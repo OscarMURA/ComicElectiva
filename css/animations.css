@@ -1,0 +1,223 @@
+/* ============================================================
+   animations.css
+   Animaciones de entrada, parallax helpers, transiciones y
+   keyframes utilitarios.
+   ============================================================ */
+
+/* ---------- Keyframes base ---------- */
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.94); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pop {
+  0%   { transform: scale(0.6); opacity: 0; }
+  60%  { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+@keyframes bobble {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 1;   transform: scale(1.15); }
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Cursor parpadeante (también declarado en panels.css; mantenemos
+   uno consolidado aquí por si se importa solo este archivo) */
+@keyframes blink {
+  to { visibility: hidden; }
+}
+
+/* ---------- Preloader: estrella latiendo ---------- */
+.preloader__star {
+  animation: twinkle 1.4s ease-in-out infinite;
+}
+
+.preloader__text {
+  animation: fadeIn 1.2s ease-in-out infinite alternate;
+}
+
+/* ---------- Header: entrada suave ---------- */
+.site-header {
+  animation: fadeInDown 0.6s var(--t-base) both;
+}
+
+/* ---------- Capítulo intro ---------- */
+.chapter__intro {
+  animation: fadeInUp 0.7s var(--t-base) both;
+}
+
+/* ---------- Panel: aparición al entrar al viewport (desktop) ----------
+   En desktop el panel parte oculto (definido en responsive.css). Aquí
+   damos timings y micro-rebote a sus hijos cuando la clase .in-view
+   se activa. */
+
+.panel.in-view .panel__index {
+  animation: pop 0.5s var(--t-base) both;
+}
+
+/* Nota: las burbujas son position:absolute con
+   transform: translate(-50%,-50%); por eso usamos fadeIn (sin
+   translateY) para no romper el centrado. */
+
+.panel.in-view .bubble-left {
+  animation: fadeIn 0.55s var(--t-base) both;
+  animation-delay: 0.15s;
+}
+
+.panel.in-view .bubble-right {
+  animation: fadeIn 0.55s var(--t-base) both;
+  animation-delay: 0.3s;
+}
+
+.panel.in-view .narration,
+.panel.in-view .bubble-narration {
+  animation: fadeIn 0.7s var(--t-base) both;
+  animation-delay: 0.1s;
+}
+
+.panel.in-view .panel__caption {
+  animation: fadeIn 0.6s var(--t-base) both;
+  animation-delay: 0.2s;
+}
+
+/* === v3 fixes: suprimir re-animación de elementos ya colocados ===
+   Cuando un elemento ya fue arrastrado/posicionado, el engine le pone
+   data-placed="1" o la clase .bubble--placed. Evitamos que el observer
+   de "in-view" reaplique fadeIn cada vez que reentra al viewport,
+   lo que provocaba saltos / "escondidas" tras un drag. */
+.panel.in-view .bubble[data-placed="1"],
+.panel.in-view .bubble--placed,
+.panel.in-view .character-overlay[data-placed="1"],
+.panel.in-view .character-overlay--placed {
+  animation: none !important;
+  opacity: 1 !important;
+}
+
+/* Sparkles flotantes dentro de paneles */
+.panel__sparkle {
+  animation: twinkle 2s ease-in-out infinite;
+}
+
+.panel__sparkle--tr { animation-delay: 0.3s; }
+.panel__sparkle--bl { animation-delay: 0.6s; }
+.panel__sparkle--br { animation-delay: 0.9s; }
+
+/* ---------- Parallax (cooperación con scrollManager.js) ----------
+   El JS escribirá en --parallax-y (px) de cada .panel para mover
+   el fondo en sentido contrario al scroll. Aquí garantizamos
+   transición suave y sin layout shift. */
+@media (min-width: 769px) {
+  html.is-desktop .panel__media {
+    transition: transform 80ms linear;
+  }
+}
+
+/* ---------- Burbujas: estados typewriter ----------
+   Las burbujas son absolutas y centradas con translate(-50%,-50%).
+   Para el "pop" final hacemos un breve fade-in extra que no
+   sobrescribe el transform centrado. */
+
+@keyframes bubblePop {
+  0%   { opacity: 0.6; }
+  60%  { opacity: 1; }
+  100% { opacity: 1; }
+}
+
+.bubble.done {
+  animation: bubblePop 0.35s var(--t-base);
+}
+
+/* Caret blink (refuerzo) */
+.bubble .caret,
+.narration .caret {
+  animation: blink 1s steps(2, start) infinite;
+}
+
+/* ---------- Botones interactivos: micro-rebote ---------- */
+.mute-toggle,
+.editor-toggle {
+  transition: transform var(--t-fast), background var(--t-fast), box-shadow var(--t-fast);
+}
+
+.mute-toggle:hover { animation: bobble 1.2s ease-in-out infinite; }
+.editor-toggle:hover { animation: bobble 1.4s ease-in-out infinite; }
+
+/* ---------- Panel del editor: micro-animación al abrir ---------- */
+.editor-panel.is-open .editor-section {
+  animation: fadeInUp 0.35s var(--t-base) both;
+}
+
+.editor-panel.is-open .editor-section:nth-child(2) { animation-delay: 0.05s; }
+.editor-panel.is-open .editor-section:nth-child(3) { animation-delay: 0.1s; }
+
+/* ---------- Galería de personajes: items aparecen escalonados ---------- */
+.character-gallery__item {
+  animation: scaleIn 0.3s var(--t-base) both;
+}
+
+/* ---------- Footer: aparece más tarde ---------- */
+.site-footer {
+  animation: fadeIn 1.2s var(--t-base) both;
+  animation-delay: 0.4s;
+}
+
+/* ---------- Modo móvil: deshabilitamos parallax para rendimiento ---------- */
+@media (max-width: 768px) {
+  html.is-mobile .panel__media {
+    transform: none !important;
+  }
+}
+
+/* ---------- Movement-sensitive users ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .preloader__star,
+  .preloader__text,
+  .panel__sparkle,
+  .mute-toggle:hover,
+  .editor-toggle:hover,
+  .bubble.done,
+  .panel.in-view .bubble-left,
+  .panel.in-view .bubble-right,
+  .panel.in-view .narration,
+  .panel.in-view .panel__caption,
+  .panel.in-view .panel__index,
+  .editor-panel.is-open .editor-section,
+  .character-gallery__item,
+  .site-header,
+  .chapter__intro,
+  .site-footer,
+  .bubble .caret,
+  .narration .caret {
+    animation: none !important;
+  }
+}

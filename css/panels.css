@@ -1,0 +1,1909 @@
+/* ============================================================
+   panels.css
+   Sistema de paneles de cómic y burbujas de diálogo.
+   ============================================================ */
+
+/* ---------- Capítulos ---------- */
+.chapter {
+  position: relative;
+  width: 100%;
+  padding: var(--space-lg) 0;
+}
+
+.chapter__intro {
+  max-width: 720px;
+  margin: 0 auto var(--space-lg);
+  padding: var(--space-md) var(--content-padding);
+  text-align: center;
+}
+
+.chapter__number {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  margin-bottom: var(--space-xs);
+}
+
+.chapter__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--color-night);
+  margin-bottom: var(--space-sm);
+}
+
+.chapter__scene {
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* ---------- Panel (el bloque base de cómic) ----------
+   Las burbujas y personajes viven DENTRO de .panel__media > .panel__overlay
+   como elementos absolutos posicionados por JS via estilos inline. */
+.panel {
+  position: relative;
+  width: 100%;
+  margin: 0 auto var(--space-lg);
+  background: transparent;
+  isolation: isolate;
+}
+
+/* Contenedor del media: aquí pasa todo (fondo + burbujas + personajes) */
+.panel__media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-color: var(--color-secondary);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 2px solid var(--color-ink);
+  box-shadow: var(--shadow-card);
+}
+
+.panel__media img.panel-bg,
+.panel-bg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Compatibilidad con imágenes legacy (cualquier <img> directo) */
+.panel__media > img:not(.panel-bg):not(.character-overlay img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Capa de luz mágica sutil dentro del panel */
+.panel__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at 50% 30%,
+    rgba(255, 214, 107, 0.18) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Capa de overlay (burbujas y personajes posicionados absolute) */
+.panel__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+
+.panel__overlay > * {
+  pointer-events: auto;
+}
+
+/* Título / número de panel (opcional, pequeño) */
+.panel__index {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: var(--color-night);
+  color: var(--color-primary);
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  letter-spacing: 1px;
+  z-index: 2;
+}
+
+/* ---------- Burbujas de diálogo ----------
+   Las burbujas son ABSOLUTAS dentro de .panel__overlay.
+   El JS las coloca con estilos inline (left/top en %).
+   El transform translate(-50%,-50%) centra la burbuja en el punto dado. */
+/* Definición principal de .bubble (única). Posicionamiento absoluto,
+   centrado con translate(-50%,-50%), opacidad inicial 0 para fade-in,
+   y ancho intrínseco al contenido para que el typewriter no cause saltos. */
+.bubble {
+  position: absolute;
+  /* left/top los pone el JS en estilos inline */
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  width: max-content;
+  max-width: 38%;
+  z-index: 10;
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-bubble-bg);
+  border: 2px solid var(--color-bubble-border);
+  border-radius: 22px;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--color-ink);
+  line-height: 1.3;
+  box-shadow: 0 4px 0 rgba(59, 46, 90, 0.12), var(--shadow-soft);
+  opacity: 0;
+  transition: opacity var(--t-slow);
+  will-change: opacity;
+  cursor: default;
+}
+
+.bubble__speaker {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--fs-xs);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin-bottom: 2px;
+}
+
+/* Variante izquierda (cola abajo-izquierda) */
+.bubble-left {
+  border-bottom-left-radius: 6px;
+  background: var(--color-cream);
+  border: 2px solid var(--color-ink);
+  box-shadow: 0 4px 0 rgba(59, 46, 90, 0.10), 0 6px 18px rgba(42, 42, 92, 0.18);
+}
+
+.bubble-left::before,
+.bubble-left::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 22px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.bubble-left::before {
+  border-width: 16px 14px 0 0;
+  border-color: var(--color-bubble-border) transparent transparent transparent;
+}
+
+.bubble-left::after {
+  bottom: -10px;
+  left: 24px;
+  border-width: 12px 10px 0 0;
+  border-color: var(--color-bubble-bg) transparent transparent transparent;
+}
+
+/* Variante derecha (cola abajo-derecha) */
+.bubble-right {
+  border-bottom-right-radius: 6px;
+  background: #ffeed1;
+  border: 2px solid var(--color-ink);
+  box-shadow: 0 4px 0 rgba(59, 46, 90, 0.10), 0 6px 18px rgba(42, 42, 92, 0.18);
+}
+
+.bubble-right::before,
+.bubble-right::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  right: 22px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+.bubble-right::before {
+  border-width: 16px 0 0 14px;
+  border-color: var(--color-bubble-border) transparent transparent transparent;
+}
+
+.bubble-right::after {
+  bottom: -10px;
+  right: 24px;
+  border-width: 12px 0 0 10px;
+  border-color: #ffeed1 transparent transparent transparent;
+}
+
+/* Variante narración (caja rectangular flotante, centrada por JS) */
+.bubble.narration,
+.bubble-narration,
+.narration {
+  max-width: 80%;
+  text-align: center;
+  background: rgba(43, 30, 80, 0.92);
+  color: var(--color-cream);
+  border: 2px solid var(--color-night);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  padding: var(--space-md);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2), 0 6px 18px rgba(42, 42, 92, 0.25);
+  font-style: italic;
+}
+
+.bubble.narration,
+.bubble-narration {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.narration::before,
+.narration::after,
+.bubble-narration::before,
+.bubble-narration::after {
+  display: none;
+}
+
+.narration .bubble__speaker,
+.bubble-narration .bubble__speaker {
+  color: var(--color-primary);
+}
+
+/* Variante para "pensamiento" (opcional, redondeada en nube) */
+.bubble-thought {
+  background: #f3eaff;
+  border-radius: 30px;
+  font-style: italic;
+}
+
+.bubble-thought::before,
+.bubble-thought::after {
+  display: none;
+}
+
+/* ---------- Caption legacy (compatibilidad) ----------
+   El nuevo layout pone todo dentro del media. Si aún quedara un
+   .panel__caption como bloque, lo mostramos como narración flotante
+   sobre el panel. */
+.panel__caption {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  padding: var(--space-sm) var(--space-md);
+  background: rgba(43, 30, 80, 0.92);
+  color: var(--color-cream);
+  border: 2px solid var(--color-night);
+  border-radius: 12px;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  text-align: center;
+  line-height: 1.4;
+  z-index: 10;
+}
+
+.panel__caption strong {
+  color: var(--color-primary);
+}
+
+/* ---------- Decoraciones: estrellitas flotantes ---------- */
+.panel__sparkle {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  color: var(--color-primary);
+  filter: drop-shadow(0 0 6px rgba(255, 214, 107, 0.7));
+  pointer-events: none;
+  z-index: 1;
+}
+
+.panel__sparkle--tl { top: 8%; left: 6%; }
+.panel__sparkle--tr { top: 12%; right: 8%; }
+.panel__sparkle--bl { bottom: 14%; left: 10%; }
+.panel__sparkle--br { bottom: 8%; right: 6%; }
+
+/* ============================================================
+   Estados de burbujas (typewriter / fade-in)
+   ============================================================ */
+
+/* Cuando el panel padre entra en viewport, las burbujas aparecen.
+   La definición de .bubble (más arriba) ya establece opacity: 0 y la
+   transition. Aquí solo activamos visibilidad para distintos estados. */
+.panel.in-view .bubble,
+.bubble.done,
+.bubble.typing {
+  opacity: 1;
+}
+
+/* Cursor parpadeante para el efecto máquina de escribir */
+.caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  background-color: var(--color-ink);
+  animation: blink 1s steps(2, start) infinite;
+}
+
+.bubble.narration .caret,
+.narration .caret {
+  background-color: var(--color-cream);
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ============================================================
+   Burbujas añadidas por el usuario (editor)
+   ============================================================ */
+
+/* En modo edición (clase doble), marcador visual sutil para
+   distinguir las burbujas creadas por el usuario */
+html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
+  outline-color: var(--color-primary);
+}
+
+/* ============================================================
+   Editor de burbujas: botón flotante y panel lateral
+   ============================================================ */
+
+.editor-toggle {
+  position: fixed;
+  left: var(--space-md);
+  bottom: var(--space-md);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: var(--color-cream);
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-card);
+  z-index: 80;
+  transition: transform var(--t-fast), background var(--t-fast), box-shadow var(--t-fast);
+}
+
+.editor-toggle:hover {
+  transform: scale(1.05);
+  background: #f79bbe;
+  box-shadow: var(--shadow-strong);
+}
+
+.editor-toggle:active {
+  transform: scale(0.96);
+}
+
+.editor-toggle__icon {
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+/* Panel lateral */
+.editor-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  max-width: 100%;
+  background: var(--color-cream);
+  box-shadow: -10px 0 28px rgba(42, 42, 92, 0.18);
+  padding: 24px;
+  overflow-y: auto;
+  z-index: 90;
+  transform: translateX(100%);
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.editor-panel.is-open {
+  transform: translateX(0);
+}
+
+.editor-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 2px solid rgba(59, 46, 90, 0.1);
+}
+
+.editor-panel__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  color: var(--color-night);
+  margin: 0;
+}
+
+.editor-panel__close {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(59, 46, 90, 0.08);
+  font-size: 1.4rem;
+  color: var(--color-ink);
+  transition: background var(--t-fast);
+}
+
+.editor-panel__close:hover {
+  background: rgba(245, 138, 181, 0.2);
+}
+
+/* Formulario */
+.editor-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.editor-form__label {
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  color: var(--color-night);
+  margin-top: var(--space-xs);
+  letter-spacing: 0.5px;
+}
+
+.editor-form__input {
+  width: 100%;
+  padding: 10px 14px;
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  color: var(--color-ink);
+  background: #fffdf6;
+  border: 2px solid var(--color-ink);
+  border-radius: 12px;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.editor-form__input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(245, 138, 181, 0.25);
+}
+
+.editor-form__textarea {
+  resize: vertical;
+  min-height: 96px;
+  font-family: var(--font-body);
+  line-height: 1.35;
+}
+
+.editor-form__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  margin-top: var(--space-sm);
+}
+
+.editor-btn {
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  border: 2px solid var(--color-ink);
+  transition: transform var(--t-fast), background var(--t-fast), color var(--t-fast);
+}
+
+.editor-btn:hover {
+  transform: translateY(-1px);
+}
+
+.editor-btn:active {
+  transform: translateY(0);
+}
+
+.editor-btn--primary {
+  background: var(--color-primary);
+  color: var(--color-night);
+}
+
+.editor-btn--primary:hover {
+  background: #ffe28f;
+}
+
+.editor-btn--secondary {
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.editor-btn--secondary:hover {
+  background: rgba(59, 46, 90, 0.06);
+}
+
+.editor-btn--danger {
+  background: var(--color-accent);
+  color: var(--color-cream);
+  border-color: var(--color-accent);
+}
+
+.editor-btn--danger:hover {
+  background: #ec73a4;
+}
+
+/* ============================================================
+   Editor: secciones (Burbujas / Fondo / Personajes)
+   ============================================================ */
+
+.editor-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+/* Separador entre secciones */
+.editor-section + .editor-section {
+  border-top: 1px solid var(--color-ink);
+  margin-top: 16px;
+  padding-top: 16px;
+}
+
+.editor-section__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  color: var(--color-ink);
+  margin: 0 0 var(--space-xs);
+}
+
+/* ---------- Tab bar (visible solo en mobile via responsive.css) ---------- */
+.editor-tabs {
+  display: none; /* en desktop ocultamos: se muestran todas las secciones */
+  gap: 6px;
+  padding: 4px;
+  background: rgba(59, 46, 90, 0.06);
+  border-radius: var(--radius-pill);
+}
+
+.editor-tabs__btn {
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  background: transparent;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+
+.editor-tabs__btn.is-active {
+  background: var(--color-night);
+  color: var(--color-primary);
+}
+
+/* ---------- Input de archivo personalizado ---------- */
+.editor-file {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  cursor: pointer;
+  margin-top: var(--space-xs);
+}
+
+.editor-file__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.editor-file__btn {
+  display: inline-block;
+  text-align: center;
+  padding: 12px;
+  background: var(--color-cream);
+  border: 2px dashed var(--color-ink);
+  border-radius: 12px;
+  font-family: var(--font-display);
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+
+.editor-file:hover .editor-file__btn {
+  background: rgba(255, 214, 107, 0.35);
+  border-color: var(--color-accent);
+}
+
+.editor-file__input:focus-visible + .editor-file__btn {
+  outline: 3px dashed var(--color-accent);
+  outline-offset: 3px;
+}
+
+.editor-file__name {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--color-muted);
+  text-align: center;
+  word-break: break-all;
+}
+
+/* ---------- Slider de tamaño kid-friendly ---------- */
+.editor-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
+  outline: none;
+  margin: var(--space-xs) 0;
+  cursor: pointer;
+}
+
+.editor-slider::-webkit-slider-runnable-track {
+  height: 10px;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
+}
+
+.editor-slider::-moz-range-track {
+  height: 10px;
+  background: var(--color-primary);
+  border-radius: var(--radius-pill);
+}
+
+.editor-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid var(--color-cream);
+  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.25);
+  margin-top: -6px;
+  transition: transform var(--t-fast);
+}
+
+.editor-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.1);
+}
+
+.editor-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid var(--color-cream);
+  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.25);
+}
+
+/* ---------- Galería de personajes ---------- */
+.character-gallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: var(--space-xs);
+}
+
+.character-gallery__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: grab;
+  transition: transform var(--t-fast);
+}
+
+.character-gallery__item:hover {
+  transform: scale(1.05);
+}
+
+.character-gallery__thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--color-cream);
+  border: 2px solid var(--color-ink);
+}
+
+.character-gallery__name {
+  font-size: 12px;
+  font-family: var(--font-body);
+  color: var(--color-ink);
+  text-align: center;
+  max-width: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.character-gallery__remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #e74c5e;
+  color: white;
+  font-size: 11px;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.character-gallery__remove:hover {
+  background: #d63b4d;
+}
+
+/* ============================================================
+   Capa de personajes superpuestos en paneles
+   ============================================================ */
+
+/* Apilado: fondo=1, character=5, bubble=10 */
+.character-overlay {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  /* left/top los pone el JS en estilos inline */
+  width: 120px;
+  height: auto;
+  z-index: 5;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  transition: filter var(--t-fast), transform var(--t-fast), box-shadow var(--t-fast);
+}
+
+.character-overlay img {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+
+/* ============================================================
+   Modo edición visible: SOLO cuando ambas clases están activas.
+   - html.edit-mode-unlocked: el usuario desbloqueó el editor.
+   - html.editor-open: el panel del editor está abierto.
+   ============================================================ */
+
+/* Burbujas y personajes en modo edición: borde dashed + grab */
+html.edit-mode-unlocked.editor-open .bubble,
+html.edit-mode-unlocked.editor-open .character-overlay {
+  outline: 2px dashed var(--color-accent);
+  outline-offset: 3px;
+  cursor: grab;
+  border-radius: 14px;
+}
+
+html.edit-mode-unlocked.editor-open .character-overlay {
+  border-radius: 8px;
+}
+
+/* Badge "EDITABLE" en la esquina superior derecha de cada burbuja.
+   Sobreescribe la "cola" ::before de las burbujas left/right
+   intencionadamente — en modo edición priorizamos legibilidad. */
+html.edit-mode-unlocked.editor-open .bubble::before {
+  content: "✎";
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  left: auto;
+  bottom: auto;
+  width: 24px;
+  height: 24px;
+  background: var(--color-accent);
+  color: var(--color-cream);
+  border: 2px solid var(--color-cream);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-family: var(--font-display);
+  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.3);
+  z-index: 11;
+  pointer-events: none;
+  /* Reset de los borders de cola */
+  border-width: 2px;
+  border-style: solid;
+  border-color: var(--color-cream);
+}
+
+/* Estado dragging: cursor + opacidad + escala + sombra elevada */
+.bubble.dragging,
+.character-overlay.dragging {
+  cursor: grabbing;
+  opacity: 0.85;
+  transform: translate(-50%, -50%) scale(1.02);
+  box-shadow: 0 18px 32px rgba(42, 42, 92, 0.4);
+  filter: drop-shadow(0 8px 16px rgba(42, 42, 92, 0.35));
+  z-index: 999;
+}
+
+/* Sin modo edición: NUNCA cursor grab ni borde dashed
+   (la regla cursor: default está en la definición principal de .bubble y
+   .character-overlay; sólo el modo edición la sobreescribe a grab). */
+.character-overlay {
+  cursor: default;
+}
+
+/* ===============================================
+   Bridge: estilos para el editor creado dinámicamente
+   por js/bubbleEditor.js (clases .bubble-editor y .be-*)
+   =============================================== */
+.bubble-editor {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 340px;
+  max-width: 100vw;
+  background: var(--color-cream, #FFF7E6);
+  border-left: 2px solid var(--color-ink, #3B2E5A);
+  box-shadow: -6px 0 24px rgba(59, 46, 90, 0.15);
+  transform: translateX(100%);
+  transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.bubble-editor.is-open { transform: translateX(0); }
+
+.bubble-editor__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(59, 46, 90, 0.15);
+  background: var(--color-primary, #FFD66B);
+}
+.bubble-editor__header h2 {
+  margin: 0;
+  font-family: var(--font-display, Fredoka, sans-serif);
+  font-size: 20px;
+  color: var(--color-ink, #3B2E5A);
+}
+.bubble-editor__close {
+  background: transparent;
+  border: none;
+  font-size: 28px;
+  line-height: 1;
+  color: var(--color-ink, #3B2E5A);
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 50%;
+  transition: background 150ms;
+}
+.bubble-editor__close:hover { background: rgba(59, 46, 90, 0.1); }
+
+.bubble-editor__body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px 24px;
+  font-family: var(--font-body, 'Patrick Hand', sans-serif);
+  color: var(--color-ink, #3B2E5A);
+}
+.bubble-editor__body label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 15px;
+}
+.bubble-editor__body select,
+.bubble-editor__body input[type="text"],
+.bubble-editor__body input[type="number"],
+.bubble-editor__body input[type="range"],
+.bubble-editor__body textarea {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 15px;
+  color: var(--color-ink, #3B2E5A);
+  background: #fff;
+  border: 2px solid var(--color-ink, #3B2E5A);
+  border-radius: 12px;
+  box-sizing: border-box;
+}
+.bubble-editor__body input[type="range"] { padding: 0; height: 32px; }
+.bubble-editor__body textarea { resize: vertical; min-height: 70px; }
+.bubble-editor__body input:focus,
+.bubble-editor__body select:focus,
+.bubble-editor__body textarea:focus {
+  outline: 3px solid var(--color-accent, #F58AB5);
+  outline-offset: 2px;
+}
+
+.bubble-editor .be-section {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(59, 46, 90, 0.15);
+}
+.bubble-editor .be-section:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.bubble-editor .be-section h3 {
+  margin: 0 0 12px;
+  font-family: var(--font-display, Fredoka, sans-serif);
+  font-size: 17px;
+  color: var(--color-ink, #3B2E5A);
+}
+
+.bubble-editor button {
+  display: inline-block;
+  padding: 10px 16px;
+  margin-top: 8px;
+  margin-right: 6px;
+  font-family: var(--font-display, Fredoka, sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid var(--color-ink, #3B2E5A);
+  border-radius: 12px;
+  background: var(--color-primary, #FFD66B);
+  color: var(--color-ink, #3B2E5A);
+  cursor: pointer;
+  transition: transform 120ms, background 120ms;
+}
+.bubble-editor button:hover { transform: translateY(-1px); }
+.bubble-editor .be-bg-remove,
+.bubble-editor [class*="clear"],
+.bubble-editor [class*="remove"] { background: var(--color-accent, #F58AB5); color: #fff; }
+.bubble-editor [class*="export"] { background: transparent; }
+
+/* File inputs custom look */
+.bubble-editor input[type="file"] {
+  padding: 8px;
+  border-style: dashed;
+  background: #fff;
+  cursor: pointer;
+}
+
+/* Move floating toggle to bottom-left (engine put it inline; ensure visible) */
+#editor-toggle.editor-toggle,
+button#editor-toggle {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 9999;
+}
+
+/* Mobile: full-screen drawer from bottom */
+@media (max-width: 768px) {
+  .bubble-editor {
+    width: 100vw;
+    height: 90dvh;
+    top: auto;
+    right: 0;
+    left: 0;
+    border-left: 0;
+    border-top: 2px solid var(--color-ink, #3B2E5A);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    transform: translateY(100%);
+  }
+  .bubble-editor.is-open { transform: translateY(0); }
+}
+
+/* ============================================================
+   Modal de contraseña (creado dinámicamente por el JS)
+   ============================================================ */
+
+.password-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20000;
+  display: grid;
+  place-items: center;
+  animation: passwordModalFade 200ms ease-out both;
+}
+
+.password-modal__backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(43, 30, 80, 0.6);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 0;
+}
+
+.password-modal__dialog {
+  position: relative;
+  z-index: 1;
+  width: 360px;
+  max-width: 90vw;
+  padding: 32px;
+  background: var(--color-cream);
+  border: 2px solid var(--color-ink);
+  border-radius: 20px;
+  box-shadow: 0 30px 60px -10px rgba(43, 30, 80, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  animation: passwordDialogIn 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.password-modal__title {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--color-ink);
+  margin: 0;
+}
+
+.password-modal__subtitle {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.password-modal__input {
+  width: 100%;
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  color: var(--color-ink);
+  background: #fffdf6;
+  border: 2px solid var(--color-ink);
+  border-radius: 12px;
+  box-sizing: border-box;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+
+.password-modal__input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(245, 138, 181, 0.25);
+}
+
+.password-modal__error {
+  color: #d63b4d;
+  font-family: var(--font-body);
+  font-size: 14px;
+  margin-top: 8px;
+  min-height: 1em;
+}
+
+.password-modal__actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-top: 4px;
+  justify-content: flex-end;
+}
+
+.password-modal__btn {
+  padding: 10px 20px;
+  border-radius: 14px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  border: 2px solid var(--color-ink);
+  cursor: pointer;
+  transition: transform var(--t-fast), background var(--t-fast), color var(--t-fast);
+}
+
+.password-modal__btn:hover { transform: translateY(-1px); }
+.password-modal__btn:active { transform: translateY(0); }
+
+.password-modal__btn--primary {
+  background: var(--color-primary);
+  color: var(--color-ink);
+}
+
+.password-modal__btn--primary:hover {
+  background: #ffe28f;
+}
+
+.password-modal__btn--ghost {
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.password-modal__btn--ghost:hover {
+  background: rgba(59, 46, 90, 0.06);
+}
+
+/* Animaciones del modal */
+@keyframes passwordModalFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes passwordDialogIn {
+  from { opacity: 0; transform: scale(0.92) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Shake horizontal para feedback de error */
+.password-modal__dialog.shake,
+.shake {
+  animation: shakeX 400ms ease-in-out;
+}
+
+@keyframes shakeX {
+  0%, 100%        { transform: translateX(0); }
+  12.5%, 62.5%    { transform: translateX(-6px); }
+  37.5%, 87.5%    { transform: translateX(6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .password-modal,
+  .password-modal__dialog,
+  .shake { animation: none !important; }
+}
+
+/* ============================================================
+   Editor: botón "Cerrar sesión de edición"
+   ============================================================ */
+
+.bubble-editor__logout {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+  padding: 14px 16px;
+  background: var(--color-accent);
+  color: #fff;
+  border: 2px solid var(--color-accent);
+  border-radius: 14px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: transform var(--t-fast), background var(--t-fast), box-shadow var(--t-fast);
+  box-shadow: 0 6px 16px rgba(245, 138, 181, 0.35);
+}
+
+.bubble-editor__logout:hover {
+  background: #ec73a4;
+  border-color: #ec73a4;
+  transform: translateY(-1px);
+}
+
+.bubble-editor__logout:active {
+  transform: translateY(0);
+}
+
+/* ============================================================
+   Editor: sección de audio (panel y música)
+   ============================================================ */
+
+.bubble-editor .be-audio-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.bubble-editor .be-audio-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Botones circulares de play/stop junto al uploader */
+.bubble-editor .be-audio-play,
+.bubble-editor .be-audio-stop,
+.bubble-editor [class*="audio-play"],
+.bubble-editor [class*="audio-stop"] {
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  padding: 0;
+  margin: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--color-primary);
+  color: var(--color-ink);
+  border: 2px solid var(--color-ink);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform var(--t-fast), background var(--t-fast);
+  box-shadow: 0 4px 10px rgba(42, 42, 92, 0.15);
+}
+
+.bubble-editor .be-audio-play:hover,
+.bubble-editor [class*="audio-play"]:hover {
+  background: #ffe28f;
+  transform: scale(1.06);
+}
+
+.bubble-editor .be-audio-stop,
+.bubble-editor [class*="audio-stop"] {
+  background: var(--color-accent);
+  color: #fff;
+  border-color: var(--color-accent);
+}
+
+.bubble-editor .be-audio-stop:hover,
+.bubble-editor [class*="audio-stop"]:hover {
+  background: #ec73a4;
+  transform: scale(1.06);
+}
+
+/* Slider de volumen: track redondeado primary + thumb accent */
+.bubble-editor input[type="range"].be-audio-volume,
+.bubble-editor [class*="volume"][type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 10px;
+  background: var(--color-primary);
+  border: 2px solid var(--color-ink);
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.bubble-editor input[type="range"].be-audio-volume::-webkit-slider-runnable-track,
+.bubble-editor [class*="volume"][type="range"]::-webkit-slider-runnable-track {
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 999px;
+}
+
+.bubble-editor input[type="range"].be-audio-volume::-moz-range-track,
+.bubble-editor [class*="volume"][type="range"]::-moz-range-track {
+  height: 6px;
+  background: var(--color-primary);
+  border-radius: 999px;
+}
+
+.bubble-editor input[type="range"].be-audio-volume::-webkit-slider-thumb,
+.bubble-editor [class*="volume"][type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid var(--color-cream);
+  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.25);
+  margin-top: -8px;
+  cursor: grab;
+}
+
+.bubble-editor input[type="range"].be-audio-volume::-moz-range-thumb,
+.bubble-editor [class*="volume"][type="range"]::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  border: 2px solid var(--color-cream);
+  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.25);
+  cursor: grab;
+}
+
+/* Fix: ocultar modal de contraseña cuando no tiene .is-open */
+.password-modal { display: none; }
+.password-modal.is-open { display: grid; }
+
+/* ============================================================
+   === v3 fixes (drag/resize/typewriter) ===
+   Bloque consolidado de correcciones para:
+   - Drag robusto sin "saltos" (sin transición/animación durante drag).
+   - Typewriter sin crecimiento horizontal (estructura tw-typed/tw-rest).
+   - Resize handles (8 esquinas/lados) para burbujas y personajes.
+   - Contraste visual del modo edición.
+   - Tip flotante "Arrastra para mover · Esquinas para redimensionar".
+   ============================================================ */
+
+/* ---------- Drag blindado ----------
+   El engine usa la clase .dragging (NO .is-dragging). Durante el drag
+   anulamos cualquier animación/transición y forzamos el transform de
+   centrado + un sutil scale para feedback. !important para ganar a
+   cualquier @keyframes residual del observer. */
+.bubble.dragging,
+.character-overlay.dragging {
+  animation: none !important;
+  transition: none !important;
+  transform: translate(-50%, -50%) scale(1.02) !important;
+  cursor: grabbing !important;
+  opacity: 0.95 !important;
+  box-shadow: 0 18px 32px rgba(42, 42, 92, 0.4) !important;
+  filter: drop-shadow(0 8px 16px rgba(42, 42, 92, 0.35));
+  z-index: 999 !important;
+  will-change: left, top;
+}
+
+/* ---------- Typewriter sin saltos ----------
+   El engine inyecta dos spans hermanos dentro del bloque de texto:
+     <span class="tw-typed"></span>          (texto visible que va apareciendo)
+     <span class="tw-rest" aria-hidden="true">resto completo</span> (reserva espacio)
+   Así la burbuja toma desde el primer frame el ancho/alto final. */
+.bubble .tw-typed {
+  display: inline;
+}
+
+.bubble .tw-rest {
+  display: inline;
+  opacity: 0;
+  visibility: visible; /* sí ocupa caja, pero invisible */
+  pointer-events: none;
+  user-select: none;
+  /* Evita que un enlace de salto de línea visible se note */
+  color: transparent;
+}
+
+/* Caret inline para que no fuerce salto de línea entre tw-typed y tw-rest */
+.bubble .caret,
+.narration .caret,
+.bubble-narration .caret {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+/* La burbuja toma su ancho del contenido total (tw-typed + tw-rest)
+   desde el inicio, así no crece mientras se "escribe". */
+.bubble.typing,
+.bubble.done {
+  width: max-content;
+  max-width: 38%;
+}
+
+/* Narración: misma idea pero respeta su max-width amplio */
+.bubble.narration,
+.bubble-narration,
+.narration {
+  width: max-content;
+  max-width: 80%;
+}
+
+/* ---------- Resize handles ----------
+   El engine añade 8 spans dentro de .bubble y .character-overlay:
+     .resize-handle .resize-handle--{nw|n|ne|e|se|s|sw|w}
+   Solo visibles en modo edición (igual que el badge ✎). */
+.resize-handle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: var(--color-cream, #fffdf6);
+  border: 2px solid var(--color-accent);
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(42, 42, 92, 0.35);
+  z-index: 12; /* encima del badge ✎ (z=11) y de la burbuja */
+  /* Por defecto ocultos: solo se ven en modo edición */
+  display: none;
+  pointer-events: auto;
+  /* Cada handle se traslada -50%,-50% para centrarse sobre su punto */
+  transform: translate(-50%, -50%);
+}
+
+/* Solo visibles cuando el modo edición está activo y el editor abierto */
+html.edit-mode-unlocked.editor-open .bubble .resize-handle,
+html.edit-mode-unlocked.editor-open .character-overlay .resize-handle {
+  display: block;
+}
+
+/* Posiciones — cada esquina/borde con su cursor */
+.resize-handle--nw { top: 0;    left: 0;    cursor: nw-resize; }
+.resize-handle--n  { top: 0;    left: 50%;  cursor: n-resize;  }
+.resize-handle--ne { top: 0;    left: 100%; cursor: ne-resize; }
+.resize-handle--e  { top: 50%;  left: 100%; cursor: e-resize;  }
+.resize-handle--se { top: 100%; left: 100%; cursor: se-resize; }
+.resize-handle--s  { top: 100%; left: 50%;  cursor: s-resize;  }
+.resize-handle--sw { top: 100%; left: 0;    cursor: sw-resize; }
+.resize-handle--w  { top: 50%;  left: 0;    cursor: w-resize;  }
+
+/* Durante drag de la burbuja: los handles "se van con ella" pero no
+   deben capturar hover/click conflictivo. */
+.bubble.dragging .resize-handle,
+.character-overlay.dragging .resize-handle {
+  pointer-events: none;
+}
+
+/* Mientras se redimensiona, no animar la burbuja/personaje */
+.bubble.resizing,
+.character-overlay.resizing {
+  animation: none !important;
+  transition: none !important;
+  user-select: none;
+}
+
+/* Asegurar que las burbujas y personajes reciben eventos cuando son
+   editables. Por defecto .panel__overlay > * ya es pointer-events:auto;
+   reforzamos por si el contenedor padre los apaga. */
+html.edit-mode-unlocked.editor-open .bubble,
+html.edit-mode-unlocked.editor-open .character-overlay {
+  pointer-events: auto;
+}
+
+/* ---------- Personajes: badge ✎ idéntico al de las burbujas ---------- */
+html.edit-mode-unlocked.editor-open .character-overlay::before {
+  content: "✎";
+  position: absolute;
+  top: -12px;
+  right: -12px;
+  width: 24px;
+  height: 24px;
+  background: var(--color-accent);
+  color: var(--color-cream);
+  border: 2px solid var(--color-cream);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-family: var(--font-display);
+  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.3);
+  z-index: 11;
+  pointer-events: none;
+}
+
+/* ---------- Contraste visual extra del modo edición ---------- */
+html.edit-mode-unlocked.editor-open .character-overlay {
+  outline: 1px dotted #d63b4d;
+  outline-offset: 4px;
+}
+
+/* Refuerzo del outline dashed accent en las burbujas (ya existía,
+   pero lo combinamos con un halo cálido sutil para mejor visibilidad). */
+html.edit-mode-unlocked.editor-open .bubble {
+  outline: 2px dashed var(--color-accent);
+  outline-offset: 3px;
+  box-shadow: 0 4px 0 rgba(59, 46, 90, 0.12),
+              var(--shadow-soft),
+              0 0 0 4px rgba(245, 138, 181, 0.12);
+}
+
+/* ---------- Tip flotante de ayuda (lo crea el engine) ----------
+   El engine inyecta un nodo:
+     <div class="edit-mode-hint">Arrastra para mover · Esquinas para redimensionar</div>
+   Aquí solo le damos estilos. */
+.edit-mode-hint {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  background: var(--color-night, #2b1e50);
+  color: var(--color-cream, #fff7e6);
+  font-family: var(--font-display, Fredoka, sans-serif);
+  font-size: 14px;
+  letter-spacing: 0.3px;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(42, 42, 92, 0.35);
+  z-index: 9500;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+  white-space: nowrap;
+  max-width: calc(100vw - 32px);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Solo visible cuando estamos en modo edición + editor abierto */
+html.edit-mode-unlocked.editor-open .edit-mode-hint {
+  opacity: 1;
+}
+
+@media (max-width: 480px) {
+  .edit-mode-hint {
+    font-size: 12px;
+    padding: 8px 12px;
+    top: 8px;
+    /* En móvil, dejamos espacio para que no choque con headers fijos */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble.dragging,
+  .character-overlay.dragging {
+    transform: translate(-50%, -50%) !important;
+    filter: none;
+  }
+  .edit-mode-hint { transition: none; }
+}
+
+/* ============================================================
+   === v4: panel list + delete + history ===
+   Estilos para:
+     - Lista ordenable "Orden de paneles" al inicio del editor.
+     - Botón "Eliminar panel actual" en rojo (Acciones).
+     - Botón "×" para borrar burbujas individuales.
+     - Toolbar opcional undo/redo + hint de atajos de teclado.
+   ============================================================ */
+
+/* ---------- 1) Lista visual de paneles ---------- */
+.be-panel-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 240px;
+  overflow-y: auto;
+  border: 1px solid rgba(59, 46, 90, 0.15);
+  border-radius: 12px;
+  background: rgba(255, 247, 230, 0.5);
+}
+
+.be-panel-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(59, 46, 90, 0.08);
+  cursor: grab;
+  user-select: none;
+  font-family: var(--font-body, 'Patrick Hand', sans-serif);
+  font-size: 13px;
+  color: var(--color-ink, #3B2E5A);
+  background: transparent;
+  transition: background 120ms ease;
+}
+
+.be-panel-item:last-child {
+  border-bottom: 0;
+}
+
+.be-panel-item:hover {
+  background: rgba(255, 214, 107, 0.25);
+}
+
+.be-panel-item.dragging {
+  opacity: 0.5;
+}
+
+.be-panel-item.drag-over {
+  background: rgba(245, 138, 181, 0.2);
+  box-shadow: inset 0 2px 0 var(--color-accent);
+}
+
+.be-panel-item__thumb {
+  width: 60px;
+  height: 40px;
+  border-radius: 6px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: var(--color-secondary);
+  border: 1px solid rgba(59, 46, 90, 0.15);
+}
+
+.be-panel-item__title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.be-panel-item__actions {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.be-panel-item__btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 1px solid var(--color-ink);
+  background: white;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  padding: 0;
+  line-height: 1;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.be-panel-item__btn:hover {
+  transform: scale(1.05);
+}
+
+.be-panel-item__btn--delete {
+  background: var(--color-accent);
+  color: white;
+  border-color: var(--color-accent);
+}
+
+.be-panel-item__btn--goto {
+  background: var(--color-primary);
+  color: var(--color-ink);
+  border-color: var(--color-ink);
+}
+
+/* ---------- 2) Botón "Eliminar panel actual" ---------- */
+.be-delete-panel {
+  background: var(--color-accent) !important;
+  color: white !important;
+  border: 2px solid var(--color-accent) !important;
+  font-weight: 600;
+}
+
+.be-delete-panel:hover {
+  filter: brightness(0.9);
+}
+
+/* ---------- 3) Botón "×" para borrar burbuja individual ---------- */
+.bubble__delete-btn {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid white;
+  background: #e63946;
+  color: white;
+  cursor: pointer;
+  font-size: 11px;
+  line-height: 1;
+  padding: 0;
+  display: none;
+  z-index: 13;
+  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.3);
+}
+
+/* Sólo visible en modo edición + editor abierto, al hacer hover en la burbuja
+   (o personaje, si por algún motivo lleva este botón). */
+html.edit-mode-unlocked.editor-open .bubble:hover .bubble__delete-btn,
+html.edit-mode-unlocked.editor-open .character-overlay:hover .bubble__delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- 4) Toolbar undo/redo ---------- */
+.be-history-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.be-undo,
+.be-redo {
+  width: 44px;
+  height: 36px;
+  border-radius: 10px;
+  font-size: 18px;
+  line-height: 1;
+  background: var(--color-cream, #FFF7E6);
+  border: 2px solid var(--color-ink, #3B2E5A);
+  color: var(--color-ink, #3B2E5A);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 120ms ease, background 120ms ease;
+}
+
+.be-undo:hover:not(:disabled),
+.be-redo:hover:not(:disabled) {
+  transform: scale(1.05);
+  background: #fffdf6;
+}
+
+.be-undo:disabled,
+.be-redo:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ---------- 5) Hint de keyboard shortcuts ---------- */
+.be-shortcuts-hint {
+  font-size: 11px;
+  color: rgba(59, 46, 90, 0.6);
+  margin-bottom: 12px;
+  font-family: var(--font-body, 'Patrick Hand', sans-serif);
+  line-height: 1.4;
+}
+
+/* ---------- 6) Mobile (≤768px) ---------- */
+@media (max-width: 768px) {
+  .be-panel-list {
+    max-height: 200px;
+    /* El editor en mobile es fullscreen drawer: evita overflow horizontal */
+    overflow-x: hidden;
+  }
+
+  .be-panel-item {
+    padding: 6px 8px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .be-panel-item__thumb {
+    width: 48px;
+    height: 32px;
+  }
+
+  .be-panel-item__btn {
+    width: 26px;
+    height: 26px;
+    font-size: 13px;
+  }
+}
+
+/* === v4.5: hide any leftover speaker labels (rendered before fix) === */
+.bubble__speaker,
+.dialogue__speaker { display: none !important; }
+
+/* === v5: selection + pos grid === */
+
+/* ---------- 1) Modo selección: ocultar chrome de edición en burbujas NO seleccionadas ---------- */
+html.edit-mode-unlocked.editor-open .bubble:not(.is-selected),
+html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected) {
+  outline: none !important;
+  box-shadow: none !important;
+  cursor: default !important;
+}
+html.edit-mode-unlocked.editor-open .bubble:not(.is-selected)::before,
+html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected)::before {
+  display: none !important;
+}
+html.edit-mode-unlocked.editor-open .bubble:not(.is-selected) .resize-handle,
+html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected) .resize-handle {
+  display: none !important;
+}
+html.edit-mode-unlocked.editor-open .bubble:not(.is-selected) .bubble__delete-btn,
+html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected) .bubble__delete-btn {
+  display: none !important;
+}
+
+/* Hover en modo edición (no seleccionado): invitación a clic */
+html.edit-mode-unlocked.editor-open .bubble:not(.is-selected):hover,
+html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected):hover {
+  cursor: pointer !important;
+  outline: 1px dashed rgba(245, 138, 181, 0.4) !important;
+  outline-offset: 2px;
+}
+
+/* Selected: highlight más fuerte */
+.bubble.is-selected,
+.character-overlay.is-selected {
+  outline: 2.5px dashed var(--color-accent) !important;
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px rgba(245, 138, 181, 0.18) !important;
+  z-index: 50 !important;
+}
+
+/* ---------- 2) Grilla 3×3 de posición ---------- */
+.be-pos-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  width: 120px;
+  height: 90px;
+  margin: 6px 0 10px;
+  padding: 6px;
+  border: 2px solid var(--color-ink);
+  border-radius: 12px;
+  background: rgba(255, 247, 230, 0.8);
+}
+.be-pos-cell {
+  border: 1.5px solid rgba(59, 46, 90, 0.35);
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 120ms ease;
+  position: relative;
+  padding: 0;
+}
+.be-pos-cell:hover {
+  background: var(--color-primary);
+  transform: scale(1.05);
+}
+.be-pos-cell.is-active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 2px rgba(245, 138, 181, 0.4);
+}
+.be-pos-cell.is-active::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 4px;
+  background: white;
+  opacity: 0.5;
+}
+
+/* ---------- 3) Indicador "Nada seleccionado" ---------- */
+.be-no-selection {
+  margin: 8px 0 12px;
+  padding: 12px;
+  font-size: 13px;
+  color: rgba(59, 46, 90, 0.6);
+  background: rgba(138, 198, 240, 0.15);
+  border: 1.5px dashed rgba(59, 46, 90, 0.25);
+  border-radius: 10px;
+  text-align: center;
+}
+.has-selection .be-no-selection { display: none; }
+
+/* ---------- 4) Sección de edición visible solo con selección ---------- */
+.be-edit-fields { display: none; }
+.has-selection .be-edit-fields { display: block; }
+
+/* === v5.1: ensure text wraps inside resized bubbles === */
+.bubble[style*="width"] .dialogue__text,
+.bubble[style*="width"] .tw-typed,
+.bubble[style*="width"] .tw-rest,
+.bubble[style*="height"] .dialogue__text,
+.bubble[style*="height"] .tw-typed,
+.bubble[style*="height"] .tw-rest {
+  white-space: normal !important;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+}
+
+/* === v5.2: bigger position grid + ensure 3 rows visible === */
+.be-pos-grid {
+  width: 160px !important;
+  height: 160px !important;
+  gap: 6px !important;
+  grid-template-rows: repeat(3, 1fr) !important;
+  grid-template-columns: repeat(3, 1fr) !important;
+  padding: 8px !important;
+  box-sizing: content-box !important;
+}
+.be-pos-cell {
+  min-height: 38px !important;
+  min-width: 38px !important;
+  border: 1.5px solid rgba(59, 46, 90, 0.4) !important;
+  background: white !important;
+  border-radius: 8px !important;
+}
+.be-pos-cell.is-active {
+  background: var(--color-accent) !important;
+  border-color: var(--color-ink) !important;
+  box-shadow: 0 0 0 3px rgba(245, 138, 181, 0.5) !important;
+}
+
+/* === v5.3: prevent text selection on selected bubble to allow drag === */
+html.edit-mode-unlocked.editor-open .bubble.is-selected,
+html.edit-mode-unlocked.editor-open .bubble.is-selected .dialogue__text,
+html.edit-mode-unlocked.editor-open .bubble.is-selected .tw-typed,
+html.edit-mode-unlocked.editor-open .bubble.is-selected .tw-rest,
+html.edit-mode-unlocked.editor-open .character-overlay.is-selected {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  cursor: grab !important;
+}
+html.edit-mode-unlocked.editor-open .bubble.is-selected.dragging,
+html.edit-mode-unlocked.editor-open .character-overlay.is-selected.dragging {
+  cursor: grabbing !important;
+}
+
+/* === v5.4: kids inside selected bubble should not catch pointer events ===
+   Without this, pointerdown lands on .tw-rest/.tw-typed/.dialogue__text and
+   may interfere with the drag threshold even though bubbling works. */
+html.edit-mode-unlocked.editor-open .bubble.is-selected .dialogue__text,
+html.edit-mode-unlocked.editor-open .bubble.is-selected .tw-typed,
+html.edit-mode-unlocked.editor-open .bubble.is-selected .tw-rest,
+html.edit-mode-unlocked.editor-open .bubble.is-selected .caret,
+html.edit-mode-unlocked.editor-open .bubble.is-selected p {
+  pointer-events: none !important;
+}
+/* But resize handles, delete button must remain interactive */
+html.edit-mode-unlocked.editor-open .bubble.is-selected .resize-handle,
+html.edit-mode-unlocked.editor-open .bubble.is-selected .be-bubble-del {
+  pointer-events: auto !important;
+}

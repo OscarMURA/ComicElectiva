@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Lumi">
+  <defs>
+    <radialGradient id="lumiAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF7E6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFD66B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="120" cy="120" r="110" fill="url(#lumiAura)"/>
+  <circle cx="120" cy="120" r="70" fill="#FFD66B" stroke="#FFF7E6" stroke-width="4"/>
+  <!-- ojos -->
+  <circle cx="98" cy="115" r="8" fill="#3B2E5A"/>
+  <circle cx="142" cy="115" r="8" fill="#3B2E5A"/>
+  <circle cx="100" cy="112" r="2.5" fill="#FFF7E6"/>
+  <circle cx="144" cy="112" r="2.5" fill="#FFF7E6"/>
+  <!-- sonrisa -->
+  <path d="M100 138 q20 18 40 0" stroke="#3B2E5A" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  <!-- mejillitas -->
+  <circle cx="82" cy="135" r="8" fill="#F58AB5" opacity="0.6"/>
+  <circle cx="158" cy="135" r="8" fill="#F58AB5" opacity="0.6"/>
+  <!-- colita estrella -->
+  <polygon points="190,130 215,115 208,130 225,140 205,142 212,162 195,148" fill="#FFD66B" stroke="#F58AB5" stroke-width="2"/>
+</svg>

@@ -1,0 +1,352 @@
+(function () {
+  'use strict';
+
+  window.Comic = window.Comic || {};
+
+  const AMBIENT_PATH = 'assets/sounds/ambient/';
+  const EFFECTS_PATH = 'assets/sounds/effects/';
+  const STORAGE_KEY = 'comic.muted';
+  const GLOBAL_AUDIO_KEY = 'comic-user-global-audio';
+  const GLOBAL_VOL_KEY = 'comic-global-audio-volume';
+  const PANEL_AUDIO_KEY = 'comic-user-panel-audio';
+  const CROSSFADE_MS = 1200;
+  const AMBIENT_VOLUME = 0.5;
+  const SFX_VOLUME = 0.7;
+  const GLOBAL_DEFAULT_VOLUME = 0.3;
+
+  let muted = false;
+  let unlocked = false;
+  let currentAmbientKey = null;
+  let currentAmbient = null;
+  let pendingAmbientKey = null;
+  const sfxCache = {};
+  const brokenAudio = new Set();
+  let muteBtn = null;
+  let overlay = null;
+
+  // Global background music (loops across whole story).
+  let globalAudio = null;
+  let globalSrc = null;
+  let globalVolume = GLOBAL_DEFAULT_VOLUME;
+  let globalShouldPlay = true; // whether user wants global track on
+
+  function loadMuted() {
+    try { return localStorage.getItem(STORAGE_KEY) === '1'; }
+    catch (e) { return false; }
+  }
+
+  function saveMuted(val) {
+    try { localStorage.setItem(STORAGE_KEY, val ? '1' : '0'); }
+    catch (e) { /* ignore */ }
+  }
+
+  function buildAmbientUrl(key) {
+    if (!key) return null;
+    if (key.indexOf('data:') === 0) return key;
+    if (key.indexOf('/') !== -1) return key;
+    if (key.indexOf('.') === -1) return AMBIENT_PATH + key + '.mp3';
+    return AMBIENT_PATH + key;
+  }
+
+  function buildSfxUrl(key) {
+    if (!key) return null;
+    if (key.indexOf('data:') === 0) return key;
+    if (key.indexOf('/') !== -1) return key;
+    if (key.indexOf('.') === -1) return EFFECTS_PATH + key + '.mp3';
+    return EFFECTS_PATH + key;
+  }
+
+  function createAudio(url, opts) {
+    const a = new Audio();
+    a.src = url;
+    a.preload = 'auto';
+    if (opts && opts.loop) a.loop = true;
+    if (opts && typeof opts.volume === 'number') a.volume = opts.volume;
+    a.addEventListener('error', () => { /* silent */ });
+    return a;
+  }
+
+  function fadeTo(audio, target, duration, onDone) {
+    if (!audio) { if (onDone) onDone(); return; }
+    const start = audio.volume;
+    const delta = target - start;
+    const startTime = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - startTime) / duration);
+      try { audio.volume = Math.max(0, Math.min(1, start + delta * t)); }
+      catch (e) { /* ignore */ }
+      if (t < 1) requestAnimationFrame(step);
+      else if (onDone) onDone();
+    }
+    requestAnimationFrame(step);
+  }
+
+  function stopAudio(audio) {
+    if (!audio) return;
+    try { audio.pause(); audio.currentTime = 0; } catch (e) { /* ignore */ }
+  }
+
+  // ---- Global background music ----------------------------------------------
+  function loadGlobalSrc() {
+    // Priority: storyData.globalAudio (set externally) > localStorage user upload.
+    const story = window.Comic.PanelLoader && window.Comic.PanelLoader.getStory && window.Comic.PanelLoader.getStory();
+    if (story && story.globalAudio) return story.globalAudio;
+    try { return localStorage.getItem(GLOBAL_AUDIO_KEY); } catch (e) { return null; }
+  }
+
+  function loadGlobalVolume() {
+    try {
+      const v = parseFloat(localStorage.getItem(GLOBAL_VOL_KEY));
+      if (!isNaN(v)) return Math.max(0, Math.min(1, v));
+    } catch (e) {}
+    return GLOBAL_DEFAULT_VOLUME;
+  }
+
+  function ensureGlobalPlaying() {
+    if (!unlocked || muted) return;
+    if (!globalShouldPlay) return;
+    const src = loadGlobalSrc();
+    if (!src) return;
+    if (globalAudio && globalSrc === src) {
+      if (globalAudio.paused) {
+        const p = globalAudio.play();
+        if (p && p.catch) p.catch(() => {});
+      }
+      return;
+    }
+    // Stop previous if src changed.
+    if (globalAudio) {
+      try { globalAudio.pause(); } catch (_) {}
+      globalAudio = null;
+    }
+    globalSrc = src;
+    globalAudio = createAudio(src, { loop: true, volume: 0 });
+    const p = globalAudio.play();
+    if (p && p.catch) p.catch(() => {});
+    fadeTo(globalAudio, muted ? 0 : globalVolume, CROSSFADE_MS);
+  }
+
+  function setGlobalAudio(dataURL) {
+    if (dataURL) {
+      try { localStorage.setItem(GLOBAL_AUDIO_KEY, dataURL); } catch (_) {}
+    } else {
+      try { localStorage.removeItem(GLOBAL_AUDIO_KEY); } catch (_) {}
+    }
+    // Force a reload.
+    if (globalAudio) {
+      try { globalAudio.pause(); } catch (_) {}
+      globalAudio = null;
+      globalSrc = null;
+    }
+    if (dataURL) {
+      globalShouldPlay = true;
+      ensureGlobalPlaying();
+    }
+  }
+
+  function setGlobalVolume(v) {
+    globalVolume = Math.max(0, Math.min(1, v));
+    if (globalAudio && !muted) {
+      try { globalAudio.volume = globalVolume; } catch (_) {}
+    }
+  }
+
+  function toggleGlobalAudio() {
+    if (globalAudio && !globalAudio.paused) {
+      globalShouldPlay = false;
+      try { globalAudio.pause(); } catch (_) {}
+    } else {
+      globalShouldPlay = true;
+      ensureGlobalPlaying();
+    }
+  }
+
+  // ---- Panel-specific SFX overrides -----------------------------------------
+  function getPanelAudioOverride(panelId) {
+    try {
+      const map = JSON.parse(localStorage.getItem(PANEL_AUDIO_KEY) || '{}');
+      return map[panelId] || null;
+    } catch (e) { return null; }
+  }
+
+  function setPanelAudio(panelId, dataURL) {
+    try {
+      const map = JSON.parse(localStorage.getItem(PANEL_AUDIO_KEY) || '{}');
+      if (dataURL) map[panelId] = dataURL;
+      else delete map[panelId];
+      localStorage.setItem(PANEL_AUDIO_KEY, JSON.stringify(map));
+    } catch (_) {}
+  }
+
+  // ---- Ambient (per chapter) -------------------------------------------------
+  function playAmbient(key) {
+    if (!key) return;
+    if (key === currentAmbientKey && currentAmbient && !currentAmbient.paused) return;
+    if (!unlocked) { pendingAmbientKey = key; return; }
+    const url = buildAmbientUrl(key);
+    if (!url) return;
+    const next = createAudio(url, { loop: true, volume: 0 });
+    const targetVol = muted ? 0 : AMBIENT_VOLUME;
+    const playPromise = next.play();
+    if (playPromise && playPromise.catch) playPromise.catch(() => {});
+    const previous = currentAmbient;
+    currentAmbient = next;
+    currentAmbientKey = key;
+    fadeTo(next, targetVol, CROSSFADE_MS);
+    if (previous) fadeTo(previous, 0, CROSSFADE_MS, () => stopAudio(previous));
+  }
+
+  // ---- One-shot SFX ----------------------------------------------------------
+  function playSfx(key) {
+    if (!key || muted || !unlocked) return;
+    const url = buildSfxUrl(key);
+    if (!url || brokenAudio.has(url)) return;
+    let template = sfxCache[url];
+    if (!template) {
+      template = createAudio(url, { volume: SFX_VOLUME });
+      template.addEventListener('error', () => { brokenAudio.add(url); delete sfxCache[url]; }, { once: true });
+      sfxCache[url] = template;
+    }
+    try {
+      const instance = template.cloneNode(true);
+      instance.volume = SFX_VOLUME;
+      instance.addEventListener('error', () => { brokenAudio.add(url); }, { once: true });
+      const p = instance.play();
+      if (p && p.catch) p.catch(() => { brokenAudio.add(url); });
+    } catch (e) { brokenAudio.add(url); }
+  }
+
+  function applyMuteState() {
+    if (currentAmbient) {
+      try { currentAmbient.volume = muted ? 0 : AMBIENT_VOLUME; } catch (e) {}
+    }
+    if (globalAudio) {
+      try { globalAudio.volume = muted ? 0 : globalVolume; } catch (e) {}
+    }
+    if (muteBtn) {
+      muteBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');
+      muteBtn.classList.toggle('is-muted', muted);
+    }
+    document.documentElement.classList.toggle('is-muted', muted);
+  }
+
+  function toggleMute() {
+    muted = !muted;
+    saveMuted(muted);
+    applyMuteState();
+    if (!muted) ensureGlobalPlaying();
+  }
+
+  function unlock() {
+    if (unlocked) return;
+    unlocked = true;
+    hideOverlay();
+    ensureGlobalPlaying();
+    if (pendingAmbientKey) {
+      const k = pendingAmbientKey;
+      pendingAmbientKey = null;
+      playAmbient(k);
+    }
+    document.dispatchEvent(new CustomEvent('audio:unlocked'));
+  }
+
+  function showOverlay() {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.id = 'audio-unlock-overlay';
+    overlay.className = 'audio-unlock-overlay';
+    overlay.setAttribute('role', 'button');
+    overlay.setAttribute('tabindex', '0');
+    overlay.setAttribute('aria-label', 'Toca para empezar');
+    overlay.innerHTML =
+      '<div class="audio-unlock-overlay__inner">' +
+      '<h1 class="audio-unlock-overlay__title">Lumi y el Bosque Estrellado</h1>' +
+      '<p class="audio-unlock-overlay__cta">Toca para empezar</p>' +
+      '</div>';
+    document.body.appendChild(overlay);
+
+    const handler = (e) => {
+      if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      unlock();
+    };
+    overlay.addEventListener('click', handler);
+    overlay.addEventListener('touchstart', handler, { passive: false });
+    overlay.addEventListener('keydown', handler);
+  }
+
+  function hideOverlay() {
+    if (!overlay) return;
+    overlay.classList.add('hidden');
+    const el = overlay;
+    overlay = null;
+    setTimeout(() => { if (el.parentNode) el.parentNode.removeChild(el); }, 500);
+  }
+
+  function onPanelEnter(e) {
+    const detail = e.detail || {};
+    if (detail.ambient && detail.ambient !== currentAmbientKey) {
+      playAmbient(detail.ambient);
+    }
+    // SFX: user override first, fall back to panel's data-sfx.
+    const panelId = detail.id;
+    const override = panelId ? getPanelAudioOverride(panelId) : null;
+    if (override) {
+      playSfx(override);
+    } else if (detail.sfx) {
+      playSfx(detail.sfx);
+    }
+  }
+
+  function bindMuteButton() {
+    muteBtn = document.getElementById('mute-toggle');
+    if (!muteBtn) return;
+    muteBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toggleMute();
+    });
+  }
+
+  function bindUnlockFallback() {
+    const opts = { once: true, passive: true };
+    const handler = () => unlock();
+    window.addEventListener('pointerdown', handler, opts);
+    window.addEventListener('touchstart', handler, opts);
+    window.addEventListener('keydown', handler, opts);
+  }
+
+  function onStorageChange(e) {
+    if (!e.key) return;
+    if (e.key === GLOBAL_AUDIO_KEY) {
+      setGlobalAudio(e.newValue);
+    } else if (e.key === GLOBAL_VOL_KEY) {
+      const v = parseFloat(e.newValue);
+      if (!isNaN(v)) setGlobalVolume(v);
+    }
+  }
+
+  function init() {
+    muted = loadMuted();
+    globalVolume = loadGlobalVolume();
+    bindMuteButton();
+    applyMuteState();
+    showOverlay();
+    bindUnlockFallback();
+    document.addEventListener('panel:enter', onPanelEnter);
+    window.addEventListener('storage', onStorageChange);
+  }
+
+  window.Comic.AudioManager = {
+    init: init,
+    toggleMute: toggleMute,
+    isMuted: function () { return muted; },
+    isUnlocked: function () { return unlocked; },
+    playSfx: playSfx,
+    playAmbient: playAmbient,
+    setGlobalAudio: setGlobalAudio,
+    setGlobalVolume: setGlobalVolume,
+    toggleGlobalAudio: toggleGlobalAudio,
+    setPanelAudio: setPanelAudio,
+    getPanelAudioOverride: getPanelAudioOverride,
+  };
+})();

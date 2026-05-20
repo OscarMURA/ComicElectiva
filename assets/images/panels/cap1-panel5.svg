@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Lumi sale al camino iluminando el bosque">
+  <defs>
+    <linearGradient id="bg5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2A5C"/>
+      <stop offset="100%" stop-color="#3B2E5A"/>
+    </linearGradient>
+    <radialGradient id="glow5" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFD66B" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFD66B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg5)"/>
+  <!-- Camino -->
+  <path d="M0 800 Q 600 600 1200 800 Z" fill="#5C3A21" opacity="0.6"/>
+  <path d="M0 800 Q 600 650 1200 800 Z" fill="#7a4a2c" opacity="0.5"/>
+  <!-- Árboles a los lados -->
+  <g fill="#1A1A40">
+    <polygon points="50,800 50,500 200,500 130,300"/>
+    <polygon points="1000,800 1000,500 1150,500 1080,300"/>
+  </g>
+  <!-- Aura -->
+  <circle cx="600" cy="560" r="220" fill="url(#glow5)"/>
+  <!-- Lumi -->
+  <circle cx="600" cy="560" r="60" fill="#FFD66B"/>
+  <!-- colita estrella -->
+  <polygon points="660,560 700,540 695,565 720,580 690,585 695,610 670,585" fill="#FFD66B" stroke="#F58AB5" stroke-width="2"/>
+  <!-- ojos -->
+  <circle cx="585" cy="555" r="6" fill="#3B2E5A"/>
+  <circle cx="615" cy="555" r="6" fill="#3B2E5A"/>
+  <!-- sonrisa -->
+  <path d="M585 575 q15 15 30 0" stroke="#3B2E5A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- destellos -->
+  <g fill="#FFF7E6">
+    <circle cx="480" cy="500" r="4"/>
+    <circle cx="720" cy="510" r="4"/>
+    <circle cx="450" cy="620" r="3"/>
+    <circle cx="750" cy="640" r="3"/>
+  </g>
+  <text x="40" y="60" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="28" fill="#FFD66B" opacity="0.85">Cap 1 · Panel 5 — Lumi sale al camino</text>
+</svg>

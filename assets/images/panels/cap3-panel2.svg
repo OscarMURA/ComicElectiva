@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Primera estrella dormida dentro de una flor">
+  <defs>
+    <linearGradient id="bg3-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3B2E5A"/>
+      <stop offset="100%" stop-color="#8AC6F0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg3-2)"/>
+  <!-- Suelo -->
+  <ellipse cx="600" cy="780" rx="900" ry="80" fill="#5FBF88"/>
+  <!-- Flor gigante en el centro -->
+  <g transform="translate(600 500)">
+    <!-- tallo -->
+    <rect x="-8" y="60" width="16" height="220" fill="#5FBF88"/>
+    <!-- hojas -->
+    <ellipse cx="-50" cy="150" rx="40" ry="18" fill="#7ED9A6" transform="rotate(-20 -50 150)"/>
+    <ellipse cx="50" cy="180" rx="40" ry="18" fill="#7ED9A6" transform="rotate(20 50 180)"/>
+    <!-- pétalos -->
+    <g>
+      <ellipse cx="0" cy="-90" rx="40" ry="60" fill="#F58AB5"/>
+      <ellipse cx="85" cy="-30" rx="60" ry="40" fill="#F58AB5"/>
+      <ellipse cx="-85" cy="-30" rx="60" ry="40" fill="#F58AB5"/>
+      <ellipse cx="60" cy="60" rx="55" ry="40" fill="#F58AB5" transform="rotate(45 60 60)"/>
+      <ellipse cx="-60" cy="60" rx="55" ry="40" fill="#F58AB5" transform="rotate(-45 -60 60)"/>
+    </g>
+    <!-- centro con estrellita dormida -->
+    <circle cx="0" cy="0" r="50" fill="#FFE9B8"/>
+    <polygon points="0,-30 8,-10 30,-10 14,5 20,28 0,15 -20,28 -14,5 -30,-10 -8,-10" fill="#C8A878" opacity="0.7"/>
+    <!-- ojos cerrados estrellita -->
+    <path d="M-10 0 q5 -5 10 0" stroke="#3B2E5A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M2 0 q5 -5 10 0" stroke="#3B2E5A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="35" y="-10" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="20" fill="#FFF7E6">z</text>
+  </g>
+  <!-- Lumi acercándose -->
+  <g transform="translate(280 400)">
+    <circle cx="0" cy="0" r="55" fill="#FFD66B"/>
+    <circle cx="0" cy="0" r="80" fill="#FFD66B" opacity="0.3"/>
+    <circle cx="-13" cy="-3" r="6" fill="#3B2E5A"/>
+    <circle cx="13" cy="-3" r="6" fill="#3B2E5A"/>
+    <ellipse cx="0" cy="15" rx="6" ry="9" fill="#F58AB5"/>
+  </g>
+  <text x="40" y="60" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="28" fill="#FFF7E6" opacity="0.85">Cap 3 · Panel 2 — Una estrellita dormida</text>
+</svg>

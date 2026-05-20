@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Lumi toca la estrella y vuelve a brillar">
+  <defs>
+    <radialGradient id="bg3-3" cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#FFF7E6"/>
+      <stop offset="60%" stop-color="#FFD66B"/>
+      <stop offset="100%" stop-color="#F58AB5"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg3-3)"/>
+  <!-- Rayos -->
+  <g stroke="#FFF7E6" stroke-width="6" opacity="0.7" stroke-linecap="round">
+    <line x1="600" y1="100" x2="600" y2="40"/>
+    <line x1="600" y1="700" x2="600" y2="760"/>
+    <line x1="100" y1="400" x2="40" y2="400"/>
+    <line x1="1100" y1="400" x2="1160" y2="400"/>
+    <line x1="250" y1="150" x2="200" y2="100"/>
+    <line x1="950" y1="150" x2="1000" y2="100"/>
+    <line x1="250" y1="650" x2="200" y2="700"/>
+    <line x1="950" y1="650" x2="1000" y2="700"/>
+  </g>
+  <!-- Estrella grande en el centro brillando -->
+  <g transform="translate(600 400)">
+    <polygon points="0,-150 35,-45 145,-45 60,25 95,140 0,75 -95,140 -60,25 -145,-45 -35,-45" fill="#FFD66B" stroke="#FFF7E6" stroke-width="6"/>
+    <!-- ojos felices -->
+    <path d="M-30 -25 q12 -12 24 0" stroke="#3B2E5A" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M6 -25 q12 -12 24 0" stroke="#3B2E5A" stroke-width="5" fill="none" stroke-linecap="round"/>
+    <path d="M-25 10 q25 22 50 0" stroke="#3B2E5A" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <circle cx="-50" cy="0" r="10" fill="#F58AB5" opacity="0.6"/>
+    <circle cx="50" cy="0" r="10" fill="#F58AB5" opacity="0.6"/>
+  </g>
+  <!-- Lumi tocando -->
+  <g transform="translate(300 500)">
+    <circle cx="0" cy="0" r="50" fill="#FFD66B" stroke="#FFF7E6" stroke-width="3"/>
+    <circle cx="-12" cy="-4" r="5" fill="#3B2E5A"/>
+    <circle cx="12" cy="-4" r="5" fill="#3B2E5A"/>
+    <path d="M-12 12 q12 12 24 0" stroke="#3B2E5A" stroke-width="3" fill="none" stroke-linecap="round"/>
+  </g>
+  <!-- ¡Ting! -->
+  <text x="780" y="200" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="72" font-weight="700" fill="#3B2E5A" transform="rotate(-8 780 200)">¡Ting!</text>
+  <text x="40" y="60" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="28" fill="#3B2E5A" opacity="0.7">Cap 3 · Panel 3 — ¡Funciona!</text>
+</svg>

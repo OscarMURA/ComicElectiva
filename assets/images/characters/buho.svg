@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Búho Sabio">
+  <!-- cuerpo -->
+  <ellipse cx="120" cy="140" rx="80" ry="90" fill="#C8A878"/>
+  <!-- pecho cremita -->
+  <ellipse cx="120" cy="155" rx="50" ry="65" fill="#FFF7E6"/>
+  <!-- cabeza -->
+  <ellipse cx="120" cy="80" rx="72" ry="60" fill="#C8A878"/>
+  <!-- "cuernos" de plumas -->
+  <polygon points="65,40 85,15 95,50" fill="#C8A878"/>
+  <polygon points="175,40 155,15 145,50" fill="#C8A878"/>
+  <!-- lentes -->
+  <circle cx="95" cy="85" r="24" fill="#FFF7E6" stroke="#3B2E5A" stroke-width="4"/>
+  <circle cx="145" cy="85" r="24" fill="#FFF7E6" stroke="#3B2E5A" stroke-width="4"/>
+  <line x1="119" y1="85" x2="121" y2="85" stroke="#3B2E5A" stroke-width="4"/>
+  <!-- ojos -->
+  <circle cx="95" cy="85" r="9" fill="#3B2E5A"/>
+  <circle cx="145" cy="85" r="9" fill="#3B2E5A"/>
+  <circle cx="98" cy="82" r="3" fill="#FFF7E6"/>
+  <circle cx="148" cy="82" r="3" fill="#FFF7E6"/>
+  <!-- pico -->
+  <polygon points="120,108 110,125 130,125" fill="#F58AB5"/>
+  <!-- patitas -->
+  <rect x="100" y="222" width="12" height="14" fill="#F58AB5"/>
+  <rect x="128" y="222" width="12" height="14" fill="#F58AB5"/>
+</svg>

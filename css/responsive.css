@@ -1,0 +1,303 @@
+/* ============================================================
+   responsive.css
+   Mobile-first. Aquí van las media queries y los modos
+   "móvil" (scroll-snap) vs "desktop" (paneles centrados grandes
+   con parallax/in-view).
+   ============================================================ */
+
+/* ---------- Base mobile-first (≤768px) ----------
+   - Scroll vertical snap, cada panel ocupa 100vh.
+   - Paneles full-width.
+   ---------------------------------------------- */
+
+.story-container {
+  width: 100%;
+}
+
+.chapter {
+  padding: var(--space-md) 0 var(--space-lg);
+}
+
+.panel {
+  width: calc(100% - 24px);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Burbujas en mobile: un poco más compactas */
+.bubble {
+  font-size: var(--fs-md);
+  max-width: 85%;
+}
+
+/* ============================================================
+   MOBILE: ≤768px
+   Scroll-snap vertical, paneles a pantalla completa.
+   ============================================================ */
+@media (max-width: 768px) {
+
+  html.is-mobile body {
+    overflow: hidden; /* el contenedor maneja su propio scroll */
+  }
+
+  html.is-mobile .story-container {
+    height: calc(100dvh - var(--header-height));
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  html.is-mobile .story-container::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Cada panel = una "página" a pantalla completa (full-bleed) */
+  html.is-mobile .panel {
+    width: 100%;
+    height: 100dvh;
+    margin: 0;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* En mobile, el media toma toda la altura disponible.
+     Sin border-radius vertical (full-bleed), sin border lateral. */
+  html.is-mobile .panel__media {
+    flex: 1;
+    aspect-ratio: auto;
+    min-height: 0;
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+
+  /* Burbujas en mobile: 18px line-height generoso, max-width mayor */
+  html.is-mobile .bubble {
+    font-size: 18px;
+    line-height: 1.3;
+    max-width: 70%;
+  }
+
+  html.is-mobile .bubble-narration,
+  html.is-mobile .bubble.narration {
+    max-width: 85%;
+  }
+
+  /* La intro de capítulo también funciona como snap */
+  html.is-mobile .chapter__intro {
+    min-height: 60dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    scroll-snap-align: start;
+    padding: var(--space-lg) var(--content-padding);
+  }
+
+  /* Header más compacto en mobile */
+  .site-header {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title actions"
+      "indicator indicator";
+    padding: var(--space-xs) var(--space-sm);
+    min-height: auto;
+  }
+
+  .site-header__inner { grid-area: title; }
+  .chapter-indicator {
+    grid-area: indicator;
+    justify-self: center;
+    padding: 4px 10px;
+    font-size: var(--fs-xs);
+  }
+  .mute-toggle { grid-area: actions; }
+
+  .site-header__title { font-size: var(--fs-lg); }
+  .site-header__subtitle { display: none; }
+
+  /* Burbujas: cola un poco más pequeña, max-width mayor */
+  .bubble {
+    max-width: 90%;
+    font-size: var(--fs-md);
+    padding: var(--space-xs) var(--space-sm);
+  }
+
+  /* Capítulo title */
+  .chapter__title { font-size: var(--fs-xl); }
+}
+
+/* ============================================================
+   DESKTOP: ≥769px
+   Paneles centrados, ancho máximo, parallax / in-view.
+   ============================================================ */
+@media (min-width: 769px) {
+
+  :root {
+    --fs-md: 1.2rem;
+    --fs-lg: 1.6rem;
+    --fs-xl: 2.2rem;
+    --fs-2xl: 3rem;
+  }
+
+  html.is-desktop body {
+    overflow-y: auto;
+  }
+
+  html.is-desktop .story-container {
+    max-width: 100%;
+    padding: var(--space-lg) var(--content-padding);
+  }
+
+  /* Paneles centrados, hasta 1100px, aspect cinematográfico 16/10 */
+  html.is-desktop .panel {
+    max-width: 1100px;
+    margin: 0 auto var(--space-xl);
+    opacity: 0;
+    transform: translateY(40px) scale(0.98);
+    transition:
+      opacity var(--t-slow),
+      transform var(--t-slow);
+  }
+
+  /* Animación al entrar en viewport */
+  html.is-desktop .panel.in-view {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  /* Media con aspect 16/10 + sombra dramática */
+  html.is-desktop .panel__media {
+    aspect-ratio: 16 / 10;
+    border-radius: 16px;
+    box-shadow: 0 30px 60px -20px rgba(43, 30, 80, 0.45);
+  }
+
+  /* Parallax sutil: el JS de scrollManager ajusta --parallax-y.
+     Aplicamos el transform en un wrapper conceptual ya que el
+     media ahora tiene burbujas absolutas dentro (no podemos
+     transformarlo sin mover los hijos). El parallax se aplica
+     a la imagen de fondo. */
+  html.is-desktop .panel__media .panel-bg,
+  html.is-desktop .panel__media > img:not(.character-overlay) {
+    transform: translate3d(0, var(--parallax-y, 0px), 0) scale(1.08);
+    transition: transform 80ms linear;
+    will-change: transform;
+  }
+
+  /* Capítulo intro: gran espacio + tipografía mayor */
+  html.is-desktop .chapter__intro {
+    padding: var(--space-xl) var(--content-padding) var(--space-lg);
+  }
+
+  html.is-desktop .chapter__title {
+    font-size: var(--fs-2xl);
+  }
+
+  /* Burbujas más grandes en desktop: 22px line-height 1.3 */
+  html.is-desktop .bubble {
+    max-width: 38%;
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  html.is-desktop .bubble-narration,
+  html.is-desktop .bubble.narration {
+    max-width: 80%;
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  /* Header desktop: subtítulo visible */
+  .site-header__subtitle { display: block; }
+}
+
+/* ============================================================
+   Desktop grande (≥1200px): respiramos más
+   ============================================================ */
+@media (min-width: 1200px) {
+  :root {
+    --content-padding: 3rem;
+  }
+
+  html.is-desktop .panel {
+    margin-bottom: 5rem;
+  }
+}
+
+/* ============================================================
+   Editor de burbujas: variantes responsivas
+   ============================================================ */
+
+/* Mobile: drawer fullscreen desde abajo + tab bar */
+@media (max-width: 768px) {
+  .editor-panel {
+    width: 100vw;
+    max-width: 100vw;
+    top: auto;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    height: 90dvh;
+    border-top-left-radius: var(--radius-lg);
+    border-top-right-radius: var(--radius-lg);
+    transform: translateY(100%);
+    box-shadow: 0 -10px 28px rgba(42, 42, 92, 0.25);
+  }
+
+  .editor-panel.is-open {
+    transform: translateY(0);
+  }
+
+  /* En mobile: mostramos el tab bar y solo la sección activa */
+  .editor-tabs {
+    display: flex;
+  }
+
+  .editor-section {
+    display: none;
+  }
+
+  .editor-section.is-active {
+    display: flex;
+  }
+
+  /* El separador no aplica si solo se ve una sección */
+  .editor-section + .editor-section {
+    border-top: none;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  /* Botón flotante un poco más arriba en mobile para evitar
+     gestos del navegador en el borde */
+  .editor-toggle {
+    bottom: calc(var(--space-md) + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Desktop: tabs ocultas, todas las secciones visibles */
+@media (min-width: 769px) {
+  .editor-tabs {
+    display: none;
+  }
+
+  .editor-section {
+    display: flex;
+  }
+}
+
+/* ============================================================
+   Preferencia: usuarios con poca movilidad/movimiento
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  html.is-desktop .panel {
+    opacity: 1;
+    transform: none;
+  }
+  html.is-desktop .panel__media {
+    transform: none;
+  }
+}

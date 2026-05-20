@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Lumi vuela encendiendo muchas estrellas">
+  <defs>
+    <linearGradient id="bg3-4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2A5C"/>
+      <stop offset="100%" stop-color="#8AC6F0"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg3-4)"/>
+  <!-- Estrellas brillando por todo el panel -->
+  <g fill="#FFD66B">
+    <polygon points="120,120 130,150 160,150 135,170 145,200 120,182 95,200 105,170 80,150 110,150"/>
+    <polygon points="320,250 330,280 360,280 335,300 345,330 320,312 295,330 305,300 280,280 310,280"/>
+    <polygon points="520,140 530,170 560,170 535,190 545,220 520,202 495,220 505,190 480,170 510,170"/>
+    <polygon points="850,200 860,230 890,230 865,250 875,280 850,262 825,280 835,250 810,230 840,230"/>
+    <polygon points="1050,350 1060,380 1090,380 1065,400 1075,430 1050,412 1025,430 1035,400 1010,380 1040,380"/>
+    <polygon points="700,500 710,530 740,530 715,550 725,580 700,562 675,580 685,550 660,530 690,530"/>
+    <polygon points="200,600 210,630 240,630 215,650 225,680 200,662 175,680 185,650 160,630 190,630"/>
+    <polygon points="1050,600 1060,630 1090,630 1065,650 1075,680 1050,662 1025,680 1035,650 1010,630 1040,630"/>
+  </g>
+  <!-- Estela curva de Lumi -->
+  <path d="M 100 700 Q 400 200 800 500 T 1150 200" stroke="#FFF7E6" stroke-width="6" fill="none" opacity="0.6" stroke-dasharray="2 14" stroke-linecap="round"/>
+  <!-- Lumi en movimiento -->
+  <g transform="translate(900 350) rotate(-15)">
+    <circle cx="0" cy="0" r="55" fill="#FFD66B" stroke="#FFF7E6" stroke-width="4"/>
+    <circle cx="-14" cy="-5" r="6" fill="#3B2E5A"/>
+    <circle cx="14" cy="-5" r="6" fill="#3B2E5A"/>
+    <path d="M-15 12 q15 15 30 0" stroke="#3B2E5A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <!-- estela cola -->
+    <polygon points="-50,5 -120,-15 -100,5 -130,25 -90,15 -110,40 -60,18" fill="#FFD66B" opacity="0.7"/>
+  </g>
+  <!-- Ting Ting Ting -->
+  <text x="200" y="200" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="42" fill="#FFF7E6" font-weight="700" transform="rotate(-5 200 200)">¡Ting!</text>
+  <text x="600" y="400" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="42" fill="#FFF7E6" font-weight="700" transform="rotate(5 600 400)">¡Ting!</text>
+  <text x="950" y="600" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="42" fill="#FFF7E6" font-weight="700" transform="rotate(-3 950 600)">¡Ting!</text>
+  <text x="40" y="60" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="28" fill="#FFF7E6" opacity="0.85">Cap 3 · Panel 4 — Una, dos, muchas estrellas</text>
+</svg>

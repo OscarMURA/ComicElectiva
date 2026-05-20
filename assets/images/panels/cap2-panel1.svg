@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Lumi frente a un árbol enorme">
+  <defs>
+    <linearGradient id="bg2-1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFF7E6"/>
+      <stop offset="100%" stop-color="#FFE9B8"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg2-1)"/>
+  <!-- Suelo -->
+  <rect x="0" y="700" width="1200" height="100" fill="#7ED9A6"/>
+  <path d="M0 700 Q 600 660 1200 700 L 1200 720 Q 600 680 0 720 Z" fill="#5FBF88"/>
+  <!-- Árbol enorme -->
+  <rect x="500" y="200" width="220" height="500" rx="30" fill="#7a4a2c"/>
+  <!-- líneas tronco -->
+  <path d="M520 250 L520 680 M560 230 L560 690 M620 240 L620 685 M680 260 L680 680" stroke="#5C3A21" stroke-width="3" opacity="0.6"/>
+  <!-- copa enorme -->
+  <ellipse cx="610" cy="180" rx="380" ry="220" fill="#7ED9A6"/>
+  <ellipse cx="400" cy="200" rx="180" ry="140" fill="#5FBF88"/>
+  <ellipse cx="820" cy="200" rx="180" ry="140" fill="#5FBF88"/>
+  <ellipse cx="610" cy="120" rx="220" ry="120" fill="#9CE5BA"/>
+  <!-- Lumi pequeñita -->
+  <circle cx="200" cy="660" r="35" fill="#FFD66B"/>
+  <circle cx="200" cy="660" r="55" fill="#FFD66B" opacity="0.25"/>
+  <circle cx="192" cy="657" r="4" fill="#3B2E5A"/>
+  <circle cx="208" cy="657" r="4" fill="#3B2E5A"/>
+  <path d="M192 670 q8 8 16 0" stroke="#3B2E5A" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- Flores -->
+  <g>
+    <circle cx="900" cy="750" r="10" fill="#F58AB5"/>
+    <circle cx="900" cy="750" r="4" fill="#FFD66B"/>
+    <circle cx="1050" cy="740" r="10" fill="#F58AB5"/>
+    <circle cx="1050" cy="740" r="4" fill="#FFD66B"/>
+    <circle cx="350" cy="745" r="10" fill="#F58AB5"/>
+    <circle cx="350" cy="745" r="4" fill="#FFD66B"/>
+  </g>
+  <text x="40" y="60" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="28" fill="#3B2E5A" opacity="0.7">Cap 2 · Panel 1 — Un árbol muy alto</text>
+</svg>

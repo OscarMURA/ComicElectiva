@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" role="img" aria-label="Lucecitas">
+  <defs>
+    <radialGradient id="g1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FFF7E6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#FFD66B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <!-- aura grupal -->
+  <circle cx="80" cy="100" r="55" fill="url(#g1)"/>
+  <circle cx="160" cy="80" r="50" fill="url(#g1)"/>
+  <circle cx="120" cy="170" r="55" fill="url(#g1)"/>
+  <!-- luciérnaga 1 -->
+  <g transform="translate(80 100)">
+    <circle cx="0" cy="0" r="22" fill="#FFD66B" stroke="#FFF7E6" stroke-width="2"/>
+    <circle cx="-6" cy="-4" r="3" fill="#3B2E5A"/>
+    <circle cx="6" cy="-4" r="3" fill="#3B2E5A"/>
+    <path d="M-6 6 q6 6 12 0" stroke="#3B2E5A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-22" cy="-8" rx="10" ry="6" fill="#FFF7E6" opacity="0.85"/>
+    <ellipse cx="22" cy="-8" rx="10" ry="6" fill="#FFF7E6" opacity="0.85"/>
+  </g>
+  <!-- luciérnaga 2 -->
+  <g transform="translate(160 80)">
+    <circle cx="0" cy="0" r="18" fill="#FFD66B" stroke="#FFF7E6" stroke-width="2"/>
+    <circle cx="-5" cy="-3" r="2.5" fill="#3B2E5A"/>
+    <circle cx="5" cy="-3" r="2.5" fill="#3B2E5A"/>
+    <path d="M-5 5 q5 5 10 0" stroke="#3B2E5A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-18" cy="-6" rx="8" ry="5" fill="#FFF7E6" opacity="0.85"/>
+    <ellipse cx="18" cy="-6" rx="8" ry="5" fill="#FFF7E6" opacity="0.85"/>
+  </g>
+  <!-- luciérnaga 3 -->
+  <g transform="translate(120 170)">
+    <circle cx="0" cy="0" r="20" fill="#FFD66B" stroke="#FFF7E6" stroke-width="2"/>
+    <circle cx="-5" cy="-3" r="2.5" fill="#3B2E5A"/>
+    <circle cx="5" cy="-3" r="2.5" fill="#3B2E5A"/>
+    <path d="M-5 5 q5 5 10 0" stroke="#3B2E5A" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <ellipse cx="-20" cy="-7" rx="9" ry="5" fill="#FFF7E6" opacity="0.85"/>
+    <ellipse cx="20" cy="-7" rx="9" ry="5" fill="#FFF7E6" opacity="0.85"/>
+  </g>
+</svg>

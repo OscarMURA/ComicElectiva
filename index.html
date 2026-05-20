@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Lumi y el Bosque Estrellado: un cuento ilustrado interactivo para los pequeños soñadores." />
+  <meta name="theme-color" content="#2A2A5C" />
+  <title>Lumi y el Bosque Estrellado</title>
+
+  <!-- Detectar mobile vs desktop antes de pintar para evitar flash -->
+  <script>
+    (function () {
+      try {
+        var isMobile = window.matchMedia('(max-width: 768px)').matches;
+        document.documentElement.classList.add(isMobile ? 'is-mobile' : 'is-desktop');
+      } catch (e) {
+        document.documentElement.classList.add('is-desktop');
+      }
+    })();
+  </script>
+
+  <!-- Google Fonts: Fredoka (display) + Patrick Hand (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Patrick+Hand&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Estilos en orden: base -> paneles -> responsive -> animaciones -->
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/panels.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
+  <!-- Scripts (deferred, en orden: typewriter, chapters, panelLoader, scrollManager, audioManager, bubbleEditor, main) -->
+  <script defer src="js/typewriter.js"></script>
+  <script defer src="js/chapters/chapter1.js"></script>
+  <script defer src="js/chapters/chapter2.js"></script>
+  <script defer src="js/chapters/chapter3.js"></script>
+  <script defer src="js/panelLoader.js"></script>
+  <script defer src="js/scrollManager.js"></script>
+  <script defer src="js/audioManager.js"></script>
+  <script defer src="js/bubbleEditor.js"></script>
+  <script defer src="js/main.js"></script>
+</head>
+<body>
+  <div id="app">
+    <!-- Canvas de partículas inmersivas (luciérnagas/estrellas) -->
+    <canvas id="immersion-canvas" aria-hidden="true"></canvas>
+
+    <!-- Preloader -->
+    <div id="preloader" class="preloader" aria-hidden="false" role="status" aria-live="polite">
+      <div class="preloader__inner">
+        <div class="preloader__star" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="80" height="80" focusable="false">
+            <path
+              d="M32 4l7 18 19 2-14 13 4 19-16-10-16 10 4-19L6 24l19-2z"
+              fill="currentColor"
+            />
+          </svg>
+        </div>
+        <p class="preloader__text">
+          <span class="preloader__text-label">Preparando el bosque</span><span class="preloader__dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header class="site-header" role="banner">
+      <div class="site-header__inner">
+        <h1 class="site-header__title">Lumi y el Bosque Estrellado</h1>
+        <p class="site-header__subtitle">Un cuento ilustrado para los pequeños soñadores</p>
+      </div>
+
+      <!-- Indicador de capítulo -->
+      <div
+        id="chapter-indicator"
+        class="chapter-indicator"
+        aria-live="polite"
+        aria-label="Capítulo actual"
+      >
+        <span class="chapter-indicator__label">Capítulo</span>
+        <span id="chapter-indicator-number" class="chapter-indicator__number">1</span>
+        <span class="chapter-indicator__divider">/</span>
+        <span id="chapter-indicator-total" class="chapter-indicator__total">3</span>
+      </div>
+
+      <!-- Botón de mute -->
+      <button
+        id="mute-toggle"
+        class="mute-toggle"
+        type="button"
+        aria-pressed="false"
+        aria-label="Silenciar audio del cuento"
+        title="Silenciar audio"
+      >
+        <svg class="mute-toggle__icon mute-toggle__icon--on" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M4 9v6h4l5 4V5L8 9H4zm12.5 3a4.5 4.5 0 0 0-2.5-4v8a4.5 4.5 0 0 0 2.5-4zM14 3.2v2.1a7 7 0 0 1 0 13.4v2.1a9 9 0 0 0 0-17.6z"
+            fill="currentColor"
+          />
+        </svg>
+        <svg class="mute-toggle__icon mute-toggle__icon--off" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path
+            d="M4 9v6h4l5 4V5L8 9H4zm15.7 1.3-1.4-1.4L16 11.2l-2.3-2.3-1.4 1.4L14.6 12.6l-2.3 2.3 1.4 1.4 2.3-2.3 2.3 2.3 1.4-1.4-2.3-2.3 2.3-2.3z"
+            fill="currentColor"
+          />
+        </svg>
+      </button>
+    </header>
+
+    <!-- Contenedor principal de la historia -->
+    <main id="story-container" class="story-container" role="main" aria-label="Cuento interactivo">
+      <!-- Los capítulos y paneles se inyectarán desde JS (panelLoader.js) -->
+    </main>
+
+    <!-- Editor de burbujas: el botón flotante #editor-toggle y el panel lateral
+         se crean dinámicamente desde js/bubbleEditor.js para evitar duplicación. -->
+
+    <!-- Footer -->
+    <footer class="site-footer" role="contentinfo">
+      <p class="site-footer__credits">
+        Hecho con cariño por <strong>ComicElectiva</strong> &middot; Para los pequeños soñadores
+      </p>
+      <p class="site-footer__hint">Desplázate para continuar la aventura</p>
+    </footer>
+  </div>
+</body>
+</html>

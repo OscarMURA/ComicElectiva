@@ -1,0 +1,380 @@
+(function () {
+  'use strict';
+
+  window.Comic = window.Comic || {};
+
+  const STORY_URL = './data/story.json';
+  const CONTAINER_SELECTOR = '#story-container';
+
+  // Default positions (in %) for each `position` keyword.
+  const POSITION_DEFAULTS = {
+    'top-left':     { x: 15, y: 15 },
+    'top-right':    { x: 70, y: 15 },
+    'center':       { x: 40, y: 45 },
+    'bottom-left':  { x: 15, y: 75 },
+    'bottom-right': { x: 70, y: 75 },
+    'left':         { x: 15, y: 45 },
+    'right':        { x: 70, y: 45 },
+    'narrator':     { x: 10, y: 85, w: 80 },
+  };
+
+  let storyData = null;
+
+  function escapeHtml(str) {
+    if (str == null) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function positionToClass(pos) {
+    // Map original `position` keyword to the new bubble-* class.
+    if (pos === 'left' || pos === 'top-left' || pos === 'bottom-left') return 'bubble-left';
+    if (pos === 'right' || pos === 'top-right' || pos === 'bottom-right') return 'bubble-right';
+    if (pos === 'center') return 'bubble-center';
+    return 'bubble-left';
+  }
+
+  function bubbleStyle(d) {
+    // Use d.x/d.y if provided (numbers in %); else map from `position`.
+    const def = POSITION_DEFAULTS[d.position || 'bottom-left'] || POSITION_DEFAULTS['bottom-left'];
+    const x = (typeof d.x === 'number') ? d.x : def.x;
+    const y = (typeof d.y === 'number') ? d.y : def.y;
+    let style = 'left:' + x + '%;top:' + y + '%;';
+    if (def.w) style += 'width:' + def.w + '%;';
+    return style;
+  }
+
+  function renderDialogue(d, panelId, idx) {
+    const speaker = escapeHtml(d.speaker || '');
+    const text = escapeHtml(d.text || '');
+    const bubbleId = escapeHtml(panelId + '-d' + idx);
+    const cls = positionToClass(d.position || 'bottom-left');
+    const style = bubbleStyle(d);
+    return (
+      '<div class="bubble ' + cls + ' dialogue dialogue--' + escapeHtml(d.position || 'bottom-left') + '"' +
+      ' data-bubble-id="' + bubbleId + '"' +
+      ' data-speaker="' + speaker + '"' +
+      ' data-position="' + escapeHtml(d.position || 'bottom-left') + '"' +
+      ' data-full-text="' + text + '"' +
+      ' style="' + style + ';opacity:0">' +
+      '<p class="dialogue__text" data-full-text="' + text + '">' +
+      '<span class="tw-typed dialogue__typed"></span>' +
+      '<span class="caret">|</span>' +
+      '<span class="tw-rest" aria-hidden="true">' + text + '</span>' +
+      '</p>' +
+      '</div>'
+    );
+  }
+
+  function renderNarration(narration, panelId) {
+    if (!narration) return '';
+    const def = POSITION_DEFAULTS['narrator'];
+    const style = 'left:' + def.x + '%;top:' + def.y + '%;width:' + def.w + '%;';
+    const text = escapeHtml(narration);
+    const bubbleId = escapeHtml(panelId + '-narration');
+    return (
+      '<div class="bubble bubble-narration narration dialogue dialogue--narration"' +
+      ' data-bubble-id="' + bubbleId + '"' +
+      ' data-position="narrator"' +
+      ' data-full-text="' + text + '"' +
+      ' style="' + style + ';opacity:0">' +
+      '<p class="dialogue__text" data-full-text="' + text + '">' +
+      '<span class="tw-typed dialogue__typed"></span>' +
+      '<span class="caret">|</span>' +
+      '<span class="tw-rest" aria-hidden="true">' + text + '</span>' +
+      '</p>' +
+      '</div>'
+    );
+  }
+
+  function renderDialogues(dialogues, panelId) {
+    if (!Array.isArray(dialogues) || dialogues.length === 0) return '';
+    return dialogues.map((d, i) => renderDialogue(d, panelId, i)).join('');
+  }
+
+  function renderPanel(panel, chapterId) {
+    const id = escapeHtml(panel.id != null ? panel.id : '');
+    const image = escapeHtml(panel.image || '');
+    const sfx = escapeHtml(panel.sfx || '');
+    const ambient = escapeHtml(panel.ambient || '');
+    const chapter = escapeHtml(chapterId);
+
+    const attrs = [
+      'class="panel"',
+      'data-panel-id="' + id + '"',
+      'data-chapter="' + chapter + '"',
+    ];
+    if (ambient) attrs.push('data-ambient="' + ambient + '"');
+    if (sfx) attrs.push('data-sfx="' + sfx + '"');
+
+    const bg = image
+      ? '<img class="panel-bg" src="' + image + '" alt="" loading="lazy" decoding="async" />'
+      : '<div class="panel-bg panel-bg--placeholder" aria-hidden="true"></div>';
+
+    const overlayContent =
+      renderNarration(panel.narration, panel.id) +
+      renderDialogues(panel.dialogues, panel.id);
+
+    return (
+      '<section ' + attrs.join(' ') + '>' +
+        '<div class="panel__media">' +
+          bg +
+          '<div class="panel__overlay">' + overlayContent + '</div>' +
+        '</div>' +
+      '</section>'
+    );
+  }
+
+  function renderChapterIntro(ch) {
+    const title = escapeHtml(ch.title || '');
+    const id = escapeHtml(ch.id);
+    return (
+      '<header class="chapter-intro" data-chapter="' + id + '">' +
+      '<span class="chapter-intro__label">Capítulo ' + id + '</span>' +
+      '<h2 class="chapter-intro__title">' + title + '</h2>' +
+      '</header>'
+    );
+  }
+
+  async function fetchStory() {
+    try {
+      const res = await fetch(STORY_URL, { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return await res.json();
+    } catch (err) {
+      console.warn('[PanelLoader] Could not load story.json:', err);
+      return null;
+    }
+  }
+
+  function getChapterPanels(chapterId) {
+    const chapters = window.Chapters || {};
+    const data = chapters[chapterId] || chapters[String(chapterId)];
+    if (!data) return [];
+    if (Array.isArray(data)) return data;
+    return Array.isArray(data.panels) ? data.panels : [];
+  }
+
+  function loadDeletedPanels() {
+    try {
+      const raw = localStorage.getItem('comic-deleted-panels');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function loadDeletedBubbles() {
+    try {
+      const raw = localStorage.getItem('comic-deleted-bubbles');
+      return raw ? JSON.parse(raw) : [];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  function loadPanelOrder() {
+    try {
+      const raw = localStorage.getItem('comic-panel-order');
+      return raw ? JSON.parse(raw) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function applyPanelOrder() {
+    const order = loadPanelOrder();
+    if (!Array.isArray(order) || order.length === 0) return;
+    const container = document.querySelector(CONTAINER_SELECTOR);
+    if (!container) return;
+    // Move panels into the saved order, anchored to their chapter article.
+    order.forEach((pid) => {
+      const panel = container.querySelector(
+        '.panel[data-panel-id="' + String(pid).replace(/"/g, '\\"') + '"]'
+      );
+      if (!panel) return;
+      const chapter = panel.closest('.chapter');
+      if (!chapter) return;
+      // Append in order; same chapter only — preserves chapter intro at top.
+      const sameChapterId = panel.dataset.chapter;
+      const targetChapter = container.querySelector(
+        '.chapter[data-chapter="' + String(sameChapterId).replace(/"/g, '\\"') + '"]'
+      );
+      if (targetChapter) targetChapter.appendChild(panel);
+    });
+  }
+
+  function applyStoredBubblePositions() {
+    let stored = {};
+    try {
+      const raw = localStorage.getItem('comic-bubble-positions');
+      stored = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      stored = {};
+    }
+    Object.keys(stored).forEach((id) => {
+      const el = document.querySelector('.bubble[data-bubble-id="' + id.replace(/"/g, '\\"') + '"]');
+      if (!el) return;
+      const pos = stored[id] || {};
+      if (typeof pos.x === 'number') el.style.left = pos.x + '%';
+      if (typeof pos.y === 'number') el.style.top = pos.y + '%';
+    });
+  }
+
+  function applyStoredCharacterPositions() {
+    let stored = {};
+    try {
+      const raw = localStorage.getItem('comic-character-positions');
+      stored = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      stored = {};
+    }
+    Object.keys(stored).forEach((id) => {
+      const el = document.querySelector('.character-overlay[data-character-id="' + id.replace(/"/g, '\\"') + '"]');
+      if (!el) return;
+      const pos = stored[id] || {};
+      if (typeof pos.x === 'number') el.style.left = pos.x + '%';
+      if (typeof pos.y === 'number') el.style.top = pos.y + '%';
+    });
+  }
+
+  function applyStoredBubbleSizes() {
+    let stored = {};
+    try {
+      const raw = localStorage.getItem('comic-bubble-sizes');
+      stored = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      stored = {};
+    }
+    Object.keys(stored).forEach((id) => {
+      const el = document.querySelector('.bubble[data-bubble-id="' + id.replace(/"/g, '\\"') + '"]');
+      if (!el) return;
+      const sz = stored[id] || {};
+      if (typeof sz.w === 'number') { el.style.maxWidth = 'none'; el.style.width = sz.w + 'px'; }
+      if (typeof sz.h === 'number') { el.style.maxHeight = 'none'; el.style.height = sz.h + 'px'; }
+    });
+  }
+
+  function applyStoredCharacterSizes() {
+    let stored = {};
+    try {
+      const raw = localStorage.getItem('comic-character-sizes');
+      stored = raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      stored = {};
+    }
+    Object.keys(stored).forEach((id) => {
+      const el = document.querySelector('.character-overlay[data-character-id="' + id.replace(/"/g, '\\"') + '"]');
+      if (!el) return;
+      const sz = stored[id] || {};
+      if (typeof sz.w === 'number') el.style.width = sz.w + 'px';
+      if (typeof sz.h === 'number') el.style.height = sz.h + 'px';
+    });
+  }
+
+  async function init() {
+    const container = document.querySelector(CONTAINER_SELECTOR);
+    if (!container) {
+      console.warn('[PanelLoader] #story-container not found.');
+      return;
+    }
+
+    storyData = await fetchStory();
+    const chapters = (storyData && Array.isArray(storyData.chapters))
+      ? storyData.chapters
+      : [];
+
+    if (chapters.length === 0) {
+      container.innerHTML =
+        '<p class="empty-state">No hay capítulos disponibles aún.</p>';
+      return;
+    }
+
+    const deletedPanels = loadDeletedPanels();
+    const deletedBubbles = loadDeletedBubbles();
+    const isDeletedPanel = (pid) =>
+      deletedPanels.indexOf(String(pid)) !== -1 || deletedPanels.indexOf(pid) !== -1;
+    const isDeletedBubble = (bid) =>
+      deletedBubbles.indexOf(String(bid)) !== -1 || deletedBubbles.indexOf(bid) !== -1;
+
+    const html = chapters
+      .map((ch) => {
+        const panels = getChapterPanels(ch.id).filter((p) => !isDeletedPanel(p.id));
+        const panelsHtml = panels.map((p) => renderPanel(p, ch.id)).join('');
+        return (
+          '<article class="chapter" data-chapter="' +
+          escapeHtml(ch.id) +
+          '">' +
+          renderChapterIntro(ch) +
+          panelsHtml +
+          '</article>'
+        );
+      })
+      .join('');
+
+    container.innerHTML = html;
+
+    // Filter out individually deleted bubbles (originals from JSON).
+    if (deletedBubbles.length) {
+      deletedBubbles.forEach((bid) => {
+        const el = container.querySelector(
+          '.bubble[data-bubble-id="' + String(bid).replace(/"/g, '\\"') + '"]'
+        );
+        if (el && el.parentNode) el.parentNode.removeChild(el);
+      });
+    }
+
+    // Apply saved panel order (intra-chapter reorder).
+    applyPanelOrder();
+
+    // Apply persisted positions and sizes for original bubbles and characters.
+    applyStoredBubblePositions();
+    applyStoredCharacterPositions();
+    applyStoredBubbleSizes();
+    applyStoredCharacterSizes();
+
+    document.dispatchEvent(
+      new CustomEvent('panels:loaded', {
+        detail: { chapterCount: chapters.length },
+      })
+    );
+  }
+
+  function findPanelData(panelId) {
+    const chapters = window.Chapters || {};
+    const keys = Object.keys(chapters);
+    for (let i = 0; i < keys.length; i++) {
+      const data = chapters[keys[i]];
+      const list = Array.isArray(data) ? data : (data && Array.isArray(data.panels) ? data.panels : []);
+      for (let j = 0; j < list.length; j++) {
+        if (String(list[j].id) === String(panelId)) {
+          return { panel: list[j], chapterId: keys[i] };
+        }
+      }
+    }
+    return null;
+  }
+
+  function renderPanelHTML(panel, chapterId) {
+    return renderPanel(panel, chapterId);
+  }
+
+  window.Comic.PanelLoader = {
+    init: init,
+    getStory: function () {
+      return storyData;
+    },
+    applyStoredBubblePositions: applyStoredBubblePositions,
+    applyStoredCharacterPositions: applyStoredCharacterPositions,
+    applyStoredBubbleSizes: applyStoredBubbleSizes,
+    applyStoredCharacterSizes: applyStoredCharacterSizes,
+    applyPanelOrder: applyPanelOrder,
+    findPanelData: findPanelData,
+    renderPanelHTML: renderPanelHTML,
+    POSITION_DEFAULTS: POSITION_DEFAULTS,
+  };
+})();

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="El búho con lentes observa desde la rama">
+  <defs>
+    <linearGradient id="bg2-2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE9B8"/>
+      <stop offset="100%" stop-color="#FFD66B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg2-2)"/>
+  <!-- Rama -->
+  <path d="M0 500 Q 400 460 1200 520" stroke="#5C3A21" stroke-width="40" fill="none" stroke-linecap="round"/>
+  <!-- Hojitas -->
+  <g fill="#7ED9A6">
+    <ellipse cx="200" cy="470" rx="40" ry="20"/>
+    <ellipse cx="500" cy="450" rx="40" ry="20"/>
+    <ellipse cx="900" cy="470" rx="40" ry="20"/>
+  </g>
+  <!-- Búho en el centro -->
+  <g transform="translate(600 400)">
+    <!-- cuerpo -->
+    <ellipse cx="0" cy="20" rx="110" ry="130" fill="#C8A878"/>
+    <!-- pecho cremita -->
+    <ellipse cx="0" cy="40" rx="70" ry="90" fill="#FFF7E6"/>
+    <!-- cabeza -->
+    <ellipse cx="0" cy="-60" rx="95" ry="80" fill="#C8A878"/>
+    <!-- "cuernos" plumas -->
+    <polygon points="-70,-110 -45,-140 -30,-100" fill="#C8A878"/>
+    <polygon points="70,-110 45,-140 30,-100" fill="#C8A878"/>
+    <!-- lentes -->
+    <circle cx="-30" cy="-55" r="28" fill="#FFF7E6" stroke="#3B2E5A" stroke-width="4"/>
+    <circle cx="30" cy="-55" r="28" fill="#FFF7E6" stroke="#3B2E5A" stroke-width="4"/>
+    <line x1="-2" y1="-55" x2="2" y2="-55" stroke="#3B2E5A" stroke-width="4"/>
+    <!-- ojos -->
+    <circle cx="-30" cy="-55" r="10" fill="#3B2E5A"/>
+    <circle cx="30" cy="-55" r="10" fill="#3B2E5A"/>
+    <circle cx="-27" cy="-58" r="3" fill="#FFF7E6"/>
+    <circle cx="33" cy="-58" r="3" fill="#FFF7E6"/>
+    <!-- pico -->
+    <polygon points="0,-25 -10,-10 10,-10" fill="#F58AB5"/>
+    <!-- patitas -->
+    <rect x="-30" y="140" width="12" height="20" fill="#F58AB5"/>
+    <rect x="18" y="140" width="12" height="20" fill="#F58AB5"/>
+  </g>
+  <!-- Lumi abajo mirando -->
+  <circle cx="300" cy="700" r="30" fill="#FFD66B"/>
+  <circle cx="300" cy="700" r="48" fill="#FFD66B" opacity="0.3"/>
+  <text x="40" y="60" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="28" fill="#3B2E5A" opacity="0.7">Cap 2 · Panel 2 — Un búho con lentes</text>
+</svg>

@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="El bosque entero brillando con Lumi y el búho felices">
+  <defs>
+    <linearGradient id="bg3-5" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2A2A5C"/>
+      <stop offset="60%" stop-color="#F58AB5"/>
+      <stop offset="100%" stop-color="#FFD66B"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg3-5)"/>
+  <!-- Constelaciones -->
+  <g fill="#FFF7E6">
+    <polygon points="100,120 108,140 128,140 112,152 120,172 100,160 80,172 88,152 72,140 92,140"/>
+    <polygon points="280,80 288,100 308,100 292,112 300,132 280,120 260,132 268,112 252,100 272,100"/>
+    <polygon points="480,140 488,160 508,160 492,172 500,192 480,180 460,192 468,172 452,160 472,160"/>
+    <polygon points="700,90 708,110 728,110 712,122 720,142 700,130 680,142 688,122 672,110 692,110"/>
+    <polygon points="900,150 908,170 928,170 912,182 920,202 900,190 880,202 888,182 872,170 892,170"/>
+    <polygon points="1080,100 1088,120 1108,120 1092,132 1100,152 1080,140 1060,152 1068,132 1052,120 1072,120"/>
+  </g>
+  <g fill="#FFF7E6" opacity="0.7">
+    <circle cx="200" cy="220" r="3"/>
+    <circle cx="450" cy="250" r="3"/>
+    <circle cx="800" cy="240" r="3"/>
+    <circle cx="1000" cy="280" r="3"/>
+    <circle cx="350" cy="200" r="2"/>
+    <circle cx="600" cy="220" r="2"/>
+  </g>
+  <!-- Colinas -->
+  <path d="M0 700 Q 300 580 600 660 T 1200 680 L 1200 800 L 0 800 Z" fill="#5FBF88"/>
+  <path d="M0 730 Q 400 660 800 720 T 1200 730 L 1200 800 L 0 800 Z" fill="#3D6B47"/>
+  <!-- Árboles pequeños -->
+  <g fill="#2D5A3D">
+    <polygon points="120,720 80,620 160,620"/>
+    <polygon points="320,710 280,610 360,610"/>
+    <polygon points="900,720 860,620 940,620"/>
+    <polygon points="1100,710 1060,610 1140,610"/>
+  </g>
+  <!-- Lumi -->
+  <g transform="translate(450 620)">
+    <circle cx="0" cy="0" r="65" fill="#FFD66B" stroke="#FFF7E6" stroke-width="4"/>
+    <circle cx="0" cy="0" r="100" fill="#FFD66B" opacity="0.3"/>
+    <path d="M-22 -8 q12 -12 24 0" stroke="#3B2E5A" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M-2 -8 q12 -12 24 0" stroke="#3B2E5A" stroke-width="4" fill="none" stroke-linecap="round"/>
+    <path d="M-22 18 q22 22 44 0" stroke="#3B2E5A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <circle cx="-38" cy="10" r="8" fill="#F58AB5" opacity="0.6"/>
+    <circle cx="38" cy="10" r="8" fill="#F58AB5" opacity="0.6"/>
+    <polygon points="60,0 100,-15 95,5 115,15 90,18 95,40 75,20" fill="#FFD66B" stroke="#FFF7E6" stroke-width="2"/>
+  </g>
+  <!-- Búho al lado -->
+  <g transform="translate(720 650)">
+    <ellipse cx="0" cy="10" rx="60" ry="75" fill="#C8A878"/>
+    <ellipse cx="0" cy="25" rx="38" ry="48" fill="#FFF7E6"/>
+    <ellipse cx="0" cy="-40" rx="52" ry="44" fill="#C8A878"/>
+    <circle cx="-18" cy="-40" r="17" fill="#FFF7E6" stroke="#3B2E5A" stroke-width="3"/>
+    <circle cx="18" cy="-40" r="17" fill="#FFF7E6" stroke="#3B2E5A" stroke-width="3"/>
+    <path d="M-26 -40 q8 -8 16 0" stroke="#3B2E5A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <path d="M10 -40 q8 -8 16 0" stroke="#3B2E5A" stroke-width="3" fill="none" stroke-linecap="round"/>
+    <polygon points="0,-22 -6,-10 6,-10" fill="#F58AB5"/>
+  </g>
+  <!-- Lucecitas alrededor -->
+  <g fill="#FFD66B">
+    <circle cx="300" cy="450" r="8"/>
+    <circle cx="850" cy="500" r="8"/>
+    <circle cx="600" cy="450" r="6"/>
+    <circle cx="200" cy="550" r="6"/>
+    <circle cx="1050" cy="500" r="8"/>
+  </g>
+  <text x="40" y="60" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="28" fill="#FFF7E6" opacity="0.9">Cap 3 · Panel 5 — ¡Lo logramos juntos!</text>
+</svg>

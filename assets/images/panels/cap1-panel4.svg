@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" role="img" aria-label="Lumi asomada por la ventana del árbol">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3B2E5A"/>
+      <stop offset="100%" stop-color="#2A2A5C"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg4)"/>
+  <!-- Árbol grande primer plano -->
+  <rect x="200" y="100" width="800" height="700" rx="60" fill="#5C3A21"/>
+  <ellipse cx="600" cy="120" rx="500" ry="150" fill="#3D6B47"/>
+  <!-- Hueco/ventana -->
+  <ellipse cx="600" cy="420" rx="180" ry="200" fill="#1A1A2E"/>
+  <!-- Lumi asomada -->
+  <circle cx="600" cy="440" r="85" fill="#FFD66B"/>
+  <!-- aura -->
+  <circle cx="600" cy="440" r="120" fill="#FFD66B" opacity="0.25"/>
+  <!-- ojos grandes sorprendidos -->
+  <circle cx="575" cy="425" r="10" fill="#3B2E5A"/>
+  <circle cx="625" cy="425" r="10" fill="#3B2E5A"/>
+  <circle cx="578" cy="422" r="3" fill="#FFF7E6"/>
+  <circle cx="628" cy="422" r="3" fill="#FFF7E6"/>
+  <!-- boca o -->
+  <ellipse cx="600" cy="470" rx="10" ry="14" fill="#F58AB5"/>
+  <!-- mejillitas -->
+  <circle cx="555" cy="460" r="8" fill="#F58AB5" opacity="0.5"/>
+  <circle cx="645" cy="460" r="8" fill="#F58AB5" opacity="0.5"/>
+  <text x="40" y="60" font-family="Comic Sans MS, Fredoka, sans-serif" font-size="28" fill="#FFD66B" opacity="0.85">Cap 1 · Panel 4 — ¿Qué fue ese ruido?</text>
+</svg>
