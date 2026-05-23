@@ -2,8 +2,9 @@
 // (burbujas, fondos, personajes — incluidos GIF/video/audio — posiciones,
 // tamaños, ritmo, audios por burbuja, etc.) quede persistido en el repo:
 //
-//   - data/state.json        (el snapshot completo)
-//   - assets/uploads/<hash>  (archivos binarios subidos)
+//   - js/data/scenes/sceneN.json  (snapshot dividido por escena)
+//   - js/data/state.json          (snapshot completo, fallback/legacy)
+//   - assets/uploads/<hash>       (archivos binarios subidos)
 //
 // Flujo:
 //   1) En index.html, un script sincrónico hace GET /api/state ANTES de que

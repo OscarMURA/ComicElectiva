@@ -4,8 +4,8 @@
 - Sirve estáticos como `python3 -m http.server`.
 - POST /api/upload {dataUrl, filename?}  -> guarda en assets/uploads/<hash>.<ext>
                                             y devuelve {url, contentType, bytes}.
-- GET  /api/state                        -> devuelve data/state.json (o snapshot vacío).
-- POST /api/state {snapshot}             -> escribe data/state.json (atómico).
+- GET  /api/state                        -> devuelve js/data/state.json (o snapshot vacío).
+- POST /api/state {snapshot}             -> escribe js/data/state.json (atómico).
 
 Todo lo subido y el estado quedan dentro del repo para compartir vía git.
 """
@@ -23,7 +23,7 @@ from socketserver import ThreadingMixIn
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 UPLOADS_DIR = os.path.join(ROOT, 'assets', 'uploads')
-STATE_DIR = os.path.join(ROOT, 'data')
+STATE_DIR = os.path.join(ROOT, 'js', 'data')
 STATE_PATH = os.path.join(STATE_DIR, 'state.json')   # legacy / fallback
 SCENES_DIR = os.path.join(STATE_DIR, 'scenes')
 
@@ -281,7 +281,7 @@ def load_state_snapshot():
     """Devuelve el snapshot agregado para GET /api/state.
 
     Prefiere data/scenes/*.json. Si no existen (instalación nueva o tras
-    pull antes de la primera escritura), cae a data/state.json. Si tampoco
+    pull antes de la primera escritura), cae a js/data/state.json. Si tampoco
     está, devuelve un snapshot vacío.
     """
     scenes = read_scenes()
@@ -307,7 +307,7 @@ def save_state_snapshot(snapshot):
 
 
 def migrate_state_if_needed():
-    """Si existe data/state.json y data/scenes está vacío, parte el state.json
+    """Si existe js/data/state.json y js/data/scenes está vacío, parte el state.json
     en escenas para que los colaboradores no tengan que volver a editar.
 
     Idempotente: si scenes ya tiene contenido, no hace nada.

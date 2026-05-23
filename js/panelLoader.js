@@ -3,7 +3,7 @@
 
   window.Comic = window.Comic || {};
 
-  const STORY_URL = './data/story.json';
+  const STORY_URL = './js/data/story.json';
   const CONTAINER_SELECTOR = '#story-container';
 
   // Default positions (in %) for each `position` keyword.

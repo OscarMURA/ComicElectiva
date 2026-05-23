@@ -9,4 +9,4 @@ Thumbs.db
 # Estado del editor: la fuente de verdad ahora está en data/scenes/*.json
 # (dividido por escena para evitar conflictos de merge entre colaboradores).
 # state.json se queda como caché local del servidor pero NO se versiona.
-data/state.json
+js/data/state.json
