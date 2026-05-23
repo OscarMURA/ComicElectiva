@@ -5,9 +5,13 @@
 
   window.Comic = window.Comic || {};
 
-  const DEFAULT_COUNT = 25;
-  const MIN_COUNT = 5;
-  const MAX_COUNT = 80;
+  const DEFAULT_COUNT = 70;
+  const MIN_COUNT = 10;
+  const MAX_COUNT = 200;
+
+  // Tonos para el brillo tipo luciérnaga: núcleo blanco-cálido, halo dorado.
+  const CORE_RGB = [255, 244, 200];   // núcleo casi blanco con tibieza
+  const GLOW_RGB = [255, 196, 77];    // halo dorado miel
 
   let canvas = null;
   let ctx = null;
@@ -18,7 +22,6 @@
   let width = 0;
   let height = 0;
   let lastTime = 0;
-  let color = 'rgba(255, 214, 107, 0.6)'; // var(--color-primary)-ish with alpha
 
   function prefersReducedMotion() {
     try {
@@ -28,25 +31,8 @@
     }
   }
 
-  function readPrimaryColor() {
-    try {
-      const styles = getComputedStyle(document.documentElement);
-      const c = (styles.getPropertyValue('--color-primary') || '').trim();
-      if (c) {
-        // If it's a hex like #FFD66B, convert to rgba with alpha 0.6.
-        const hex = c.match(/^#([0-9a-f]{6})$/i);
-        if (hex) {
-          const n = parseInt(hex[1], 16);
-          const r = (n >> 16) & 255;
-          const g = (n >> 8) & 255;
-          const b = n & 255;
-          return 'rgba(' + r + ',' + g + ',' + b + ',0.6)';
-        }
-        // Otherwise leave it as-is and trust the CSS.
-        return c;
-      }
-    } catch (e) {}
-    return color;
+  function rgba(rgb, a) {
+    return 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + a + ')';
   }
 
   function createCanvas() {
@@ -60,7 +46,8 @@
       canvas.style.width = '100%';
       canvas.style.height = '100%';
       canvas.style.pointerEvents = 'none';
-      canvas.style.zIndex = '5';
+      // z=0 → detrás de los paneles (.panel { z-index: 1 }) pero delante del body.
+      canvas.style.zIndex = '0';
       canvas.setAttribute('aria-hidden', 'true');
       document.body.appendChild(canvas);
     }
@@ -79,18 +66,23 @@
   }
 
   function makeParticle() {
+    // Mezcla: ~80% luciérnagas (más lentas, halo grande), ~20% chispitas
+    // pequeñas y veloces que dan textura de polvo dorado.
+    const isFirefly = Math.random() < 0.8;
     return {
       x: Math.random() * width,
-      y: Math.random() * height + Math.random() * 50,
-      r: 1 + Math.random() * 2,         // 1-3 px
-      vy: 0.15 + Math.random() * 0.35,   // upward drift
-      ax: Math.random() * Math.PI * 2,   // phase for sinusoidal x
-      af: 0.4 + Math.random() * 0.6,     // frequency of lateral drift
-      amp: 8 + Math.random() * 16,       // lateral drift amplitude
+      y: Math.random() * height + Math.random() * 80,
+      r: isFirefly ? 1.6 + Math.random() * 2.2 : 0.7 + Math.random() * 1.2,
+      vy: isFirefly ? 0.05 + Math.random() * 0.18 : 0.25 + Math.random() * 0.4,
+      ax: Math.random() * Math.PI * 2,
+      af: isFirefly ? 0.25 + Math.random() * 0.5 : 0.6 + Math.random() * 0.8,
+      amp: isFirefly ? 14 + Math.random() * 28 : 6 + Math.random() * 10,
       baseX: 0,
       twinklePhase: Math.random() * Math.PI * 2,
-      twinkleSpeed: 0.6 + Math.random() * 1.2,
-      alpha: 0.4 + Math.random() * 0.6,
+      // Las luciérnagas pulsan más despacio (efecto bioluminiscente).
+      twinkleSpeed: isFirefly ? 0.8 + Math.random() * 1.2 : 1.6 + Math.random() * 1.8,
+      alpha: 0.55 + Math.random() * 0.45,
+      glow: isFirefly ? 6 + Math.random() * 4 : 3 + Math.random() * 1.5,
     };
   }
 
@@ -110,6 +102,9 @@
     const dts = dt / 1000;
 
     ctx.clearRect(0, 0, width, height);
+    // 'lighter' suma colores → varias luciérnagas cercanas se acumulan en un
+    // dorado más brillante (efecto de enjambre luminoso).
+    ctx.globalCompositeOperation = 'lighter';
 
     for (let i = 0; i < particles.length; i++) {
       const p = particles[i];
@@ -118,30 +113,45 @@
       const drawX = p.baseX + Math.sin(p.ax) * p.amp;
       p.twinklePhase += p.twinkleSpeed * dts;
       const tw = 0.5 + 0.5 * Math.sin(p.twinklePhase);
-      const a = p.alpha * (0.4 + 0.6 * tw);
+      const a = p.alpha * (0.35 + 0.65 * tw);
 
-      // Wrap when above viewport — respawn at bottom.
-      if (p.y < -10) {
+      // Wrap cuando salen por arriba → reaparecen abajo.
+      if (p.y < -20) {
         p.y = height + 10;
         p.baseX = Math.random() * width;
         p.ax = Math.random() * Math.PI * 2;
       }
 
-      // Render — glow + dot.
-      ctx.save();
-      ctx.globalAlpha = a;
-      ctx.fillStyle = color;
+      const haloR = p.r * p.glow;
+
+      // 1) Halo exterior dorado-miel (más grande y tenue).
+      const outer = ctx.createRadialGradient(drawX, p.y, 0, drawX, p.y, haloR);
+      outer.addColorStop(0,    rgba(GLOW_RGB, 0.55 * a));
+      outer.addColorStop(0.4,  rgba(GLOW_RGB, 0.22 * a));
+      outer.addColorStop(1,    rgba(GLOW_RGB, 0));
+      ctx.fillStyle = outer;
+      ctx.beginPath();
+      ctx.arc(drawX, p.y, haloR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2) Halo medio dorado más concentrado.
+      const midR = p.r * 2.4;
+      const mid = ctx.createRadialGradient(drawX, p.y, 0, drawX, p.y, midR);
+      mid.addColorStop(0, rgba(GLOW_RGB, 0.9 * a));
+      mid.addColorStop(1, rgba(GLOW_RGB, 0));
+      ctx.fillStyle = mid;
+      ctx.beginPath();
+      ctx.arc(drawX, p.y, midR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 3) Núcleo cálido casi blanco — la "chispa" de la luciérnaga.
+      ctx.fillStyle = rgba(CORE_RGB, Math.min(1, a * 1.1));
       ctx.beginPath();
       ctx.arc(drawX, p.y, p.r, 0, Math.PI * 2);
       ctx.fill();
-      // Soft halo
-      ctx.globalAlpha = a * 0.25;
-      ctx.beginPath();
-      ctx.arc(drawX, p.y, p.r * 3, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.restore();
     }
 
+    ctx.globalCompositeOperation = 'source-over';
     rafId = requestAnimationFrame(step);
   }
 
@@ -149,7 +159,6 @@
     if (running) return;
     if (prefersReducedMotion()) return;
     if (!canvas) createCanvas();
-    color = readPrimaryColor();
     if (particles.length === 0) seedParticles(DEFAULT_COUNT);
     running = true;
     lastTime = 0;

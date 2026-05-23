@@ -1,61 +1,115 @@
 {
-  "title": "Lumi y el Bosque Estrellado",
-  "subtitle": "Un cuento ilustrado para los pequeños soñadores",
-  "author": "ComicElectiva",
+  "title": "Los Hilos del Agua y el Plato de las Preguntas",
+  "subtitle": "Un cuento ilustrado interactivo",
+  "author": "Narrativas Visuales",
   "language": "es",
-  "ageRange": "3-7",
   "globalAudio": "assets/sounds/ambient/global.mp3",
   "theme": {
     "palette": {
-      "primary": "#FFD66B",
-      "secondary": "#8AC6F0",
-      "accent": "#F58AB5",
-      "leaf": "#7ED9A6",
-      "night": "#2A2A5C",
-      "cream": "#FFF7E6",
-      "ink": "#3B2E5A"
+      "primary": "#1F4E79",
+      "accent": "#C9A227",
+      "bg": "#F4F1E8",
+      "warm": "#B85C38",
+      "text": "#2C2C2C",
+      "textMuted": "#5A5A5A",
+      "bgAlt": "#FFFFFF",
+      "bgSoft": "#EFEAD8",
+      "border": "#E0DCC8",
+      "sunrise": "#E8B547",
+      "water": "#3D7FB8",
+      "field": "#7A8B5E",
+      "river": "#9B6B9E",
+      "hope": "#5BA66B"
     },
     "fonts": {
       "display": "Fredoka, 'Comic Sans MS', cursive",
       "body": "'Patrick Hand', 'Comic Sans MS', cursive"
     },
-    "mood": "warm, soft, magical, friendly"
+    "mood": "sensorial, social, esperanzador"
   },
   "characters": [
     {
-      "id": "lumi",
-      "name": "Lumi",
-      "description": "Una pequeña criatura luminosa, redonda y suave, con grandes ojos brillantes y una colita en forma de estrella. Color amarillo dorado con destellos."
+      "id": "bongo",
+      "name": "Bongo",
+      "description": "Narrador sensorial. Acompaña al lector a través de las escenas, percibiendo el mundo desde lo que ve, escucha, huele y siente."
     },
     {
-      "id": "buho",
-      "name": "Búho Sabio",
-      "description": "Un búho viejo y amable, con gafas redondas, plumas color crema y café. Vive en el árbol más alto del bosque."
+      "id": "narrator",
+      "name": "Narrador",
+      "description": "Voz narrativa de fondo."
     },
     {
-      "id": "lucesitas",
-      "name": "Lucecitas",
-      "description": "Pequeñas luciérnagas curiosas que acompañan a Lumi en su viaje."
+      "id": "nina",
+      "name": "Niña del charco",
+      "description": "Aparece en la Escena 5. Curiosa, mira el reflejo en el agua del parque."
     }
   ],
   "chapters": [
     {
       "id": 1,
-      "title": "La casita en el árbol",
-      "scene": "Lumi vive dentro de un árbol hueco. Una noche, una estrella cae cerca de su casita y la despierta.",
-      "panels": 5
+      "act": "Acto I · Planteamiento",
+      "title": "La serpiente que tose",
+      "scene": "Patio · 7:00 AM",
+      "note": "Incluye el Prólogo: Bongo habla.",
+      "panels": 3
     },
     {
       "id": 2,
-      "title": "El búho de los lentes",
-      "scene": "Lumi conoce al Búho Sabio que le cuenta que las estrellas del bosque se han apagado, y solo una luz pequeña y valiente puede despertarlas.",
-      "panels": 5
+      "act": "Acto I · Planteamiento",
+      "title": "Dentro de la gota",
+      "scene": "Túnel onírico",
+      "panels": 3
     },
     {
       "id": 3,
-      "title": "Un bosque de estrellas",
-      "scene": "Lumi, con la ayuda de las lucecitas, vuela por el bosque encendiendo cada estrella dormida. El bosque vuelve a brillar.",
-      "panels": 5
+      "act": "Acto II · Confrontación",
+      "title": "El campo partido en dos",
+      "scene": "Valle del Cauca · Mediodía",
+      "panels": 3
+    },
+    {
+      "id": 4,
+      "act": "Acto II · Confrontación",
+      "title": "El callejón de la comida tirada",
+      "scene": "Galería Alameda · 1:00 PM",
+      "panels": 3
+    },
+    {
+      "id": 5,
+      "act": "Acto II · Confrontación",
+      "title": "La niña del charco",
+      "scene": "Parque · 4:00 PM",
+      "panels": 3
+    },
+    {
+      "id": 6,
+      "act": "Acto II · Confrontación",
+      "title": "El río que llora",
+      "scene": "Río Cauca · Atardecer",
+      "note": "Clímax.",
+      "panels": 3
+    },
+    {
+      "id": 7,
+      "act": "Acto III · Resolución",
+      "title": "La sopa de preguntas",
+      "scene": "Cocina · 7:00 PM",
+      "panels": 3
+    },
+    {
+      "id": 8,
+      "act": "Acto III · Resolución",
+      "title": "La pequeña revolución",
+      "scene": "Día siguiente · Tríptico",
+      "panels": 3
+    },
+    {
+      "id": 9,
+      "act": "Acto III · Resolución",
+      "title": "El mapa de Bongo",
+      "scene": "Habitación · Noche",
+      "note": "Incluye el Epílogo: cierre con voz de Bongo y el balde de agua clara.",
+      "panels": 3
     }
   ]
 }

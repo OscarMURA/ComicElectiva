@@ -196,6 +196,81 @@
     if (previous) fadeTo(previous, 0, CROSSFADE_MS, () => stopAudio(previous));
   }
 
+  // ---- One-shot bubble audio -------------------------------------------------
+  // Plays a per-bubble audio clip when the bubble starts its typewriter pass.
+  // Preload-friendly: call `preloadBubbleAudio(src)` ahead of time (e.g. on
+  // panel:enter) so that `playBubbleAudio` actually fires the sound on the
+  // same frame the bubble becomes visible.
+  const bubbleAudioInstances = new Map();
+  const bubblePreloadCache = new Map(); // url -> HTMLAudioElement (template)
+
+  function resolveBubbleAudioUrl(src) {
+    if (!src) return null;
+    if (src.indexOf('data:') === 0 || src.indexOf('/') !== -1) return src;
+    return EFFECTS_PATH + src + (src.indexOf('.') === -1 ? '.mp3' : '');
+  }
+
+  function preloadBubbleAudio(src) {
+    const url = resolveBubbleAudioUrl(src);
+    if (!url || brokenAudio.has(url)) return null;
+    let tpl = bubblePreloadCache.get(url);
+    if (tpl) return tpl;
+    tpl = new Audio();
+    tpl.preload = 'auto';
+    tpl.src = url;
+    tpl.addEventListener('error', () => {
+      brokenAudio.add(url);
+      bubblePreloadCache.delete(url);
+    }, { once: true });
+    // Forzar fetch inmediato.
+    try { tpl.load(); } catch (_) {}
+    bubblePreloadCache.set(url, tpl);
+    return tpl;
+  }
+
+  function playBubbleAudio(src, opts) {
+    if (!src || muted || !unlocked) return null;
+    const url = resolveBubbleAudioUrl(src);
+    if (!url || brokenAudio.has(url)) return null;
+    const bubbleKey = opts && opts.bubbleId;
+    if (bubbleKey && bubbleAudioInstances.has(bubbleKey)) {
+      const prev = bubbleAudioInstances.get(bubbleKey);
+      try { prev.pause(); prev.currentTime = 0; } catch (_) {}
+    }
+    // Asegura preload (idempotente). Si ya estaba precargado, no hay fetch.
+    const template = preloadBubbleAudio(src);
+    try {
+      // Clonar de la plantilla: el browser reutiliza el recurso cacheado y
+      // .play() arranca en el mismo frame sin esperar red.
+      const a = template ? template.cloneNode(true) : new Audio(url);
+      a.volume = (opts && typeof opts.volume === 'number') ? opts.volume : SFX_VOLUME;
+      a.currentTime = 0;
+      a.addEventListener('error', () => { brokenAudio.add(url); }, { once: true });
+      const p = a.play();
+      if (p && p.catch) p.catch(() => { brokenAudio.add(url); });
+      if (bubbleKey) bubbleAudioInstances.set(bubbleKey, a);
+      return a;
+    } catch (e) {
+      brokenAudio.add(url);
+      return null;
+    }
+  }
+
+  function stopBubbleAudio(bubbleId) {
+    if (!bubbleId) return;
+    const a = bubbleAudioInstances.get(bubbleId);
+    if (!a) return;
+    try { a.pause(); a.currentTime = 0; } catch (_) {}
+    bubbleAudioInstances.delete(bubbleId);
+  }
+
+  function stopAllBubbleAudio() {
+    bubbleAudioInstances.forEach((a) => {
+      try { a.pause(); a.currentTime = 0; } catch (_) {}
+    });
+    bubbleAudioInstances.clear();
+  }
+
   // ---- One-shot SFX ----------------------------------------------------------
   function playSfx(key) {
     if (!key || muted || !unlocked) return;
@@ -260,7 +335,7 @@
     overlay.setAttribute('aria-label', 'Toca para empezar');
     overlay.innerHTML =
       '<div class="audio-unlock-overlay__inner">' +
-      '<h1 class="audio-unlock-overlay__title">Lumi y el Bosque Estrellado</h1>' +
+      '<h1 class="audio-unlock-overlay__title">Los Hilos del Agua y el Plato de las Preguntas</h1>' +
       '<p class="audio-unlock-overlay__cta">Toca para empezar</p>' +
       '</div>';
     document.body.appendChild(overlay);
@@ -295,6 +370,13 @@
       playSfx(override);
     } else if (detail.sfx) {
       playSfx(detail.sfx);
+    }
+    // Preload bubble audios in this panel so they fire on the SAME frame the
+    // bubble starts its entrance animation (no network wait → in sync).
+    if (detail.element && detail.element.querySelectorAll) {
+      detail.element.querySelectorAll('.bubble[data-audio]').forEach((b) => {
+        preloadBubbleAudio(b.dataset.audio);
+      });
     }
   }
 
@@ -334,6 +416,16 @@
     bindUnlockFallback();
     document.addEventListener('panel:enter', onPanelEnter);
     window.addEventListener('storage', onStorageChange);
+    // Precarga global de audios por burbuja en cuanto el DOM tenga los paneles
+    // (bubbleEditor aplica los data-audio en restoreAll tras panels:loaded).
+    document.addEventListener('panels:loaded', () => {
+      // Pequeño retardo para que bubbleEditor.applyStoredBubbleAudio haya corrido.
+      setTimeout(() => {
+        document.querySelectorAll('.bubble[data-audio]').forEach((b) => {
+          preloadBubbleAudio(b.dataset.audio);
+        });
+      }, 50);
+    });
   }
 
   window.Comic.AudioManager = {
@@ -342,6 +434,10 @@
     isMuted: function () { return muted; },
     isUnlocked: function () { return unlocked; },
     playSfx: playSfx,
+    playBubbleAudio: playBubbleAudio,
+    preloadBubbleAudio: preloadBubbleAudio,
+    stopBubbleAudio: stopBubbleAudio,
+    stopAllBubbleAudio: stopAllBubbleAudio,
     playAmbient: playAmbient,
     setGlobalAudio: setGlobalAudio,
     setGlobalVolume: setGlobalVolume,

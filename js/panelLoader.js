@@ -132,10 +132,17 @@
   function renderChapterIntro(ch) {
     const title = escapeHtml(ch.title || '');
     const id = escapeHtml(ch.id);
+    const act = ch.act ? escapeHtml(ch.act) : '';
+    const scene = ch.scene ? escapeHtml(ch.scene) : '';
+    const note = ch.note ? escapeHtml(ch.note) : '';
     return (
       '<header class="chapter-intro" data-chapter="' + id + '">' +
-      '<span class="chapter-intro__label">Capítulo ' + id + '</span>' +
-      '<h2 class="chapter-intro__title">' + title + '</h2>' +
+      '<span class="chapter-intro__label">' +
+        'Capítulo ' + id + (act ? ' · ' + act : '') +
+      '</span>' +
+      '<h2 class="chapter-intro__title">Escena ' + id + ' · ' + title + '</h2>' +
+      (scene ? '<p class="chapter-intro__scene">' + scene + '</p>' : '') +
+      (note ? '<p class="chapter-intro__note">' + note + '</p>' : '') +
       '</header>'
     );
   }
@@ -183,6 +190,15 @@
       return raw ? JSON.parse(raw) : null;
     } catch (e) {
       return null;
+    }
+  }
+
+  function loadExtraPanels() {
+    try {
+      const raw = localStorage.getItem('comic-extra-panels');
+      return raw ? JSON.parse(raw) : {};
+    } catch (e) {
+      return {};
     }
   }
 
@@ -296,6 +312,7 @@
 
     const deletedPanels = loadDeletedPanels();
     const deletedBubbles = loadDeletedBubbles();
+    const extraPanels = loadExtraPanels();
     const isDeletedPanel = (pid) =>
       deletedPanels.indexOf(String(pid)) !== -1 || deletedPanels.indexOf(pid) !== -1;
     const isDeletedBubble = (bid) =>
@@ -303,7 +320,11 @@
 
     const html = chapters
       .map((ch) => {
-        const panels = getChapterPanels(ch.id).filter((p) => !isDeletedPanel(p.id));
+        const base = getChapterPanels(ch.id);
+        const extras = Array.isArray(extraPanels[ch.id])
+          ? extraPanels[ch.id]
+          : (Array.isArray(extraPanels[String(ch.id)]) ? extraPanels[String(ch.id)] : []);
+        const panels = base.concat(extras).filter((p) => !isDeletedPanel(p.id));
         const panelsHtml = panels.map((p) => renderPanel(p, ch.id)).join('');
         return (
           '<article class="chapter" data-chapter="' +
@@ -337,6 +358,9 @@
     applyStoredBubbleSizes();
     applyStoredCharacterSizes();
 
+    // Tinte de fondo a partir de la imagen (o blanco si no hay imagen).
+    applyAllPanelTints(container);
+
     document.dispatchEvent(
       new CustomEvent('panels:loaded', {
         detail: { chapterCount: chapters.length },
@@ -356,11 +380,114 @@
         }
       }
     }
+    const extras = loadExtraPanels();
+    const ekeys = Object.keys(extras);
+    for (let i = 0; i < ekeys.length; i++) {
+      const list = extras[ekeys[i]] || [];
+      for (let j = 0; j < list.length; j++) {
+        if (String(list[j].id) === String(panelId)) {
+          return { panel: list[j], chapterId: ekeys[i] };
+        }
+      }
+    }
     return null;
   }
 
   function renderPanelHTML(panel, chapterId) {
     return renderPanel(panel, chapterId);
+  }
+
+  // ---- Panel tint: color promedio de la imagen como background -------------
+  // Calcula el color promedio de `imgEl` (downscaling a 24x24 en canvas) y
+  // devuelve { r, g, b } sin procesar. Si no se puede leer (CORS), null.
+  function computeAverageRgb(imgEl) {
+    try {
+      const w = 24, h = 24;
+      const c = document.createElement('canvas');
+      c.width = w; c.height = h;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(imgEl, 0, 0, w, h);
+      const data = ctx.getImageData(0, 0, w, h).data;
+      let r = 0, g = 0, b = 0, n = 0;
+      for (let i = 0; i < data.length; i += 4) {
+        const a = data[i + 3];
+        if (a < 32) continue;
+        r += data[i]; g += data[i + 1]; b += data[i + 2];
+        n++;
+      }
+      if (!n) return null;
+      return { r: r / n, g: g / n, b: b / n };
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function mixWithWhite(rgb, mix) {
+    return {
+      r: Math.round(rgb.r + (255 - rgb.r) * mix),
+      g: Math.round(rgb.g + (255 - rgb.g) * mix),
+      b: Math.round(rgb.b + (255 - rgb.b) * mix),
+    };
+  }
+
+  function rgbStr(rgb) {
+    return 'rgb(' + Math.round(rgb.r) + ',' + Math.round(rgb.g) + ',' + Math.round(rgb.b) + ')';
+  }
+  function rgbaStr(rgb, a) {
+    return 'rgba(' + Math.round(rgb.r) + ',' + Math.round(rgb.g) + ',' + Math.round(rgb.b) + ',' + a + ')';
+  }
+
+  function applyPanelTint(imgEl) {
+    if (!imgEl) return;
+    const media = imgEl.closest('.panel__media');
+    const panel = imgEl.closest('.panel');
+    if (!media) return;
+    const run = () => {
+      if (!imgEl.naturalWidth) return;
+      const raw = computeAverageRgb(imgEl);
+      if (!raw) return;
+      // Fondo del panel: matiz pastel suave (mezcla con blanco).
+      const soft = mixWithWhite(raw, 0.55);
+      media.style.backgroundColor = rgbStr(soft);
+      // Variables para el "aura" alrededor del panel: usan el color saturado
+      // para que la sombra y el wash exterior tiñan el papel crema.
+      if (panel) {
+        panel.style.setProperty('--panel-tint-soft', rgbStr(soft));
+        panel.style.setProperty('--panel-tint-glow', rgbaStr(raw, 0.55));
+        panel.style.setProperty('--panel-tint-wash', rgbaStr(raw, 0.18));
+      }
+    };
+    if (imgEl.complete && imgEl.naturalWidth > 0) {
+      run();
+    } else {
+      imgEl.addEventListener('load', run, { once: true });
+      imgEl.addEventListener('error', () => {
+        media.style.backgroundColor = '#ffffff';
+      }, { once: true });
+    }
+  }
+
+  function applyAllPanelTints(root) {
+    const scope = root || document;
+    // Si `root` es un panel concreto, incluirlo además de sus descendientes.
+    const isElement = scope && scope.nodeType === 1;
+    const panels = [];
+    if (isElement && scope.classList && scope.classList.contains('panel')) {
+      panels.push(scope);
+    }
+    scope.querySelectorAll && scope.querySelectorAll('.panel').forEach((p) => {
+      if (panels.indexOf(p) === -1) panels.push(p);
+    });
+    panels.forEach((p) => {
+      const img = p.querySelector('img.panel-bg');
+      const placeholder = p.querySelector('.panel-bg--placeholder');
+      const media = p.querySelector('.panel__media');
+      if (img) {
+        applyPanelTint(img);
+      } else if (placeholder && media) {
+        media.style.backgroundColor = '#ffffff';
+      }
+    });
   }
 
   window.Comic.PanelLoader = {
@@ -375,6 +502,8 @@
     applyPanelOrder: applyPanelOrder,
     findPanelData: findPanelData,
     renderPanelHTML: renderPanelHTML,
+    applyPanelTint: applyPanelTint,
+    applyAllPanelTints: applyAllPanelTints,
     POSITION_DEFAULTS: POSITION_DEFAULTS,
   };
 })();

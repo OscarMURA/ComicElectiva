@@ -1,55 +1,41 @@
-/* Capítulo 1 — La casita en el árbol
- * Lumi vive dentro de un árbol hueco. Una noche, una estrella cae cerca de su
- * casita y la despierta.
+/* Capítulo 1 · Acto I — La serpiente que tose
+ * Patio · 7:00 AM. Incluye el Prólogo (Bongo habla) en el primer panel.
+ *
+ * Estructura editable: cada panel trae narración + un diálogo de Bongo
+ * como placeholder. Tu puedes:
+ *  - editar el texto haciendo clic sobre la burbuja (modo edición)
+ *  - mover, redimensionar o eliminar burbujas
+ *  - subir un fondo nuevo o un audio para cada panel
  */
 window.Chapters = window.Chapters || {};
 window.Chapters[1] = {
   id: 1,
-  title: 'La casita en el árbol',
+  title: 'La serpiente que tose',
   ambient: 'assets/sounds/ambient/cap1.mp3',
   panels: [
     {
-      id: 'c1-p1',
-      image: 'assets/images/panels/cap1-panel1.svg',
-      narration: 'Había una vez un bosque muy, muy callado. La luna grande lo cuidaba todo desde el cielo.',
-      dialogues: [],
-      sfx: 'assets/sounds/effects/wind.mp3',
-      audio: 'assets/sounds/narration/cap1-panel1.mp3'
-    },
-    {
-      id: 'c1-p2',
-      image: 'assets/images/panels/cap1-panel2.svg',
-      narration: 'Dentro de un árbol hueco vivía Lumi, una lucecita redondita. Estaba durmiendo abrazada a su colita de estrella.',
+      id: 'e1-p1',
+      image: '',
+      narration: 'Prólogo · Bongo habla. (Editá este texto cuando estés listo)',
       dialogues: [
-        { speaker: 'lumi', text: 'Mmm... zzz...', position: 'center', x: 50, y: 55, width: 30 }
+        { speaker: 'bongo', text: 'Hola, soy Bongo. Voy a contarte lo que siento.', position: 'top-left', x: 28, y: 28, width: 40 }
       ]
     },
     {
-      id: 'c1-p3',
-      image: 'assets/images/panels/cap1-panel3.svg',
-      narration: 'De pronto, ¡una estrella fugaz cruzó el cielo y cayó cerquita del árbol!',
+      id: 'e1-p2',
+      image: '',
+      narration: 'Patio · 7:00 AM. (Narración pendiente)',
       dialogues: [
-        { speaker: '', text: '¡Plop!', position: 'bottom-right', x: 80, y: 70, width: 22 }
-      ],
-      sfx: 'assets/sounds/effects/star-fall.mp3'
+        { speaker: 'bongo', text: '...', position: 'bottom-right', x: 72, y: 70, width: 32 }
+      ]
     },
     {
-      id: 'c1-p4',
-      image: 'assets/images/panels/cap1-panel4.svg',
-      narration: 'Lumi se despertó y asomó la cabecita por la ventana.',
+      id: 'e1-p3',
+      image: '',
+      narration: '',
       dialogues: [
-        { speaker: 'lumi', text: '¿Qué fue ese ruidito?', position: 'bottom-left', x: 22, y: 72, width: 34 }
-      ],
-      sfx: 'assets/sounds/effects/wake.mp3'
-    },
-    {
-      id: 'c1-p5',
-      image: 'assets/images/panels/cap1-panel5.svg',
-      narration: 'Curiosa, Lumi salió de su casita. Sus destellos iluminaron el caminito del bosque.',
-      dialogues: [
-        { speaker: 'lumi', text: '¡Voy a ver qué pasó!', position: 'bottom-right', x: 78, y: 72, width: 34 }
-      ],
-      sfx: 'assets/sounds/effects/footstep.mp3'
+        { speaker: 'bongo', text: '...', position: 'center', x: 50, y: 50, width: 40 }
+      ]
     }
   ]
 };

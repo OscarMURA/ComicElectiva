@@ -7,38 +7,52 @@
 .chapter {
   position: relative;
   width: 100%;
-  padding: var(--space-lg) 0;
+  padding: var(--space-md) 0;
 }
 
+/* Intro de capítulo — clases BEM reales del HTML (.chapter-intro) +
+   alias .chapter__intro por compatibilidad. */
+.chapter-intro,
 .chapter__intro {
-  max-width: 720px;
-  margin: 0 auto var(--space-lg);
-  padding: var(--space-md) var(--content-padding);
-  text-align: center;
+  max-width: 100%;
+  margin: 0 auto var(--space-md);
+  padding: var(--space-sm) 0;
 }
 
+.chapter-intro__label,
 .chapter__number {
   display: inline-block;
   font-family: var(--font-display);
   font-size: var(--fs-sm);
   color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   margin-bottom: var(--space-xs);
 }
 
+.chapter-intro__title,
 .chapter__title {
   font-family: var(--font-display);
   font-size: var(--fs-2xl);
-  color: var(--color-night);
-  margin-bottom: var(--space-sm);
+  color: var(--color-primary);
+  margin: 0 0 var(--space-sm);
+  line-height: 1.1;
 }
 
+.chapter-intro__scene,
 .chapter__scene {
   font-family: var(--font-body);
   font-size: var(--fs-md);
-  color: var(--color-muted);
+  color: var(--color-text-muted);
   font-style: italic;
+  margin: 0 0 var(--space-xs);
+}
+
+.chapter-intro__note {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  color: var(--color-accent);
+  margin: 0;
 }
 
 /* ---------- Panel (el bloque base de cómic) ----------
@@ -50,6 +64,33 @@
   margin: 0 auto var(--space-lg);
   background: transparent;
   isolation: isolate;
+  /* z-index explícito para quedar SOBRE el canvas de luciérnagas
+     (#immersion-canvas, z=0). Las partículas vuelan por detrás. */
+  z-index: 1;
+  /* Variables que el JS sobrescribe con el color promedio de la imagen.
+     Defaults neutros para paneles sin imagen → glow apenas perceptible. */
+  --panel-tint-soft: rgba(255, 255, 255, 0);
+  --panel-tint-glow: rgba(31, 42, 58, 0.25);
+  --panel-tint-wash: rgba(31, 42, 58, 0.05);
+}
+
+/* "Aura" exterior: un wash radial que se proyecta más allá del panel y tiñe
+   el papel crema con el color promedio de la imagen. Hace que el panel
+   parezca derretirse en el fondo en lugar de cortar como una caja. */
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: -8% -6%;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse at center,
+    var(--panel-tint-wash) 0%,
+    var(--panel-tint-wash) 35%,
+    transparent 75%
+  );
+  filter: blur(24px);
+  transition: background 320ms ease;
 }
 
 /* Contenedor del media: aquí pasa todo (fondo + burbujas + personajes) */
@@ -57,14 +98,24 @@
   position: relative;
   width: 100%;
   aspect-ratio: 4 / 3;
-  background-color: var(--color-secondary);
+  /* Sin imagen → blanco. Con imagen → JS sobrescribe con un tinte sacado
+     del color promedio del fondo (ver panelLoader.applyPanelTint). */
+  background-color: #ffffff;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   overflow: hidden;
   border-radius: 12px;
-  border: 2px solid var(--color-ink);
-  box-shadow: var(--shadow-card);
+  /* Borde casi invisible — el panel se integra en lugar de "encajonarse".
+     El glow exterior (var --panel-tint-glow) hace el trabajo de definir el límite. */
+  border: 1px solid var(--panel-tint-soft, rgba(31, 42, 58, 0.12));
+  box-shadow:
+    0 18px 50px -10px var(--panel-tint-glow, rgba(31, 42, 58, 0.35)),
+    0 4px 14px -4px var(--panel-tint-glow, rgba(31, 42, 58, 0.25));
+  transition:
+    background-color 320ms ease,
+    box-shadow 320ms ease,
+    border-color 320ms ease;
 }
 
 .panel__media img.panel-bg,
@@ -90,7 +141,7 @@
   inset: 0;
   background: radial-gradient(
     ellipse at 50% 30%,
-    rgba(255, 214, 107, 0.18) 0%,
+    rgba(201, 162, 39, 0.18) 0%,
     transparent 60%
   );
   pointer-events: none;
@@ -147,7 +198,7 @@
   font-size: var(--fs-md);
   color: var(--color-ink);
   line-height: 1.3;
-  box-shadow: 0 4px 0 rgba(59, 46, 90, 0.12), var(--shadow-soft);
+  box-shadow: 0 4px 0 rgba(44, 44, 44, 0.12), var(--shadow-soft);
   opacity: 0;
   transition: opacity var(--t-slow);
   will-change: opacity;
@@ -169,7 +220,7 @@
   border-bottom-left-radius: 6px;
   background: var(--color-cream);
   border: 2px solid var(--color-ink);
-  box-shadow: 0 4px 0 rgba(59, 46, 90, 0.10), 0 6px 18px rgba(42, 42, 92, 0.18);
+  box-shadow: 0 4px 0 rgba(44, 44, 44, 0.10), 0 6px 18px rgba(31, 42, 58, 0.18);
 }
 
 .bubble-left::before,
@@ -198,9 +249,9 @@
 /* Variante derecha (cola abajo-derecha) */
 .bubble-right {
   border-bottom-right-radius: 6px;
-  background: #ffeed1;
+  background: #FAF3DE;
   border: 2px solid var(--color-ink);
-  box-shadow: 0 4px 0 rgba(59, 46, 90, 0.10), 0 6px 18px rgba(42, 42, 92, 0.18);
+  box-shadow: 0 4px 0 rgba(44, 44, 44, 0.10), 0 6px 18px rgba(31, 42, 58, 0.18);
 }
 
 .bubble-right::before,
@@ -223,7 +274,7 @@
   bottom: -10px;
   right: 24px;
   border-width: 12px 0 0 10px;
-  border-color: #ffeed1 transparent transparent transparent;
+  border-color: #FAF3DE transparent transparent transparent;
 }
 
 /* Variante narración (caja rectangular flotante, centrada por JS) */
@@ -232,14 +283,14 @@
 .narration {
   max-width: 80%;
   text-align: center;
-  background: rgba(43, 30, 80, 0.92);
+  background: rgba(31, 42, 58, 0.92);
   color: var(--color-cream);
   border: 2px solid var(--color-night);
   border-radius: 10px;
   font-family: var(--font-body);
   font-size: var(--fs-md);
   padding: var(--space-md);
-  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2), 0 6px 18px rgba(42, 42, 92, 0.25);
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2), 0 6px 18px rgba(31, 42, 58, 0.25);
   font-style: italic;
 }
 
@@ -264,7 +315,7 @@
 
 /* Variante para "pensamiento" (opcional, redondeada en nube) */
 .bubble-thought {
-  background: #f3eaff;
+  background: #EFEAD8;
   border-radius: 30px;
   font-style: italic;
 }
@@ -272,6 +323,103 @@
 .bubble-thought::before,
 .bubble-thought::after {
   display: none;
+}
+
+/* ---------- Variantes por tipo (bubble-type-*) ---------- */
+
+/* Pensamiento: nube redondeada con burbujitas que reemplazan la cola */
+.bubble.bubble-type-thought {
+  border-radius: 30px;
+  font-style: italic;
+  background: #F6F1DE;
+}
+.bubble.bubble-type-thought.bubble-left::before,
+.bubble.bubble-type-thought.bubble-right::before,
+.bubble.bubble-type-thought.bubble-center::before {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-ink);
+  background: #F6F1DE;
+  border-radius: 50%;
+  bottom: -16px;
+  left: 30px;
+  border-bottom-left-radius: 50%;
+  transform: none;
+}
+.bubble.bubble-type-thought.bubble-right::before {
+  left: auto;
+  right: 30px;
+}
+.bubble.bubble-type-thought.bubble-left::after,
+.bubble.bubble-type-thought.bubble-right::after,
+.bubble.bubble-type-thought.bubble-center::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border: 2px solid var(--color-ink);
+  background: #F6F1DE;
+  border-radius: 50%;
+  bottom: -28px;
+  left: 22px;
+  transform: none;
+}
+.bubble.bubble-type-thought.bubble-right::after {
+  left: auto;
+  right: 22px;
+}
+
+/* Grito: borde irregular con clip-path estrella suave */
+.bubble.bubble-type-shout {
+  background: #FFF4D6;
+  border: 3px solid var(--color-ink);
+  border-radius: 0;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: calc(var(--space-md) + 4px) calc(var(--space-md) + 6px);
+  clip-path: polygon(
+    0% 12%, 8% 0%, 18% 10%, 30% 0%, 42% 8%, 55% 0%, 68% 10%, 80% 0%, 92% 8%, 100% 18%,
+    96% 32%, 100% 48%, 94% 62%, 100% 78%, 92% 92%, 80% 100%, 65% 92%, 50% 100%, 35% 92%, 20% 100%, 8% 92%, 0% 80%,
+    6% 62%, 0% 48%, 6% 32%
+  );
+}
+.bubble.bubble-type-shout::before,
+.bubble.bubble-type-shout::after {
+  display: none;
+}
+
+/* Susurro: borde discontinuo y opacidad atenuada */
+.bubble.bubble-type-whisper {
+  background: rgba(250, 243, 222, 0.85);
+  border-style: dashed;
+  border-width: 2px;
+  font-style: italic;
+  opacity: 0.95;
+}
+.bubble.bubble-type-whisper::before {
+  border-color: transparent;
+}
+.bubble.bubble-type-whisper::after {
+  opacity: 0.85;
+}
+
+/* Narración aplicada como tipo (forzar look oscuro aunque tenga otras clases) */
+.bubble.bubble-type-narration {
+  background: rgba(31, 42, 58, 0.92);
+  color: var(--color-cream);
+  border: 2px solid var(--color-night);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-style: italic;
+  text-align: center;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.2), 0 6px 18px rgba(31, 42, 58, 0.25);
+}
+.bubble.bubble-type-narration::before,
+.bubble.bubble-type-narration::after {
+  display: none !important;
 }
 
 /* ---------- Caption legacy (compatibilidad) ----------
@@ -285,7 +433,7 @@
   transform: translateX(-50%);
   max-width: 80%;
   padding: var(--space-sm) var(--space-md);
-  background: rgba(43, 30, 80, 0.92);
+  background: rgba(31, 42, 58, 0.92);
   color: var(--color-cream);
   border: 2px solid var(--color-night);
   border-radius: 12px;
@@ -306,7 +454,7 @@
   width: 22px;
   height: 22px;
   color: var(--color-primary);
-  filter: drop-shadow(0 0 6px rgba(255, 214, 107, 0.7));
+  filter: drop-shadow(0 0 6px rgba(201, 162, 39, 0.7));
   pointer-events: none;
   z-index: 1;
 }
@@ -320,12 +468,14 @@
    Estados de burbujas (typewriter / fade-in)
    ============================================================ */
 
-/* Cuando el panel padre entra en viewport, las burbujas aparecen.
-   La definición de .bubble (más arriba) ya establece opacity: 0 y la
-   transition. Aquí solo activamos visibilidad para distintos estados. */
-.panel.in-view .bubble,
+/* Las burbujas inician opacity:0 (ver definición de .bubble). Solo se
+   vuelven visibles cuando empiezan a escribirse (.typing), cuando ya
+   terminaron (.tw-done / .done) o cuando el typewriter aplicó su fadeIn
+   inline. Las que están esperando su turno en la cola se quedan ocultas
+   — así no se ven cajas vacías con un caret titilando. */
 .bubble.done,
-.bubble.typing {
+.bubble.typing,
+.bubble.tw-done {
   opacity: 1;
 }
 
@@ -383,7 +533,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
 
 .editor-toggle:hover {
   transform: scale(1.05);
-  background: #f79bbe;
+  background: #D8B43A;
   box-shadow: var(--shadow-strong);
 }
 
@@ -405,7 +555,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
   width: 320px;
   max-width: 100%;
   background: var(--color-cream);
-  box-shadow: -10px 0 28px rgba(42, 42, 92, 0.18);
+  box-shadow: -10px 0 28px rgba(31, 42, 58, 0.18);
   padding: 24px;
   overflow-y: auto;
   z-index: 90;
@@ -426,7 +576,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
   justify-content: space-between;
   gap: var(--space-sm);
   padding-bottom: var(--space-sm);
-  border-bottom: 2px solid rgba(59, 46, 90, 0.1);
+  border-bottom: 2px solid rgba(44, 44, 44, 0.1);
 }
 
 .editor-panel__title {
@@ -442,14 +592,14 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
   display: grid;
   place-items: center;
   border-radius: 50%;
-  background: rgba(59, 46, 90, 0.08);
+  background: rgba(44, 44, 44, 0.08);
   font-size: 1.4rem;
   color: var(--color-ink);
   transition: background var(--t-fast);
 }
 
 .editor-panel__close:hover {
-  background: rgba(245, 138, 181, 0.2);
+  background: rgba(201, 162, 39, 0.2);
 }
 
 /* Formulario */
@@ -473,7 +623,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
   font-family: var(--font-body);
   font-size: var(--fs-md);
   color: var(--color-ink);
-  background: #fffdf6;
+  background: #FFFEF8;
   border: 2px solid var(--color-ink);
   border-radius: 12px;
   transition: border-color var(--t-fast), box-shadow var(--t-fast);
@@ -482,7 +632,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
 .editor-form__input:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(245, 138, 181, 0.25);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25);
 }
 
 .editor-form__textarea {
@@ -531,7 +681,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
 }
 
 .editor-btn--secondary:hover {
-  background: rgba(59, 46, 90, 0.06);
+  background: rgba(44, 44, 44, 0.06);
 }
 
 .editor-btn--danger {
@@ -541,7 +691,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
 }
 
 .editor-btn--danger:hover {
-  background: #ec73a4;
+  background: #A8801E;
 }
 
 /* ============================================================
@@ -573,7 +723,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
   display: none; /* en desktop ocultamos: se muestran todas las secciones */
   gap: 6px;
   padding: 4px;
-  background: rgba(59, 46, 90, 0.06);
+  background: rgba(44, 44, 44, 0.06);
   border-radius: var(--radius-pill);
 }
 
@@ -625,7 +775,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
 }
 
 .editor-file:hover .editor-file__btn {
-  background: rgba(255, 214, 107, 0.35);
+  background: rgba(201, 162, 39, 0.35);
   border-color: var(--color-accent);
 }
 
@@ -675,7 +825,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
   border-radius: 50%;
   background: var(--color-accent);
   border: 2px solid var(--color-cream);
-  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.25);
+  box-shadow: 0 2px 6px rgba(31, 42, 58, 0.25);
   margin-top: -6px;
   transition: transform var(--t-fast);
 }
@@ -690,7 +840,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
   border-radius: 50%;
   background: var(--color-accent);
   border: 2px solid var(--color-cream);
-  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.25);
+  box-shadow: 0 2px 6px rgba(31, 42, 58, 0.25);
 }
 
 /* ---------- Galería de personajes ---------- */
@@ -742,7 +892,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #e74c5e;
+  background: #B85C38;
   color: white;
   font-size: 11px;
   line-height: 1;
@@ -753,7 +903,7 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
 }
 
 .character-gallery__remove:hover {
-  background: #d63b4d;
+  background: #B85C38;
 }
 
 /* ============================================================
@@ -820,7 +970,7 @@ html.edit-mode-unlocked.editor-open .bubble::before {
   place-items: center;
   font-size: 13px;
   font-family: var(--font-display);
-  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.3);
+  box-shadow: 0 2px 6px rgba(31, 42, 58, 0.3);
   z-index: 11;
   pointer-events: none;
   /* Reset de los borders de cola */
@@ -835,8 +985,8 @@ html.edit-mode-unlocked.editor-open .bubble::before {
   cursor: grabbing;
   opacity: 0.85;
   transform: translate(-50%, -50%) scale(1.02);
-  box-shadow: 0 18px 32px rgba(42, 42, 92, 0.4);
-  filter: drop-shadow(0 8px 16px rgba(42, 42, 92, 0.35));
+  box-shadow: 0 18px 32px rgba(31, 42, 58, 0.4);
+  filter: drop-shadow(0 8px 16px rgba(31, 42, 58, 0.35));
   z-index: 999;
 }
 
@@ -852,15 +1002,29 @@ html.edit-mode-unlocked.editor-open .bubble::before {
    por js/bubbleEditor.js (clases .bubble-editor y .be-*)
    =============================================== */
 .bubble-editor {
+  --be-bg:       #FFF8F2;     /* crema pastel */
+  --be-surface:  #FFFFFF;     /* inputs */
+  --be-header:   #FFE5D4;     /* durazno pastel */
+  --be-ink:      #5C4A3A;     /* tinta suave (no negro) */
+  --be-ink-soft: #8A7766;     /* texto secundario */
+  --be-border:   #E9D9C6;     /* borde suave */
+  --be-divider:  #F0E4D5;     /* línea entre secciones */
+  --be-focus:    #FFB997;     /* halo de foco */
+  --be-primary:  #B7E4C7;     /* mint pastel  (Agregar) */
+  --be-info:     #BDE0FE;     /* azul pastel  (Caption) */
+  --be-warn:     #FBD1A2;     /* durazno fuerte (clear) */
+  --be-danger:   #FCB9B2;     /* rosa coral pastel (delete) */
+  --be-accent:   #E0BBE4;     /* lavanda pastel (export/import) */
+
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   width: 340px;
   max-width: 100vw;
-  background: var(--color-cream, #FFF7E6);
-  border-left: 2px solid var(--color-ink, #3B2E5A);
-  box-shadow: -6px 0 24px rgba(59, 46, 90, 0.15);
+  background: var(--be-bg);
+  border-left: 1px solid var(--be-border);
+  box-shadow: -6px 0 24px rgba(92, 74, 58, 0.10);
   transform: translateX(100%);
   transition: transform 300ms cubic-bezier(0.2, 0.8, 0.2, 1);
   z-index: 10000;
@@ -875,40 +1039,41 @@ html.edit-mode-unlocked.editor-open .bubble::before {
   align-items: center;
   justify-content: space-between;
   padding: 16px 20px;
-  border-bottom: 1px solid rgba(59, 46, 90, 0.15);
-  background: var(--color-primary, #FFD66B);
+  border-bottom: 1px solid var(--be-border);
+  background: var(--be-header);
 }
 .bubble-editor__header h2 {
   margin: 0;
   font-family: var(--font-display, Fredoka, sans-serif);
   font-size: 20px;
-  color: var(--color-ink, #3B2E5A);
+  color: var(--be-ink);
 }
 .bubble-editor__close {
   background: transparent;
   border: none;
   font-size: 28px;
   line-height: 1;
-  color: var(--color-ink, #3B2E5A);
+  color: var(--be-ink);
   cursor: pointer;
   padding: 4px 10px;
   border-radius: 50%;
   transition: background 150ms;
 }
-.bubble-editor__close:hover { background: rgba(59, 46, 90, 0.1); }
+.bubble-editor__close:hover { background: rgba(92, 74, 58, 0.08); }
 
 .bubble-editor__body {
   flex: 1;
   overflow-y: auto;
   padding: 16px 20px 24px;
   font-family: var(--font-body, 'Patrick Hand', sans-serif);
-  color: var(--color-ink, #3B2E5A);
+  color: var(--be-ink);
 }
 .bubble-editor__body label {
   display: block;
   margin-bottom: 12px;
   font-weight: 600;
   font-size: 15px;
+  color: var(--be-ink);
 }
 .bubble-editor__body select,
 .bubble-editor__body input[type="text"],
@@ -921,62 +1086,95 @@ html.edit-mode-unlocked.editor-open .bubble::before {
   padding: 8px 12px;
   font-family: inherit;
   font-size: 15px;
-  color: var(--color-ink, #3B2E5A);
-  background: #fff;
-  border: 2px solid var(--color-ink, #3B2E5A);
+  color: var(--be-ink);
+  background: var(--be-surface);
+  border: 1px solid var(--be-border);
   border-radius: 12px;
   box-sizing: border-box;
+  box-shadow: 0 1px 0 rgba(92, 74, 58, 0.04);
 }
-.bubble-editor__body input[type="range"] { padding: 0; height: 32px; }
+.bubble-editor__body input[type="range"] { padding: 0; height: 32px; background: transparent; border: 0; }
 .bubble-editor__body textarea { resize: vertical; min-height: 70px; }
 .bubble-editor__body input:focus,
 .bubble-editor__body select:focus,
 .bubble-editor__body textarea:focus {
-  outline: 3px solid var(--color-accent, #F58AB5);
-  outline-offset: 2px;
+  outline: 3px solid var(--be-focus);
+  outline-offset: 1px;
+  border-color: var(--be-focus);
 }
 
 .bubble-editor .be-section {
   margin-top: 18px;
   padding-top: 16px;
-  border-top: 1px solid rgba(59, 46, 90, 0.15);
+  border-top: 1px solid var(--be-divider);
 }
 .bubble-editor .be-section:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
 .bubble-editor .be-section h3 {
   margin: 0 0 12px;
   font-family: var(--font-display, Fredoka, sans-serif);
   font-size: 17px;
-  color: var(--color-ink, #3B2E5A);
+  color: var(--be-ink);
 }
+.bubble-editor .be-section h4 { color: var(--be-ink); }
+.bubble-editor .be-section p { color: var(--be-ink-soft); }
 
 .bubble-editor button {
   display: inline-block;
-  padding: 10px 16px;
+  padding: 9px 14px;
   margin-top: 8px;
   margin-right: 6px;
   font-family: var(--font-display, Fredoka, sans-serif);
   font-size: 14px;
   font-weight: 600;
-  border: 2px solid var(--color-ink, #3B2E5A);
+  border: 1px solid var(--be-border);
   border-radius: 12px;
-  background: var(--color-primary, #FFD66B);
-  color: var(--color-ink, #3B2E5A);
+  background: var(--be-surface);
+  color: var(--be-ink);
   cursor: pointer;
-  transition: transform 120ms, background 120ms;
+  transition: transform 120ms, background 120ms, box-shadow 120ms;
+  box-shadow: 0 1px 0 rgba(92, 74, 58, 0.04);
 }
-.bubble-editor button:hover { transform: translateY(-1px); }
+.bubble-editor button:hover { transform: translateY(-1px); box-shadow: 0 3px 8px rgba(92, 74, 58, 0.10); }
+.bubble-editor .be-add { background: var(--be-primary); }
+.bubble-editor .be-add-caption { background: var(--be-info); }
 .bubble-editor .be-bg-remove,
 .bubble-editor [class*="clear"],
-.bubble-editor [class*="remove"] { background: var(--color-accent, #F58AB5); color: #fff; }
-.bubble-editor [class*="export"] { background: transparent; }
+.bubble-editor [class*="remove"] { background: var(--be-warn); }
+.bubble-editor .be-delete-panel,
+.bubble-editor [class*="logout"] { background: var(--be-danger); }
+.bubble-editor .be-state-export,
+.bubble-editor .be-state-import,
+.bubble-editor .be-export { background: var(--be-accent); }
+
+/* Toggle de cola izquierda/derecha */
+.bubble-editor .be-side-toggle .be-side-btn {
+  flex: 1;
+  margin: 0;
+  background: var(--be-surface);
+  border: 1px solid var(--be-border);
+}
+.bubble-editor .be-side-toggle .be-side-btn.is-active {
+  background: var(--be-primary);
+  border-color: rgba(92, 74, 58, 0.20);
+  box-shadow: inset 0 0 0 1px rgba(92, 74, 58, 0.10);
+}
 
 /* File inputs custom look */
 .bubble-editor input[type="file"] {
   padding: 8px;
-  border-style: dashed;
-  background: #fff;
+  border: 1px dashed var(--be-border);
+  background: var(--be-surface);
   cursor: pointer;
+  border-radius: 12px;
 }
+
+/* Scrollbar discreto */
+.bubble-editor__body::-webkit-scrollbar { width: 10px; }
+.bubble-editor__body::-webkit-scrollbar-thumb {
+  background: var(--be-border);
+  border-radius: 8px;
+}
+.bubble-editor__body::-webkit-scrollbar-track { background: transparent; }
 
 /* Move floating toggle to bottom-left (engine put it inline; ensure visible) */
 #editor-toggle.editor-toggle,
@@ -996,7 +1194,7 @@ button#editor-toggle {
     right: 0;
     left: 0;
     border-left: 0;
-    border-top: 2px solid var(--color-ink, #3B2E5A);
+    border-top: 2px solid var(--color-ink, #2C2C2C);
     border-top-left-radius: 24px;
     border-top-right-radius: 24px;
     transform: translateY(100%);
@@ -1020,7 +1218,7 @@ button#editor-toggle {
 .password-modal__backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(43, 30, 80, 0.6);
+  background: rgba(31, 42, 58, 0.6);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   z-index: 0;
@@ -1035,7 +1233,7 @@ button#editor-toggle {
   background: var(--color-cream);
   border: 2px solid var(--color-ink);
   border-radius: 20px;
-  box-shadow: 0 30px 60px -10px rgba(43, 30, 80, 0.5);
+  box-shadow: 0 30px 60px -10px rgba(31, 42, 58, 0.5);
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1062,7 +1260,7 @@ button#editor-toggle {
   font-family: var(--font-body);
   font-size: 16px;
   color: var(--color-ink);
-  background: #fffdf6;
+  background: #FFFEF8;
   border: 2px solid var(--color-ink);
   border-radius: 12px;
   box-sizing: border-box;
@@ -1072,11 +1270,11 @@ button#editor-toggle {
 .password-modal__input:focus {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(245, 138, 181, 0.25);
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.25);
 }
 
 .password-modal__error {
-  color: #d63b4d;
+  color: #B85C38;
   font-family: var(--font-body);
   font-size: 14px;
   margin-top: 8px;
@@ -1120,7 +1318,7 @@ button#editor-toggle {
 }
 
 .password-modal__btn--ghost:hover {
-  background: rgba(59, 46, 90, 0.06);
+  background: rgba(44, 44, 44, 0.06);
 }
 
 /* Animaciones del modal */
@@ -1171,12 +1369,12 @@ button#editor-toggle {
   cursor: pointer;
   text-align: center;
   transition: transform var(--t-fast), background var(--t-fast), box-shadow var(--t-fast);
-  box-shadow: 0 6px 16px rgba(245, 138, 181, 0.35);
+  box-shadow: 0 6px 16px rgba(201, 162, 39, 0.35);
 }
 
 .bubble-editor__logout:hover {
-  background: #ec73a4;
-  border-color: #ec73a4;
+  background: #A8801E;
+  border-color: #A8801E;
   transform: translateY(-1px);
 }
 
@@ -1220,7 +1418,7 @@ button#editor-toggle {
   line-height: 1;
   cursor: pointer;
   transition: transform var(--t-fast), background var(--t-fast);
-  box-shadow: 0 4px 10px rgba(42, 42, 92, 0.15);
+  box-shadow: 0 4px 10px rgba(31, 42, 58, 0.15);
 }
 
 .bubble-editor .be-audio-play:hover,
@@ -1238,7 +1436,7 @@ button#editor-toggle {
 
 .bubble-editor .be-audio-stop:hover,
 .bubble-editor [class*="audio-stop"]:hover {
-  background: #ec73a4;
+  background: #A8801E;
   transform: scale(1.06);
 }
 
@@ -1280,7 +1478,7 @@ button#editor-toggle {
   border-radius: 50%;
   background: var(--color-accent);
   border: 2px solid var(--color-cream);
-  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.25);
+  box-shadow: 0 2px 6px rgba(31, 42, 58, 0.25);
   margin-top: -8px;
   cursor: grab;
 }
@@ -1292,7 +1490,7 @@ button#editor-toggle {
   border-radius: 50%;
   background: var(--color-accent);
   border: 2px solid var(--color-cream);
-  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.25);
+  box-shadow: 0 2px 6px rgba(31, 42, 58, 0.25);
   cursor: grab;
 }
 
@@ -1322,8 +1520,8 @@ button#editor-toggle {
   transform: translate(-50%, -50%) scale(1.02) !important;
   cursor: grabbing !important;
   opacity: 0.95 !important;
-  box-shadow: 0 18px 32px rgba(42, 42, 92, 0.4) !important;
-  filter: drop-shadow(0 8px 16px rgba(42, 42, 92, 0.35));
+  box-shadow: 0 18px 32px rgba(31, 42, 58, 0.4) !important;
+  filter: drop-shadow(0 8px 16px rgba(31, 42, 58, 0.35));
   z-index: 999 !important;
   will-change: left, top;
 }
@@ -1379,10 +1577,10 @@ button#editor-toggle {
   position: absolute;
   width: 10px;
   height: 10px;
-  background: var(--color-cream, #fffdf6);
+  background: var(--color-cream, #FFFEF8);
   border: 2px solid var(--color-accent);
   border-radius: 2px;
-  box-shadow: 0 1px 3px rgba(42, 42, 92, 0.35);
+  box-shadow: 0 1px 3px rgba(31, 42, 58, 0.35);
   z-index: 12; /* encima del badge ✎ (z=11) y de la burbuja */
   /* Por defecto ocultos: solo se ven en modo edición */
   display: none;
@@ -1446,14 +1644,14 @@ html.edit-mode-unlocked.editor-open .character-overlay::before {
   place-items: center;
   font-size: 13px;
   font-family: var(--font-display);
-  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.3);
+  box-shadow: 0 2px 6px rgba(31, 42, 58, 0.3);
   z-index: 11;
   pointer-events: none;
 }
 
 /* ---------- Contraste visual extra del modo edición ---------- */
 html.edit-mode-unlocked.editor-open .character-overlay {
-  outline: 1px dotted #d63b4d;
+  outline: 1px dotted #B85C38;
   outline-offset: 4px;
 }
 
@@ -1462,9 +1660,9 @@ html.edit-mode-unlocked.editor-open .character-overlay {
 html.edit-mode-unlocked.editor-open .bubble {
   outline: 2px dashed var(--color-accent);
   outline-offset: 3px;
-  box-shadow: 0 4px 0 rgba(59, 46, 90, 0.12),
+  box-shadow: 0 4px 0 rgba(44, 44, 44, 0.12),
               var(--shadow-soft),
-              0 0 0 4px rgba(245, 138, 181, 0.12);
+              0 0 0 4px rgba(201, 162, 39, 0.12);
 }
 
 /* ---------- Tip flotante de ayuda (lo crea el engine) ----------
@@ -1477,13 +1675,13 @@ html.edit-mode-unlocked.editor-open .bubble {
   left: 50%;
   transform: translateX(-50%);
   padding: 10px 18px;
-  background: var(--color-night, #2b1e50);
-  color: var(--color-cream, #fff7e6);
+  background: var(--color-night, #1F2A3A);
+  color: var(--color-cream, #F4F1E8);
   font-family: var(--font-display, Fredoka, sans-serif);
   font-size: 14px;
   letter-spacing: 0.3px;
   border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(42, 42, 92, 0.35);
+  box-shadow: 0 8px 24px rgba(31, 42, 58, 0.35);
   z-index: 9500;
   pointer-events: none;
   opacity: 0;
@@ -1533,9 +1731,9 @@ html.edit-mode-unlocked.editor-open .edit-mode-hint {
   margin: 0;
   max-height: 240px;
   overflow-y: auto;
-  border: 1px solid rgba(59, 46, 90, 0.15);
+  border: 1px solid rgba(44, 44, 44, 0.15);
   border-radius: 12px;
-  background: rgba(255, 247, 230, 0.5);
+  background: rgba(244, 241, 232, 0.5);
 }
 
 .be-panel-item {
@@ -1543,12 +1741,12 @@ html.edit-mode-unlocked.editor-open .edit-mode-hint {
   align-items: center;
   gap: 8px;
   padding: 8px 10px;
-  border-bottom: 1px solid rgba(59, 46, 90, 0.08);
+  border-bottom: 1px solid rgba(44, 44, 44, 0.08);
   cursor: grab;
   user-select: none;
   font-family: var(--font-body, 'Patrick Hand', sans-serif);
   font-size: 13px;
-  color: var(--color-ink, #3B2E5A);
+  color: var(--color-ink, #2C2C2C);
   background: transparent;
   transition: background 120ms ease;
 }
@@ -1558,7 +1756,7 @@ html.edit-mode-unlocked.editor-open .edit-mode-hint {
 }
 
 .be-panel-item:hover {
-  background: rgba(255, 214, 107, 0.25);
+  background: rgba(201, 162, 39, 0.25);
 }
 
 .be-panel-item.dragging {
@@ -1566,7 +1764,7 @@ html.edit-mode-unlocked.editor-open .edit-mode-hint {
 }
 
 .be-panel-item.drag-over {
-  background: rgba(245, 138, 181, 0.2);
+  background: rgba(201, 162, 39, 0.2);
   box-shadow: inset 0 2px 0 var(--color-accent);
 }
 
@@ -1577,7 +1775,7 @@ html.edit-mode-unlocked.editor-open .edit-mode-hint {
   object-fit: cover;
   flex-shrink: 0;
   background: var(--color-secondary);
-  border: 1px solid rgba(59, 46, 90, 0.15);
+  border: 1px solid rgba(44, 44, 44, 0.15);
 }
 
 .be-panel-item__title {
@@ -1647,7 +1845,7 @@ html.edit-mode-unlocked.editor-open .edit-mode-hint {
   height: 20px;
   border-radius: 50%;
   border: 2px solid white;
-  background: #e63946;
+  background: #B85C38;
   color: white;
   cursor: pointer;
   font-size: 11px;
@@ -1655,7 +1853,7 @@ html.edit-mode-unlocked.editor-open .edit-mode-hint {
   padding: 0;
   display: none;
   z-index: 13;
-  box-shadow: 0 2px 6px rgba(42, 42, 92, 0.3);
+  box-shadow: 0 2px 6px rgba(31, 42, 58, 0.3);
 }
 
 /* Sólo visible en modo edición + editor abierto, al hacer hover en la burbuja
@@ -1681,9 +1879,9 @@ html.edit-mode-unlocked.editor-open .character-overlay:hover .bubble__delete-btn
   border-radius: 10px;
   font-size: 18px;
   line-height: 1;
-  background: var(--color-cream, #FFF7E6);
-  border: 2px solid var(--color-ink, #3B2E5A);
-  color: var(--color-ink, #3B2E5A);
+  background: var(--color-cream, #F4F1E8);
+  border: 2px solid var(--color-ink, #2C2C2C);
+  color: var(--color-ink, #2C2C2C);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -1695,7 +1893,7 @@ html.edit-mode-unlocked.editor-open .character-overlay:hover .bubble__delete-btn
 .be-undo:hover:not(:disabled),
 .be-redo:hover:not(:disabled) {
   transform: scale(1.05);
-  background: #fffdf6;
+  background: #FFFEF8;
 }
 
 .be-undo:disabled,
@@ -1707,7 +1905,7 @@ html.edit-mode-unlocked.editor-open .character-overlay:hover .bubble__delete-btn
 /* ---------- 5) Hint de keyboard shortcuts ---------- */
 .be-shortcuts-hint {
   font-size: 11px;
-  color: rgba(59, 46, 90, 0.6);
+  color: rgba(44, 44, 44, 0.6);
   margin-bottom: 12px;
   font-family: var(--font-body, 'Patrick Hand', sans-serif);
   line-height: 1.4;
@@ -1769,7 +1967,7 @@ html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected) .bubble
 html.edit-mode-unlocked.editor-open .bubble:not(.is-selected):hover,
 html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected):hover {
   cursor: pointer !important;
-  outline: 1px dashed rgba(245, 138, 181, 0.4) !important;
+  outline: 1px dashed rgba(201, 162, 39, 0.4) !important;
   outline-offset: 2px;
 }
 
@@ -1778,7 +1976,7 @@ html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected):hover {
 .character-overlay.is-selected {
   outline: 2.5px dashed var(--color-accent) !important;
   outline-offset: 4px;
-  box-shadow: 0 0 0 6px rgba(245, 138, 181, 0.18) !important;
+  box-shadow: 0 0 0 6px rgba(201, 162, 39, 0.18) !important;
   z-index: 50 !important;
 }
 
@@ -1794,10 +1992,10 @@ html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected):hover {
   padding: 6px;
   border: 2px solid var(--color-ink);
   border-radius: 12px;
-  background: rgba(255, 247, 230, 0.8);
+  background: rgba(244, 241, 232, 0.8);
 }
 .be-pos-cell {
-  border: 1.5px solid rgba(59, 46, 90, 0.35);
+  border: 1.5px solid rgba(44, 44, 44, 0.35);
   background: white;
   border-radius: 6px;
   cursor: pointer;
@@ -1812,7 +2010,7 @@ html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected):hover {
 .be-pos-cell.is-active {
   background: var(--color-accent);
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 2px rgba(245, 138, 181, 0.4);
+  box-shadow: 0 0 0 2px rgba(201, 162, 39, 0.4);
 }
 .be-pos-cell.is-active::after {
   content: '';
@@ -1828,9 +2026,9 @@ html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected):hover {
   margin: 8px 0 12px;
   padding: 12px;
   font-size: 13px;
-  color: rgba(59, 46, 90, 0.6);
-  background: rgba(138, 198, 240, 0.15);
-  border: 1.5px dashed rgba(59, 46, 90, 0.25);
+  color: rgba(44, 44, 44, 0.6);
+  background: rgba(61, 127, 184, 0.15);
+  border: 1.5px dashed rgba(44, 44, 44, 0.25);
   border-radius: 10px;
   text-align: center;
 }
@@ -1865,14 +2063,14 @@ html.edit-mode-unlocked.editor-open .character-overlay:not(.is-selected):hover {
 .be-pos-cell {
   min-height: 38px !important;
   min-width: 38px !important;
-  border: 1.5px solid rgba(59, 46, 90, 0.4) !important;
+  border: 1.5px solid rgba(44, 44, 44, 0.4) !important;
   background: white !important;
   border-radius: 8px !important;
 }
 .be-pos-cell.is-active {
   background: var(--color-accent) !important;
   border-color: var(--color-ink) !important;
-  box-shadow: 0 0 0 3px rgba(245, 138, 181, 0.5) !important;
+  box-shadow: 0 0 0 3px rgba(201, 162, 39, 0.5) !important;
 }
 
 /* === v5.3: prevent text selection on selected bubble to allow drag === */

@@ -25,9 +25,10 @@
   const DELETED_PANELS_KEY = 'comic-deleted-panels';
   const DELETED_BUBBLES_KEY = 'comic-deleted-bubbles';
   const PANEL_ORDER_KEY = 'comic-panel-order';
+  const EXTRA_PANELS_KEY = 'comic-extra-panels';
   const HISTORY_LIMIT = 50;
 
-  const SPEAKERS = ['lumi', 'buho', 'lucesitas', 'narrator'];
+  const SPEAKERS = ['bongo', 'narrator', 'nina', 'lumi', 'buho', 'lucesitas'];
   const POSITIONS = [
     'top-left',
     'top-center',
@@ -63,6 +64,22 @@
     'bottom-right':  'Abajo derecha',
   };
   const TEXT_OVERRIDES_KEY = 'comic-bubble-text-overrides';
+  const TIMING_KEY = 'comic-bubble-timing';
+  const BUBBLE_AUDIO_KEY = 'comic-bubble-audio';
+  const DEFAULT_DELAY_AFTER = 300;
+
+  const BUBBLE_SIDES_KEY = 'comic-bubble-sides';
+  const BUBBLE_TYPES_KEY = 'comic-bubble-types';
+  const BUBBLE_TYPES = [
+    { id: 'speech',    label: 'Diálogo (con cola)' },
+    { id: 'thought',   label: 'Pensamiento (nube)' },
+    { id: 'shout',     label: 'Grito (puntiaguda)' },
+    { id: 'whisper',   label: 'Susurro (línea punteada)' },
+    { id: 'narration', label: 'Narración (caja oscura)' },
+  ];
+  const BUBBLE_TYPE_CLASSES = BUBBLE_TYPES.map((t) => 'bubble-type-' + t.id);
+  const POS_CLASSES = ['bubble-left', 'bubble-right', 'bubble-center'];
+  const NARRATION_CLASSES = ['bubble-narration', 'narration', 'dialogue--narration'];
 
   // ---- State -----------------------------------------------------------------
   let panelEl = null;
@@ -141,6 +158,30 @@
   function saveDeletedBubbles(d) { saveJSON(DELETED_BUBBLES_KEY, d); }
   function loadPanelOrder() { return loadJSON(PANEL_ORDER_KEY, null); }
   function savePanelOrder(arr) { saveJSON(PANEL_ORDER_KEY, arr); }
+  function loadExtraPanels() { return loadJSON(EXTRA_PANELS_KEY, {}); }
+  function saveExtraPanels(d) { saveJSON(EXTRA_PANELS_KEY, d); }
+
+  function addExtraPanelToStorage(chapterId, panelData) {
+    const map = loadExtraPanels();
+    const key = String(chapterId);
+    if (!Array.isArray(map[key])) map[key] = [];
+    if (!map[key].some((p) => String(p.id) === String(panelData.id))) {
+      map[key].push(panelData);
+    }
+    saveExtraPanels(map);
+  }
+
+  function removeExtraPanelFromStorage(panelId) {
+    const map = loadExtraPanels();
+    let changed = false;
+    Object.keys(map).forEach((k) => {
+      if (!Array.isArray(map[k])) return;
+      const before = map[k].length;
+      map[k] = map[k].filter((p) => String(p.id) !== String(panelId));
+      if (map[k].length !== before) changed = true;
+    });
+    if (changed) saveExtraPanels(map);
+  }
 
   function getCurrentPanelOrder() {
     return Array.from(document.querySelectorAll('.panel')).map((p) => p.dataset.panelId);
@@ -303,6 +344,22 @@
           savePanelOrder(a.before);
           renderPanelList();
           break;
+        case 'addPanel':
+          // Undo: remover panel del DOM + de storage de extras + del order.
+          {
+            const el = getPanelById(a.panelId);
+            if (el && el.parentNode) el.parentNode.removeChild(el);
+            removeExtraPanelFromStorage(a.panelId);
+            const order = (loadPanelOrder() || getCurrentPanelOrder())
+              .filter((pid) => String(pid) !== String(a.panelId));
+            savePanelOrder(order);
+            refreshPanelSelect();
+            renderPanelList();
+            if (window.Comic.ScrollManager && window.Comic.ScrollManager.refresh) {
+              window.Comic.ScrollManager.refresh();
+            }
+          }
+          break;
         default: break;
       }
     }
@@ -417,6 +474,21 @@
           savePanelOrder(a.after);
           renderPanelList();
           break;
+        case 'addPanel':
+          // Redo: volver a insertar el panel + persistir en extras.
+          if (a.panelData && a.chapterId) {
+            addExtraPanelToStorage(a.chapterId, a.panelData);
+            const newPanel = insertPanelIntoDom(a.panelData, a.chapterId, null);
+            if (newPanel) {
+              savePanelOrder(getCurrentPanelOrder());
+              refreshPanelSelect();
+              renderPanelList();
+              if (window.Comic.ScrollManager && window.Comic.ScrollManager.refresh) {
+                window.Comic.ScrollManager.refresh();
+              }
+            }
+          }
+          break;
         default: break;
       }
     }
@@ -524,6 +596,53 @@
     }
     // Font slider.
     syncFontSliderToBubble(el);
+    // Timing inputs.
+    syncTimingInputsToBubble(el);
+    // Bubble type select.
+    if (panelEl) {
+      const typeSel = panelEl.querySelector('.be-bubble-type');
+      if (typeSel && !el.classList.contains('character-overlay')) {
+        const t = el.dataset.bubbleType
+          || (el.classList.contains('bubble-narration') || el.classList.contains('narration') ? 'narration' : 'speech');
+        typeSel.value = t;
+      }
+    }
+    // Side buttons (left / right).
+    if (!el.classList.contains('character-overlay')) syncSideButtonsToBubble(el);
+    // Per-bubble audio status.
+    syncBubbleAudioStatus(el);
+  }
+
+  function syncBubbleAudioStatus(el) {
+    if (!panelEl) return;
+    const statusEl = panelEl.querySelector('.be-bubble-audio-status');
+    if (!statusEl) return;
+    if (!el || el.classList.contains('character-overlay')) {
+      statusEl.textContent = 'Sin audio.';
+      return;
+    }
+    const src = getBubbleAudioSrc(el);
+    statusEl.textContent = src
+      ? '🎵 Audio asignado a esta burbuja.'
+      : 'Sin audio.';
+  }
+
+  function syncTimingInputsToBubble(el) {
+    if (!panelEl || !el) return;
+    const seqInput = panelEl.querySelector('.be-bubble-seq');
+    const delayInput = panelEl.querySelector('.be-bubble-delay');
+    if (el.classList.contains('character-overlay')) {
+      if (seqInput) seqInput.value = '';
+      if (delayInput) delayInput.value = '';
+      return;
+    }
+    const t = getBubbleTiming(el);
+    if (seqInput) seqInput.value = (t.sequence == null ? '' : String(t.sequence));
+    if (delayInput) {
+      // Show empty if it's the default; lets the user re-enable explicit value.
+      const hasExplicit = el.dataset.delayAfter != null && el.dataset.delayAfter !== '';
+      delayInput.value = hasExplicit ? String(t.delayAfter) : '';
+    }
   }
 
   // Show/hide editor sub-sections that only make sense when something is selected.
@@ -550,6 +669,59 @@
     }
   }
 
+  // ---- Bubble timing (sequence + delay-after) ------------------------------
+  function loadTiming() { return loadJSON(TIMING_KEY, {}); }
+  function saveTiming(d) { saveJSON(TIMING_KEY, d); }
+
+  function getBubbleTiming(el) {
+    if (!el) return { sequence: null, delayAfter: DEFAULT_DELAY_AFTER };
+    const seq = parseFloat(el.dataset.sequence);
+    const da = parseInt(el.dataset.delayAfter, 10);
+    return {
+      sequence: isNaN(seq) ? null : seq,
+      delayAfter: isNaN(da) ? DEFAULT_DELAY_AFTER : da,
+    };
+  }
+
+  function setBubbleTiming(el, sequence, delayAfter) {
+    if (!el || !el.dataset.bubbleId) return;
+    if (sequence == null || sequence === '') {
+      delete el.dataset.sequence;
+    } else {
+      el.dataset.sequence = String(sequence);
+    }
+    if (delayAfter == null || delayAfter === '') {
+      delete el.dataset.delayAfter;
+    } else {
+      el.dataset.delayAfter = String(delayAfter);
+    }
+    const map = loadTiming();
+    const entry = { };
+    if (sequence != null && sequence !== '' && !isNaN(parseFloat(sequence))) {
+      entry.sequence = parseFloat(sequence);
+    }
+    if (delayAfter != null && delayAfter !== '' && !isNaN(parseInt(delayAfter, 10))) {
+      entry.delayAfter = parseInt(delayAfter, 10);
+    }
+    if (Object.keys(entry).length === 0) {
+      delete map[el.dataset.bubbleId];
+    } else {
+      map[el.dataset.bubbleId] = entry;
+    }
+    saveTiming(map);
+  }
+
+  function applyStoredTiming() {
+    const map = loadTiming();
+    Object.keys(map).forEach((id) => {
+      const el = document.querySelector('.bubble[data-bubble-id="' + id.replace(/"/g, '\\"') + '"]');
+      if (!el) return;
+      const t = map[id] || {};
+      if (typeof t.sequence === 'number') el.dataset.sequence = String(t.sequence);
+      if (typeof t.delayAfter === 'number') el.dataset.delayAfter = String(t.delayAfter);
+    });
+  }
+
   // ---- Text overrides for original bubbles ----------------------------------
   function loadTextOverrides() { return loadJSON(TEXT_OVERRIDES_KEY, {}); }
   function saveTextOverrides(d) { saveJSON(TEXT_OVERRIDES_KEY, d); }
@@ -569,6 +741,12 @@
       const p = el.querySelector('p');
       if (p) p.textContent = newText;
       else el.textContent = newText;
+    }
+    // Keep .bubble--empty in sync so empty bubbles stay hidden outside edit mode.
+    if ((newText || '').trim()) {
+      el.classList.remove('bubble--empty');
+    } else {
+      el.classList.add('bubble--empty');
     }
   }
 
@@ -600,6 +778,76 @@
     Object.keys(map).forEach((id) => {
       const el = document.querySelector('.bubble[data-bubble-id="' + id.replace(/"/g, '\\"') + '"]');
       if (el) applyTextToBubble(el, map[id]);
+    });
+  }
+
+  // ---- Per-bubble audio ----------------------------------------------------
+  function loadBubbleAudio() { return loadJSON(BUBBLE_AUDIO_KEY, {}); }
+  function saveBubbleAudio(d) { saveJSON(BUBBLE_AUDIO_KEY, d); }
+
+  // Resolve the audio source for a given bubble: prefers the dedicated
+  // overrides map; falls back to user-added bubble JSON entry.
+  function getBubbleAudioSrc(el) {
+    if (!el) return null;
+    const id = el.dataset.bubbleId;
+    if (!id) return null;
+    const map = loadBubbleAudio();
+    if (map[id]) return map[id];
+    if (el.dataset.userAdded === 'true') {
+      const panel = el.closest('.panel');
+      const panelId = panel ? panel.dataset.panelId : null;
+      if (!panelId) return null;
+      const list = (loadStored()[panelId]) || [];
+      const entry = list.find((b) => b.id === id);
+      return (entry && entry.audio) || null;
+    }
+    return null;
+  }
+
+  function persistBubbleAudio(el, dataURL) {
+    if (!el || !el.dataset.bubbleId) return;
+    const id = el.dataset.bubbleId;
+    if (el.dataset.userAdded === 'true') {
+      const panel = el.closest('.panel');
+      const panelId = panel ? panel.dataset.panelId : null;
+      if (panelId) {
+        const data = loadStored();
+        const list = data[panelId] || [];
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].id === id) {
+            if (dataURL) list[i].audio = dataURL;
+            else delete list[i].audio;
+            break;
+          }
+        }
+        data[panelId] = list;
+        saveStored(data);
+      }
+    } else {
+      const map = loadBubbleAudio();
+      if (dataURL) map[id] = dataURL;
+      else delete map[id];
+      saveBubbleAudio(map);
+    }
+    if (dataURL) el.dataset.audio = dataURL;
+    else delete el.dataset.audio;
+  }
+
+  function applyStoredBubbleAudio() {
+    // Original bubbles → from BUBBLE_AUDIO_KEY map.
+    const map = loadBubbleAudio();
+    Object.keys(map).forEach((id) => {
+      const el = document.querySelector('.bubble[data-bubble-id="' + id.replace(/"/g, '\\"') + '"]');
+      if (el) el.dataset.audio = map[id];
+    });
+    // User-added bubbles → from their JSON entry.
+    const stored = loadStored();
+    Object.keys(stored).forEach((panelId) => {
+      (stored[panelId] || []).forEach((b) => {
+        if (!b.audio || !b.id) return;
+        const el = document.querySelector('.bubble[data-bubble-id="' + b.id.replace(/"/g, '\\"') + '"]');
+        if (el) el.dataset.audio = b.audio;
+      });
     });
   }
 
@@ -713,30 +961,44 @@
 
   function makeBubbleElement(bubble, panelId) {
     const wrapper = document.createElement('div');
-    const pos = bubble.position || 'bottom-left';
+    const type = bubble.type || 'speech';
+    const isNarration = type === 'narration';
+    const pos = bubble.position || (isNarration ? 'bottom-center' : 'bottom-left');
     const posClass = (pos === 'left' || pos === 'top-left' || pos === 'bottom-left')
       ? 'bubble-left'
       : (pos === 'right' || pos === 'top-right' || pos === 'bottom-right')
         ? 'bubble-right'
         : 'bubble-center';
-    wrapper.className = 'bubble ' + posClass + ' dialogue dialogue--' + pos + ' dialogue--user';
+    if (isNarration) {
+      wrapper.className = 'bubble bubble-narration narration dialogue dialogue--narration dialogue--user bubble-type-narration';
+    } else {
+      wrapper.className = 'bubble ' + posClass + ' dialogue dialogue--' + pos + ' dialogue--user bubble-type-' + type;
+    }
     wrapper.dataset.speaker = bubble.speaker || '';
     wrapper.dataset.userAdded = 'true';
     wrapper.dataset.position = pos;
+    wrapper.dataset.bubbleType = type;
     wrapper.style.opacity = '0';
     wrapper.style.position = 'absolute';
 
     const defaults = (window.Comic.PanelLoader && window.Comic.PanelLoader.POSITION_DEFAULTS) || {};
-    const def = defaults[pos] || { x: 15, y: 75 };
+    const def = isNarration
+      ? (defaults['narrator'] || { x: 50, y: 85, w: 80 })
+      : (defaults[pos] || { x: 15, y: 75 });
     const x = (typeof bubble.x === 'number') ? bubble.x : def.x;
     const y = (typeof bubble.y === 'number') ? bubble.y : def.y;
     wrapper.style.left = x + '%';
     wrapper.style.top = y + '%';
+    if (isNarration) {
+      const w = (typeof bubble.width === 'number') ? bubble.width : (def.w || 80);
+      wrapper.style.width = w + '%';
+    }
 
     // Generate an id so positions can be persisted.
     const id = bubble.id || (panelId + '-u' + Date.now().toString(36));
     wrapper.dataset.bubbleId = id;
     wrapper.dataset.fullText = bubble.text || '';
+    if (bubble.audio) wrapper.dataset.audio = bubble.audio;
 
     const fullText = escapeHtml(bubble.text || '');
     wrapper.innerHTML =
@@ -934,7 +1196,7 @@
 
   function ensureDeleteButton(el) {
     if (el.dataset.deleteBound === '1') return;
-    if (el.tagName === 'IMG') return; // characters get their own delete via list / clearAdded
+    if (el.tagName === 'IMG' || el.tagName === 'VIDEO') return; // characters get their own delete via list / clearAdded
     el.dataset.deleteBound = '1';
     const btn = document.createElement('button');
     btn.type = 'button';
@@ -1044,7 +1306,7 @@
     // image's parent and absolutely position handles relative to the image.
     // Simpler: wrap behavior — for both bubbles (divs) and img, we attach
     // handles to the element if it can contain children, otherwise to its parent.
-    if (el.tagName === 'IMG') {
+    if (el.tagName === 'IMG' || el.tagName === 'VIDEO') {
       // Use pointer-based resize without inner handles: track edges via parent overlay
       // We still need a stable surface for the user to grab — use small absolute
       // handles appended to the parent and synced by JS.
@@ -1136,6 +1398,14 @@
       if (pendingH != null) el.style.height = pendingH + 'px';
     }
 
+    // Aspect-ratio behavior:
+    //   - Media characters (img/video): corners are proportional BY DEFAULT;
+    //     hold Shift to free-resize. Edge handles (n/s/e/w) are always free.
+    //   - Bubbles: corners are free BY DEFAULT; hold Shift to lock aspect.
+    const isCorner = dir.length === 2;
+    const isMedia = el.tagName === 'IMG' || el.tagName === 'VIDEO';
+    const aspect = (startH > 0) ? (startW / startH) : 1;
+
     function onMove(ev) {
       const p = (ev.touches && ev.touches[0]) || ev;
       const dx = p.clientX - startX;
@@ -1151,6 +1421,23 @@
       // For pure horizontal handles (e/w) keep height; for vertical (n/s) keep width.
       if (dir === 'e' || dir === 'w') h = null;
       if (dir === 'n' || dir === 's') w = null;
+
+      // Proportional resize on corners.
+      const shift = !!(ev.shiftKey || (ev.touches && ev.touches.length > 1));
+      const proportional = isCorner && (isMedia ? !shift : shift);
+      if (proportional && w != null && h != null) {
+        // Pick the dominant axis (whichever moved more relative to start).
+        const dW = Math.abs(w - startW);
+        const dH = Math.abs(h - startH);
+        if (dW * (1 / Math.max(0.01, aspect)) >= dH) {
+          h = w / aspect;
+        } else {
+          w = h * aspect;
+        }
+        w = Math.max(MIN_SIZE, Math.min(maxW, w));
+        h = Math.max(MIN_SIZE, Math.min(maxH, h));
+      }
+
       pendingW = w;
       pendingH = h;
       resizedAny = true;
@@ -1346,30 +1633,62 @@
     return panel ? (panel.querySelector('.panel__overlay') || panel.querySelector('.panel__media') || panel) : null;
   }
 
+  function detectMediaType(dataURL, fallback) {
+    if (fallback === 'video' || fallback === 'image') return fallback;
+    if (typeof dataURL === 'string') {
+      if (dataURL.indexOf('data:video/') === 0) return 'video';
+      if (dataURL.indexOf('data:image/') === 0) return 'image';
+      // Url with known extension
+      const m = dataURL.toLowerCase().match(/\.(mp4|webm|ogv|mov|m4v)(\?|#|$)/);
+      if (m) return 'video';
+    }
+    return 'image';
+  }
+
   function makeCharacterElement(c) {
-    const img = document.createElement('img');
-    img.className = 'character-overlay';
-    img.alt = c.name || '';
-    img.dataset.userAdded = 'true';
-    img.dataset.name = c.name || '';
-    img.dataset.characterId = c.id || (c.panelId + '-char-' + Date.now().toString(36));
-    img.src = c.dataURL;
-    img.style.position = 'absolute';
+    const mediaType = detectMediaType(c.dataURL, c.mediaType);
+    const el = document.createElement(mediaType === 'video' ? 'video' : 'img');
+    el.className = 'character-overlay';
+    el.dataset.userAdded = 'true';
+    el.dataset.name = c.name || '';
+    el.dataset.characterId = c.id || (c.panelId + '-char-' + Date.now().toString(36));
+    el.dataset.mediaType = mediaType;
+    if (mediaType === 'video') {
+      el.src = c.dataURL;
+      el.autoplay = true;
+      el.loop = true;
+      el.muted = true; // required for autoplay across browsers
+      el.defaultMuted = true;
+      el.playsInline = true;
+      el.setAttribute('playsinline', '');
+      el.setAttribute('muted', '');
+      el.setAttribute('loop', '');
+      el.setAttribute('autoplay', '');
+      el.controls = false;
+      el.disablePictureInPicture = true;
+      el.style.objectFit = 'contain';
+      // Best-effort kick to start playback (some browsers need it).
+      try { const p = el.play(); if (p && p.catch) p.catch(() => {}); } catch (_) {}
+    } else {
+      el.alt = c.name || '';
+      el.src = c.dataURL;
+    }
+    el.style.position = 'absolute';
     const size = typeof c.size === 'number' ? c.size : 150;
-    img.style.width = size + 'px';
-    img.style.height = 'auto';
-    img.dataset.size = String(size);
+    el.style.width = size + 'px';
+    el.style.height = (typeof c.height === 'number') ? (c.height + 'px') : 'auto';
+    el.dataset.size = String(size);
 
     if (typeof c.x === 'number' && typeof c.y === 'number') {
-      img.style.left = c.x + '%';
-      img.style.top = c.y + '%';
+      el.style.left = c.x + '%';
+      el.style.top = c.y + '%';
     } else {
       const pos = c.position || 'center';
-      if (pos === 'left') { img.style.left = '10%'; img.style.top = '40%'; }
-      else if (pos === 'right') { img.style.left = '70%'; img.style.top = '40%'; }
-      else { img.style.left = '40%'; img.style.top = '40%'; }
+      if (pos === 'left') { el.style.left = '10%'; el.style.top = '40%'; }
+      else if (pos === 'right') { el.style.left = '70%'; el.style.top = '40%'; }
+      else { el.style.left = '40%'; el.style.top = '40%'; }
     }
-    return img;
+    return el;
   }
 
   function updateStoredCharacter(el) {
@@ -1380,9 +1699,16 @@
     const chars = loadCharacters();
     for (let i = 0; i < chars.length; i++) {
       if (chars[i].id === id || (chars[i].panelId === panelId && !id)) {
-        chars[i].x = parseFloat(el.dataset.x);
-        chars[i].y = parseFloat(el.dataset.y);
-        chars[i].size = parseFloat(el.dataset.size) || chars[i].size;
+        const x = parseFloat(el.dataset.x);
+        const y = parseFloat(el.dataset.y);
+        if (!isNaN(x)) chars[i].x = x;
+        if (!isNaN(y)) chars[i].y = y;
+        const w = parseFloat(el.dataset.w);
+        const h = parseFloat(el.dataset.h);
+        if (!isNaN(w)) { chars[i].size = w; }
+        else { chars[i].size = parseFloat(el.dataset.size) || chars[i].size; }
+        if (!isNaN(h)) chars[i].height = h;
+        if (el.dataset.mediaType) chars[i].mediaType = el.dataset.mediaType;
         saveCharacters(chars);
         return;
       }
@@ -1402,18 +1728,20 @@
     saveCharacters(chars); // make sure ids are persisted
   }
 
-  function addCharacterFromData(name, dataURL) {
-    const panelId = panelSelect.value;
+  function addCharacterFromData(name, dataURL, mediaType) {
+    const panelId = getCurrentPanelId();
     const panel = getPanelById(panelId);
     if (!panel) return;
     const size = parseInt(charSizeInput.value, 10) || 150;
     const position = charPosSelect.value || 'center';
     const id = panelId + '-char-' + Date.now().toString(36);
+    const type = detectMediaType(dataURL, mediaType);
     const record = {
       id: id,
       panelId: panelId,
       name: name,
       dataURL: dataURL,
+      mediaType: type,
       position: position,
       size: size,
     };
@@ -1430,7 +1758,7 @@
     const gallery = loadGallery();
     const key = (name || '') + '::' + (dataURL || '').slice(0, 64);
     if (!gallery.some((g) => g._key === key)) {
-      gallery.push({ _key: key, name: name, dataURL: dataURL });
+      gallery.push({ _key: key, name: name, dataURL: dataURL, mediaType: type });
       saveGallery(gallery);
       renderGallery();
     }
@@ -1442,7 +1770,14 @@
     if (!file) return;
     try {
       const dataURL = await readFileAsDataURL(file);
-      addCharacterFromData(name, dataURL);
+      const mediaType = (file.type || '').indexOf('video/') === 0 ? 'video' : 'image';
+      // Sube el binario al repo (assets/uploads/...) cuando el servidor está.
+      let src = dataURL;
+      if (window.Comic.RepoSync && window.Comic.RepoSync.uploadDataUrl) {
+        const uploaded = await window.Comic.RepoSync.uploadDataUrl(dataURL, file.name);
+        if (uploaded) src = uploaded;
+      }
+      addCharacterFromData(name, src, mediaType);
       charFileInput.value = '';
       charNameInput.value = '';
     } catch (err) {
@@ -1459,14 +1794,19 @@
       return;
     }
     galleryList.innerHTML = gallery
-      .map((g, i) =>
-        '<div class="gallery-item" data-index="' + i + '">' +
-          '<img src="' + g.dataURL + '" alt="" />' +
-          '<span class="gallery-item__name">' + escapeHtml(g.name || '') + '</span>' +
+      .map((g, i) => {
+        const type = detectMediaType(g.dataURL, g.mediaType);
+        const media = type === 'video'
+          ? '<video src="' + g.dataURL + '" autoplay loop muted playsinline></video>'
+          : '<img src="' + g.dataURL + '" alt="" />';
+        return '<div class="gallery-item" data-index="' + i + '">' +
+          media +
+          '<span class="gallery-item__name">' + escapeHtml(g.name || '') +
+            (type === 'video' ? ' 🎞️' : '') + '</span>' +
           '<button type="button" class="gallery-item__use" data-action="use">Usar</button>' +
           '<button type="button" class="gallery-item__del" data-action="del" aria-label="Borrar">&times;</button>' +
-        '</div>'
-      )
+        '</div>';
+      })
       .join('');
   }
 
@@ -1480,7 +1820,7 @@
     const entry = gallery[index];
     if (!entry) return;
     if (btn.dataset.action === 'use') {
-      addCharacterFromData(entry.name, entry.dataURL);
+      addCharacterFromData(entry.name, entry.dataURL, entry.mediaType);
     } else if (btn.dataset.action === 'del') {
       gallery.splice(index, 1);
       saveGallery(gallery);
@@ -1509,6 +1849,10 @@
     }
     img.src = dataURL;
     img.dataset.userBg = 'true';
+    // Recalcular el tinte del panel con la nueva imagen (cuando cargue).
+    if (window.Comic.PanelLoader && window.Comic.PanelLoader.applyPanelTint) {
+      window.Comic.PanelLoader.applyPanelTint(img);
+    }
   }
 
   function restoreBackgrounds() {
@@ -1524,12 +1868,17 @@
     if (!file) return;
     try {
       const dataURL = await readFileAsDataURL(file);
-      const panelId = panelSelect.value;
+      let src = dataURL;
+      if (window.Comic.RepoSync && window.Comic.RepoSync.uploadDataUrl) {
+        const uploaded = await window.Comic.RepoSync.uploadDataUrl(dataURL, file.name);
+        if (uploaded) src = uploaded;
+      }
+      const panelId = getCurrentPanelId();
       const panel = getPanelById(panelId);
       if (!panel) return;
-      applyBackground(panel, dataURL);
+      applyBackground(panel, src);
       const data = loadBackgrounds();
-      data[panelId] = dataURL;
+      data[panelId] = src;
       saveBackgrounds(data);
     } catch (err) {
       console.warn('[BubbleEditor] background read failed:', err);
@@ -1539,17 +1888,40 @@
   }
 
   function removeCustomBackground() {
-    const panelId = panelSelect.value;
+    const panelId = getCurrentPanelId();
     const panel = getPanelById(panelId);
     if (!panel) return;
     const img = panel.querySelector('img.panel-bg');
     if (img && img.dataset.originalSrc) {
-      img.src = img.dataset.originalSrc;
+      const original = img.dataset.originalSrc;
+      img.src = original;
       delete img.dataset.userBg;
+      const media = panel.querySelector('.panel__media');
+      if (!original) {
+        // No había imagen original → fondo blanco.
+        if (media) media.style.backgroundColor = '#ffffff';
+      } else if (window.Comic.PanelLoader && window.Comic.PanelLoader.applyPanelTint) {
+        window.Comic.PanelLoader.applyPanelTint(img);
+      }
     }
     const data = loadBackgrounds();
     delete data[panelId];
     saveBackgrounds(data);
+  }
+
+  // Devuelve el id del panel sobre el que el usuario está actuando: prioriza
+  // el más visible en pantalla y sincroniza el dropdown del editor para que
+  // refleje el panel real. Evita el bug "agrego cosa al panel 1 cuando estoy
+  // viendo el panel 2" cuando el IntersectionObserver no ha actualizado
+  // panelSelect (umbral 25-50%).
+  function getCurrentPanelId() {
+    const visible = detectVisiblePanelId();
+    const fallback = panelSelect ? panelSelect.value : null;
+    const id = visible || fallback;
+    if (id && panelSelect && panelSelect.value !== id) {
+      panelSelect.value = id;
+    }
+    return id;
   }
 
   // ---- Panels ----------------------------------------------------------------
@@ -1634,9 +2006,158 @@
     persistTextChange(sel, newText);
   }
 
+  // ---- Bubble type (visual variant) -----------------------------------------
+  function loadBubbleTypes() {
+    return loadJSON(BUBBLE_TYPES_KEY, {});
+  }
+
+  function saveBubbleType(bubbleId, type) {
+    if (!bubbleId) return;
+    const map = loadBubbleTypes();
+    if (type && type !== 'speech') {
+      map[bubbleId] = type;
+    } else {
+      delete map[bubbleId];
+    }
+    saveJSON(BUBBLE_TYPES_KEY, map);
+  }
+
+  function applyBubbleType(el, type) {
+    if (!el) return;
+    const newType = type || 'speech';
+    const wasNarration = el.classList.contains('bubble-type-narration');
+    const willBeNarration = newType === 'narration';
+
+    // Remove all existing bubble-type-* classes.
+    BUBBLE_TYPE_CLASSES.forEach((c) => el.classList.remove(c));
+    el.classList.add('bubble-type-' + newType);
+    el.dataset.bubbleType = newType;
+
+    if (willBeNarration && !wasNarration) {
+      // Switch to narration look: drop side-tail classes, add narration classes.
+      POS_CLASSES.forEach((c) => el.classList.remove(c));
+      // Also remove dialogue--<position> tail-driving classes.
+      Array.from(el.classList).forEach((c) => {
+        if (/^dialogue--(top|bottom|middle|center|left|right)/.test(c)) el.classList.remove(c);
+      });
+      NARRATION_CLASSES.forEach((c) => el.classList.add(c));
+    } else if (!willBeNarration && wasNarration) {
+      // Restore a sensible side-tail variant.
+      NARRATION_CLASSES.forEach((c) => el.classList.remove(c));
+      const pos = el.dataset.position || 'bottom-left';
+      const posClass = (pos === 'left' || pos === 'top-left' || pos === 'bottom-left')
+        ? 'bubble-left'
+        : (pos === 'right' || pos === 'top-right' || pos === 'bottom-right')
+          ? 'bubble-right'
+          : 'bubble-center';
+      el.classList.add(posClass, 'dialogue--' + pos);
+      el.style.width = '';
+    }
+  }
+
+  function setSelectedBubbleType(type) {
+    const sel = getSelectedBubble();
+    if (!sel || sel.classList.contains('character-overlay')) return;
+    const id = sel.dataset.bubbleId;
+    applyBubbleType(sel, type);
+    saveBubbleType(id, type);
+  }
+
+  function applyStoredBubbleTypes() {
+    const map = loadBubbleTypes();
+    Object.keys(map).forEach((id) => {
+      const el = document.querySelector('.bubble[data-bubble-id="' + id.replace(/"/g, '\\"') + '"]');
+      if (!el) return;
+      applyBubbleType(el, map[id]);
+    });
+  }
+
+  // ---- Bubble side (tail direction left/right) ------------------------------
+  function loadBubbleSides() {
+    return loadJSON(BUBBLE_SIDES_KEY, {});
+  }
+
+  function saveBubbleSide(bubbleId, side) {
+    if (!bubbleId) return;
+    const map = loadBubbleSides();
+    if (side === 'left' || side === 'right') {
+      map[bubbleId] = side;
+    } else {
+      delete map[bubbleId];
+    }
+    saveJSON(BUBBLE_SIDES_KEY, map);
+  }
+
+  function getBubbleSide(el) {
+    if (!el) return null;
+    if (el.classList.contains('bubble-narration') || el.classList.contains('narration')) return null;
+    if (el.classList.contains('bubble-right')) return 'right';
+    if (el.classList.contains('bubble-left')) return 'left';
+    return null;
+  }
+
+  function applyBubbleSide(el, side) {
+    if (!el) return;
+    if (el.classList.contains('bubble-narration') || el.classList.contains('narration')) return;
+    // Strip side classes; keep center untouched if no side requested.
+    el.classList.remove('bubble-left', 'bubble-right');
+    Array.from(el.classList).forEach((c) => {
+      if (/^dialogue--(top|bottom|middle)-(left|right)$/.test(c)) el.classList.remove(c);
+    });
+    if (side === 'left') {
+      el.classList.add('bubble-left');
+      el.dataset.position = 'bottom-left';
+      el.classList.add('dialogue--bottom-left');
+    } else if (side === 'right') {
+      el.classList.add('bubble-right');
+      el.dataset.position = 'bottom-right';
+      el.classList.add('dialogue--bottom-right');
+    } else {
+      // Default to left as a safe fallback.
+      el.classList.add('bubble-left');
+      el.dataset.position = 'bottom-left';
+      el.classList.add('dialogue--bottom-left');
+    }
+  }
+
+  function setSelectedBubbleSide(side) {
+    const sel = getSelectedBubble();
+    if (!sel || sel.classList.contains('character-overlay')) return;
+    if (sel.classList.contains('bubble-narration') || sel.classList.contains('narration')) return;
+    const id = sel.dataset.bubbleId;
+    applyBubbleSide(sel, side);
+    saveBubbleSide(id, side);
+    syncSideButtonsToBubble(sel);
+  }
+
+  function applyStoredBubbleSides() {
+    const map = loadBubbleSides();
+    Object.keys(map).forEach((id) => {
+      const el = document.querySelector('.bubble[data-bubble-id="' + id.replace(/"/g, '\\"') + '"]');
+      if (!el) return;
+      applyBubbleSide(el, map[id]);
+    });
+  }
+
+  function syncSideButtonsToBubble(el) {
+    if (!panelEl) return;
+    const btns = panelEl.querySelectorAll('.be-side-btn');
+    const side = getBubbleSide(el);
+    btns.forEach((b) => {
+      const isActive = b.dataset.side === side;
+      b.classList.toggle('is-active', isActive);
+      b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+
   // ---- User bubble add -------------------------------------------------------
+  function getDraftType() {
+    const sel = panelEl && panelEl.querySelector('.be-bubble-type');
+    return (sel && sel.value) || 'speech';
+  }
+
   function addBubble() {
-    const panelId = panelSelect.value;
+    const panelId = getCurrentPanelId();
     const panel = getPanelById(panelId);
     if (!panel) return;
     // To create a new bubble, first clear selection — otherwise typing into
@@ -1645,11 +2166,13 @@
     const text = (textArea ? textArea.value.trim() : '');
     if (!text) return;
     const id = panelId + '-u' + Date.now().toString(36);
+    const type = getDraftType();
     const bubble = {
       id: id,
-      speaker: speakerSelect.value,
+      speaker: (speakerSelect && speakerSelect.value) || 'narrator',
       text: text,
-      position: 'bottom-left',
+      position: type === 'narration' ? 'bottom-center' : 'bottom-left',
+      type: type,
     };
 
     const host = panelOverlay(panel);
@@ -1677,6 +2200,47 @@
     selectBubble(el);
   }
 
+  function addCaption() {
+    const panelId = getCurrentPanelId();
+    const panel = getPanelById(panelId);
+    if (!panel) return;
+    if (getSelectedBubble()) selectBubble(null);
+    const text = (textArea && textArea.value.trim())
+      || 'Editá este caption…';
+    const id = panelId + '-uc' + Date.now().toString(36);
+    const bubble = {
+      id: id,
+      speaker: 'narrator',
+      text: text,
+      position: 'bottom-center',
+      type: 'narration',
+      width: 80,
+    };
+
+    const host = panelOverlay(panel);
+    const el = makeBubbleElement(bubble, panelId);
+    host.appendChild(el);
+    attachDragHandler(el);
+    applyEditableClass();
+    storeBubble(panelId, bubble);
+
+    document.dispatchEvent(
+      new CustomEvent('bubble:typewrite', {
+        detail: { bubble: el, panel: panel, panelId: panelId },
+      })
+    );
+
+    History.push({
+      type: 'addBubble',
+      el: el,
+      panelId: panelId,
+      bubbleData: Object.assign({}, bubble),
+    });
+
+    if (textArea) textArea.value = '';
+    selectBubble(el);
+  }
+
   function restoreFromStorage() {
     const data = loadStored();
     Object.keys(data).forEach((panelId) => {
@@ -1698,12 +2262,17 @@
     if (!file) return;
     try {
       const dataURL = await readFileAsDataURL(file);
-      const panelId = panelSelect.value;
+      let src = dataURL;
+      if (window.Comic.RepoSync && window.Comic.RepoSync.uploadDataUrl) {
+        const uploaded = await window.Comic.RepoSync.uploadDataUrl(dataURL, file.name);
+        if (uploaded) src = uploaded;
+      }
+      const panelId = getCurrentPanelId();
       const map = loadJSON(PANEL_AUDIO_KEY, {});
-      map[panelId] = dataURL;
+      map[panelId] = src;
       saveJSON(PANEL_AUDIO_KEY, map);
       if (window.Comic.AudioManager && typeof window.Comic.AudioManager.setPanelAudio === 'function') {
-        window.Comic.AudioManager.setPanelAudio(panelId, dataURL);
+        window.Comic.AudioManager.setPanelAudio(panelId, src);
       }
     } catch (err) {
       console.warn('[BubbleEditor] panel audio read failed:', err);
@@ -1727,9 +2296,14 @@
     if (!file) return;
     try {
       const dataURL = await readFileAsDataURL(file);
-      try { localStorage.setItem(GLOBAL_AUDIO_KEY, dataURL); } catch (_) {}
+      let src = dataURL;
+      if (window.Comic.RepoSync && window.Comic.RepoSync.uploadDataUrl) {
+        const uploaded = await window.Comic.RepoSync.uploadDataUrl(dataURL, file.name);
+        if (uploaded) src = uploaded;
+      }
+      try { localStorage.setItem(GLOBAL_AUDIO_KEY, src); } catch (_) {}
       if (window.Comic.AudioManager && typeof window.Comic.AudioManager.setGlobalAudio === 'function') {
-        window.Comic.AudioManager.setGlobalAudio(dataURL);
+        window.Comic.AudioManager.setGlobalAudio(src);
       }
     } catch (err) {
       console.warn('[BubbleEditor] global audio read failed:', err);
@@ -1786,8 +2360,10 @@
           .map((c) => ({
             name: c.name,
             dataURL: c.dataURL,
+            mediaType: c.mediaType || detectMediaType(c.dataURL),
             position: c.position,
             size: c.size,
+            height: c.height,
             x: c.x,
             y: c.y,
           })),
@@ -1880,10 +2456,110 @@
 
   function deleteCurrentPanel() {
     if (!panelSelect) return;
-    const panelId = panelSelect.value;
+    const panelId = getCurrentPanelId();
     if (!panelId) return;
     if (!confirm('¿Eliminar el panel actual? Puedes deshacerlo con Ctrl+Z.')) return;
     removePanelById(panelId, true);
+  }
+
+  function buildUserPanelData(chapterId) {
+    const stamp = Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+    const id = 'e' + chapterId + '-up-' + stamp;
+    return {
+      id: id,
+      image: '',
+      narration: 'Nuevo panel — editá esta narración',
+      dialogues: [],
+    };
+  }
+
+  // Inserta el panelData en el DOM, en el capítulo correspondiente, justo
+  // después de `anchorPanel` (si pertenece al mismo capítulo). Si no hay
+  // anchor, lo agrega al final del capítulo.
+  function insertPanelIntoDom(panelData, chapterId, anchorPanel) {
+    const PL = window.Comic.PanelLoader;
+    if (!PL || typeof PL.renderPanelHTML !== 'function') return null;
+    const html = PL.renderPanelHTML(panelData, chapterId);
+    const tmp = document.createElement('div');
+    tmp.innerHTML = html;
+    const newPanel = tmp.firstElementChild;
+    if (!newPanel) return null;
+
+    const chapterEl = document.querySelector(
+      '.chapter[data-chapter="' + String(chapterId).replace(/"/g, '\\"') + '"]'
+    );
+    if (!chapterEl) return null;
+
+    const anchorIsInChapter = anchorPanel && anchorPanel.parentNode === chapterEl;
+    if (anchorIsInChapter) {
+      chapterEl.insertBefore(newPanel, anchorPanel.nextSibling);
+    } else {
+      chapterEl.appendChild(newPanel);
+    }
+    // Tinte: panel nuevo arranca sin imagen → blanco. Si trae imagen,
+    // applyAllPanelTints calculará el matiz cuando cargue.
+    if (window.Comic.PanelLoader && window.Comic.PanelLoader.applyAllPanelTints) {
+      window.Comic.PanelLoader.applyAllPanelTints(newPanel);
+    }
+    return newPanel;
+  }
+
+  function syncOrderAfterInsert(newPanelId, anchorPanelId) {
+    // Reordena `comic-panel-order` para incluir el nuevo panel justo después
+    // del ancla (o al final si no hay). Usa el orden actual del DOM como base.
+    const current = getCurrentPanelOrder();
+    // current ya refleja la inserción porque leemos del DOM; persistimos.
+    savePanelOrder(current);
+    return current;
+  }
+
+  function addPanelAfterCurrent() {
+    let anchor = null;
+    let chapterId = null;
+    const currentId = getCurrentPanelId();
+    if (currentId) {
+      anchor = getPanelById(currentId);
+      if (anchor) chapterId = anchor.dataset.chapter;
+    }
+    if (!chapterId) {
+      // Fallback: primer capítulo disponible en el DOM.
+      const firstChapter = document.querySelector('.chapter');
+      chapterId = firstChapter ? firstChapter.dataset.chapter : null;
+    }
+    if (!chapterId) {
+      alert('No se pudo determinar la escena destino.');
+      return;
+    }
+
+    const panelData = buildUserPanelData(chapterId);
+    addExtraPanelToStorage(chapterId, panelData);
+    const newPanel = insertPanelIntoDom(panelData, chapterId, anchor);
+    if (!newPanel) {
+      removeExtraPanelFromStorage(panelData.id);
+      alert('No se pudo insertar el panel en el DOM.');
+      return;
+    }
+    syncOrderAfterInsert(panelData.id, anchor ? anchor.dataset.panelId : null);
+
+    refreshPanelSelect();
+    renderPanelList();
+    if (window.Comic.ScrollManager && window.Comic.ScrollManager.refresh) {
+      window.Comic.ScrollManager.refresh();
+    }
+
+    History.push({
+      type: 'addPanel',
+      panelData: panelData,
+      chapterId: chapterId,
+      panelId: panelData.id,
+    });
+
+    // Llevar al usuario al nuevo panel para que pueda editarlo enseguida.
+    if (window.Comic.ScrollManager && window.Comic.ScrollManager.goToPanel) {
+      window.Comic.ScrollManager.goToPanel(panelData.id);
+    } else {
+      newPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }
 
   // ---- Panel list (orden visual + drag/drop) --------------------------------
@@ -1922,11 +2598,11 @@
         return (
           '<li class="be-panel-item" draggable="true" data-panel-id="' + escapeHtml(pid) + '" ' +
           'style="display:flex;align-items:center;gap:8px;padding:6px 8px;margin:4px 0;' +
-          'border:1px solid rgba(59,46,90,0.18);border-radius:8px;background:rgba(255,255,255,0.55);cursor:grab">' +
+          'border:1px solid rgba(44,44,44,0.18);border-radius:8px;background:rgba(255,255,255,0.55);cursor:grab">' +
             thumb +
             '<span class="be-panel-item__label" style="flex:1;font-size:12px;line-height:1.2">' + label + '</span>' +
             '<button type="button" class="be-panel-item__goto" data-action="goto" aria-label="Ir al panel" ' +
-              'style="border:0;background:rgba(59,46,90,0.1);border-radius:6px;padding:4px 6px;cursor:pointer">📷</button>' +
+              'style="border:0;background:rgba(44,44,44,0.1);border-radius:6px;padding:4px 6px;cursor:pointer">📷</button>' +
             '<button type="button" class="be-panel-item__del" data-action="del" aria-label="Eliminar panel" ' +
               'style="border:0;background:#d33;color:#fff;border-radius:6px;padding:4px 8px;cursor:pointer">✕</button>' +
           '</li>'
@@ -1938,7 +2614,7 @@
     panelListEl.querySelectorAll('.be-panel-item__thumb').forEach((t) => {
       t.style.cssText =
         'width:60px;height:40px;object-fit:cover;border-radius:4px;flex-shrink:0;' +
-        'background:rgba(59,46,90,0.12);display:inline-block';
+        'background:rgba(44,44,44,0.12);display:inline-block';
     });
   }
 
@@ -2019,7 +2695,7 @@
       .forEach((el) => el.parentNode && el.parentNode.removeChild(el));
     clearStoredFor(panelId);
 
-    panel.querySelectorAll('img.character-overlay[data-user-added="true"]')
+    panel.querySelectorAll('.character-overlay[data-user-added="true"]')
       .forEach((el) => el.parentNode && el.parentNode.removeChild(el));
     const chars = loadCharacters().filter((c) => c.panelId !== panelId);
     saveCharacters(chars);
@@ -2060,33 +2736,64 @@
       '</section>' +
       '<section class="be-section">' +
       '<h3>Burbujas</h3>' +
-      '<label>Speaker<select class="be-speaker">' +
-      SPEAKERS.map((s) => '<option value="' + s + '">' + s + '</option>').join('') +
+      '<label>Texto<textarea class="be-text" rows="3" placeholder="Escribe el diálogo. La burbuja se crea con este texto y luego la arrastras donde quieras."></textarea></label>' +
+      '<label>Tipo de burbuja<select class="be-bubble-type">' +
+      BUBBLE_TYPES.map((t) =>
+        '<option value="' + t.id + '">' + escapeHtml(t.label) + '</option>'
+      ).join('') +
       '</select></label>' +
-      '<label>Texto<textarea class="be-text" rows="3" placeholder="Texto (edita la seleccionada o sirve como texto para nueva burbuja)..."></textarea></label>' +
       '<div class="be-selection-only" style="display:none">' +
-      '<label style="display:block;margin-bottom:6px">Posición de la burbuja seleccionada</label>' +
-      '<div class="be-pos-grid" role="group" aria-label="Posición de la burbuja seleccionada" ' +
-        'style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,32px);' +
-        'gap:4px;max-width:140px;margin:0 0 10px">' +
-        POSITIONS.map((p) =>
-          '<button type="button" class="be-pos-cell" data-pos="' + p + '" ' +
-          'aria-label="' + escapeHtml(POSITION_LABELS[p] || p) + '" ' +
-          'title="' + escapeHtml(POSITION_LABELS[p] || p) + '" ' +
-          'style="border:1px solid rgba(59,46,90,0.25);background:rgba(255,255,255,0.55);' +
-          'border-radius:6px;cursor:pointer;padding:0;font-size:10px;color:#3b2e5a">' +
-          '·</button>'
-        ).join('') +
+      '<label style="display:block;margin-bottom:6px">Cola de la burbuja</label>' +
+      '<div class="be-side-toggle" role="group" aria-label="Lado de la cola" ' +
+        'style="display:flex;gap:8px;margin-bottom:10px">' +
+      '<button type="button" class="be-side-btn" data-side="left" aria-pressed="false" ' +
+        'title="Cola hacia la izquierda">← Izquierda</button>' +
+      '<button type="button" class="be-side-btn" data-side="right" aria-pressed="false" ' +
+        'title="Cola hacia la derecha">Derecha →</button>' +
       '</div>' +
       '</div>' +
-      '<button type="button" class="be-add">Agregar burbuja nueva</button>' +
-      '<hr style="border:0;border-top:1px solid rgba(59,46,90,0.15);margin:12px 0" />' +
+      '<div class="bubble-editor__actions" style="display:flex;gap:6px;flex-wrap:wrap">' +
+      '<button type="button" class="be-add">Agregar burbuja</button>' +
+      '<button type="button" class="be-add-caption" title="Caja de narración oscura como la del prólogo">+ Caption oscuro</button>' +
+      '</div>' +
+      '<hr style="border:0;border-top:1px solid rgba(44,44,44,0.15);margin:12px 0" />' +
       '<h4 style="margin:0 0 8px;font-family:Fredoka,sans-serif;font-size:14px">Tamaño de texto (burbuja seleccionada)</h4>' +
       '<div class="be-selection-only" style="display:none">' +
       '<label>Tamaño px <span class="be-font-size-val">22</span>' +
       '<input type="range" class="be-font-size" min="10" max="40" value="22" />' +
       '</label>' +
       '<button type="button" class="be-font-auto">Auto-ajustar al cuadro</button>' +
+      '</div>' +
+      '<hr style="border:0;border-top:1px solid rgba(44,44,44,0.15);margin:12px 0" />' +
+      '<h4 style="margin:0 0 8px;font-family:Fredoka,sans-serif;font-size:14px">Ritmo de aparición</h4>' +
+      '<p style="margin:0 0 8px;font-size:12px;opacity:0.8">' +
+      'Las burbujas aparecen una a una. Define el orden y cuánto espera antes de pasar a la siguiente.' +
+      '</p>' +
+      '<div class="be-selection-only" style="display:none">' +
+      '<label>Orden de aparición ' +
+      '<input type="number" class="be-bubble-seq" step="1" min="0" placeholder="(orden por defecto)" ' +
+      'style="width:90px;margin-left:6px" /></label>' +
+      '<label>Pausa después (ms) ' +
+      '<input type="number" class="be-bubble-delay" step="50" min="0" placeholder="' + DEFAULT_DELAY_AFTER + '" ' +
+      'style="width:110px;margin-left:6px" /></label>' +
+      '<button type="button" class="be-timing-clear" ' +
+      'style="margin-top:6px;border:0;background:rgba(44,44,44,0.1);border-radius:6px;padding:6px 10px;cursor:pointer">' +
+      'Restablecer ritmo</button>' +
+      '</div>' +
+      '<hr style="border:0;border-top:1px solid rgba(44,44,44,0.15);margin:12px 0" />' +
+      '<h4 style="margin:0 0 8px;font-family:Fredoka,sans-serif;font-size:14px">Audio de la burbuja</h4>' +
+      '<p style="margin:0 0 8px;font-size:12px;opacity:0.8">' +
+      'Sube un clip que se reproducirá cuando la burbuja seleccionada empiece a escribirse.' +
+      '</p>' +
+      '<div class="be-selection-only" style="display:none">' +
+      '<label>Audio<input type="file" class="be-bubble-audio" accept="audio/*" /></label>' +
+      '<p class="be-bubble-audio-status" style="margin:6px 0;font-size:12px;opacity:0.8">Sin audio.</p>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
+      '<button type="button" class="be-bubble-audio-preview" ' +
+      'style="border:0;background:rgba(44,44,44,0.1);border-radius:6px;padding:6px 10px;cursor:pointer">▶ Probar</button>' +
+      '<button type="button" class="be-bubble-audio-remove" ' +
+      'style="border:0;background:rgba(211,51,51,0.15);color:#a82020;border-radius:6px;padding:6px 10px;cursor:pointer">Quitar audio</button>' +
+      '</div>' +
       '</div>' +
       '</section>' +
       '<section class="be-section">' +
@@ -2096,7 +2803,8 @@
       '</section>' +
       '<section class="be-section">' +
       '<h3>Agregar personaje al panel</h3>' +
-      '<label>Imagen del personaje<input type="file" class="be-char-file" accept="image/*" /></label>' +
+      '<label>Imagen, GIF o video del personaje<input type="file" class="be-char-file" accept="image/*,video/*" /></label>' +
+      '<p style="margin:6px 0;font-size:11px;opacity:0.7">Mantén <strong>Shift</strong> al redimensionar para liberar las proporciones; sin Shift, las imágenes/videos se escalan proporcionalmente.</p>' +
       '<label>Nombre<input type="text" class="be-char-name" placeholder="Nombre del personaje" /></label>' +
       '<label>Posición<select class="be-char-pos">' +
       '<option value="left">left</option>' +
@@ -2126,10 +2834,25 @@
       '</label>' +
       '</section>' +
       '<section class="be-section">' +
+      '<h3>Respaldo del estado</h3>' +
+      '<p style="margin:0 0 8px;font-size:12px;opacity:0.8">' +
+      'Guarda un archivo .json con TODO el cuento (fondos, personajes, burbujas, ' +
+      'posiciones, ritmo, audio). Úsalo para mover el cuento a otro navegador ' +
+      'o para tener un respaldo.' +
+      '</p>' +
+      '<div class="bubble-editor__actions">' +
+      '<button type="button" class="be-state-export">💾 Descargar estado</button>' +
+      '<button type="button" class="be-state-import">📂 Cargar estado…</button>' +
+      '<input type="file" class="be-state-file" accept="application/json,.json" style="display:none" />' +
+      '</div>' +
+      '<p class="be-state-msg" style="margin:8px 0 0;font-size:12px;min-height:14px"></p>' +
+      '</section>' +
+      '<section class="be-section">' +
       '<h3>Acciones</h3>' +
       '<div class="bubble-editor__actions">' +
       '<button type="button" class="be-export">Exportar JSON</button>' +
       '<button type="button" class="be-clear">Borrar añadidas</button>' +
+      '<button type="button" class="be-add-panel" style="background:#2a8a4a;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer;font-weight:600">➕ Agregar panel a esta escena</button>' +
       '<button type="button" class="be-delete-panel" style="background:#d33;color:#fff;border:0;border-radius:6px;padding:6px 10px;cursor:pointer;font-weight:600">🗑️ Eliminar panel actual</button>' +
       '</div>' +
       '<label>Export<textarea class="be-export-out" rows="8" readonly></textarea></label>' +
@@ -2152,13 +2875,13 @@
       // Highlight active cell via inline style observer (no CSS edits).
       const styleActive = (btn, on) => {
         if (on) {
-          btn.style.background = 'rgba(59,46,90,0.85)';
+          btn.style.background = 'rgba(44,44,44,0.85)';
           btn.style.color = '#fff';
-          btn.style.borderColor = 'rgba(59,46,90,1)';
+          btn.style.borderColor = 'rgba(44,44,44,1)';
         } else {
           btn.style.background = 'rgba(255,255,255,0.55)';
-          btn.style.color = '#3b2e5a';
-          btn.style.borderColor = 'rgba(59,46,90,0.25)';
+          btn.style.color = '#2C2C2C';
+          btn.style.borderColor = 'rgba(44,44,44,0.25)';
         }
       };
       try {
@@ -2197,6 +2920,8 @@
 
     const deletePanelBtn = panelEl.querySelector('.be-delete-panel');
     if (deletePanelBtn) deletePanelBtn.addEventListener('click', deleteCurrentPanel);
+    const addPanelBtn = panelEl.querySelector('.be-add-panel');
+    if (addPanelBtn) addPanelBtn.addEventListener('click', addPanelAfterCurrent);
 
     const charSizeVal = panelEl.querySelector('.be-char-size-val');
     charSizeInput.addEventListener('input', () => {
@@ -2220,6 +2945,27 @@
     toggleBtn.addEventListener('click', onToggleClick);
     panelEl.querySelector('.bubble-editor__close').addEventListener('click', close);
     panelEl.querySelector('.be-add').addEventListener('click', addBubble);
+    const addCaptionBtn = panelEl.querySelector('.be-add-caption');
+    if (addCaptionBtn) addCaptionBtn.addEventListener('click', addCaption);
+    const sideToggle = panelEl.querySelector('.be-side-toggle');
+    if (sideToggle) {
+      sideToggle.addEventListener('click', (e) => {
+        const btn = e.target.closest('.be-side-btn');
+        if (!btn) return;
+        setSelectedBubbleSide(btn.dataset.side);
+      });
+    }
+    const bubbleTypeSel = panelEl.querySelector('.be-bubble-type');
+    if (bubbleTypeSel) {
+      bubbleTypeSel.addEventListener('change', () => {
+        // If a bubble is selected, mutate its type; otherwise it's just a draft
+        // value for the next "Agregar burbuja".
+        const sel = getSelectedBubble();
+        if (sel && !sel.classList.contains('character-overlay')) {
+          setSelectedBubbleType(bubbleTypeSel.value);
+        }
+      });
+    }
     panelEl.querySelector('.be-export').addEventListener('click', exportChapterJson);
     panelEl.querySelector('.be-clear').addEventListener('click', clearAddedBubbles);
     panelEl.querySelector('.be-bg-remove').addEventListener('click', removeCustomBackground);
@@ -2227,6 +2973,86 @@
     panelEl.querySelector('.be-panel-audio-remove').addEventListener('click', removePanelAudio);
     panelEl.querySelector('.be-global-audio-toggle').addEventListener('click', toggleGlobalAudio);
     panelEl.querySelector('.be-logout').addEventListener('click', logoutEditMode);
+
+    // Timing inputs (sequence + delay after)
+    const seqInput = panelEl.querySelector('.be-bubble-seq');
+    const delayInput = panelEl.querySelector('.be-bubble-delay');
+    const timingClearBtn = panelEl.querySelector('.be-timing-clear');
+    function applyTimingFromInputs() {
+      const sel = getSelectedBubble();
+      if (!sel || sel.classList.contains('character-overlay')) return;
+      const seqVal = seqInput && seqInput.value !== '' ? seqInput.value : null;
+      const delayVal = delayInput && delayInput.value !== '' ? delayInput.value : null;
+      setBubbleTiming(sel, seqVal, delayVal);
+    }
+    if (seqInput) {
+      seqInput.addEventListener('input', applyTimingFromInputs);
+      seqInput.addEventListener('change', applyTimingFromInputs);
+    }
+    if (delayInput) {
+      delayInput.addEventListener('input', applyTimingFromInputs);
+      delayInput.addEventListener('change', applyTimingFromInputs);
+    }
+    if (timingClearBtn) {
+      timingClearBtn.addEventListener('click', () => {
+        const sel = getSelectedBubble();
+        if (!sel) return;
+        if (seqInput) seqInput.value = '';
+        if (delayInput) delayInput.value = '';
+        setBubbleTiming(sel, null, null);
+      });
+    }
+
+    // Per-bubble audio
+    const bubbleAudioInput = panelEl.querySelector('.be-bubble-audio');
+    const bubbleAudioStatus = panelEl.querySelector('.be-bubble-audio-status');
+    const bubbleAudioPreviewBtn = panelEl.querySelector('.be-bubble-audio-preview');
+    const bubbleAudioRemoveBtn = panelEl.querySelector('.be-bubble-audio-remove');
+    if (bubbleAudioInput) {
+      bubbleAudioInput.addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        const sel = getSelectedBubble();
+        if (!sel || sel.classList.contains('character-overlay')) {
+          alert('Selecciona primero la burbuja a la que quieres agregar audio.');
+          e.target.value = '';
+          return;
+        }
+        try {
+          const dataURL = await readFileAsDataURL(file);
+          let src = dataURL;
+          if (window.Comic.RepoSync && window.Comic.RepoSync.uploadDataUrl) {
+            const uploaded = await window.Comic.RepoSync.uploadDataUrl(dataURL, file.name);
+            if (uploaded) src = uploaded;
+          }
+          persistBubbleAudio(sel, src);
+          syncBubbleAudioStatus(sel);
+        } catch (err) {
+          console.warn('[BubbleEditor] bubble audio read failed:', err);
+        } finally {
+          e.target.value = '';
+        }
+      });
+    }
+    if (bubbleAudioRemoveBtn) {
+      bubbleAudioRemoveBtn.addEventListener('click', () => {
+        const sel = getSelectedBubble();
+        if (!sel || sel.classList.contains('character-overlay')) return;
+        persistBubbleAudio(sel, null);
+        syncBubbleAudioStatus(sel);
+      });
+    }
+    if (bubbleAudioPreviewBtn) {
+      bubbleAudioPreviewBtn.addEventListener('click', () => {
+        const sel = getSelectedBubble();
+        if (!sel) return;
+        const src = getBubbleAudioSrc(sel);
+        if (!src) { alert('Esta burbuja todavía no tiene audio.'); return; }
+        if (window.Comic.AudioManager && window.Comic.AudioManager.playBubbleAudio) {
+          window.Comic.AudioManager.playBubbleAudio(src, { bubbleId: sel.dataset.bubbleId });
+        }
+      });
+    }
 
     // Font-size slider + auto-fit
     const fontSizeInput = panelEl.querySelector('.be-font-size');
@@ -2268,6 +3094,52 @@
     panelAudioFileInput.addEventListener('change', onPanelAudioChange);
     globalAudioFileInput.addEventListener('change', onGlobalAudioChange);
     galleryList.addEventListener('click', onGalleryClick);
+
+    // State snapshot: export to JSON file / import from JSON file.
+    const stateExportBtn = panelEl.querySelector('.be-state-export');
+    const stateImportBtn = panelEl.querySelector('.be-state-import');
+    const stateFileInput = panelEl.querySelector('.be-state-file');
+    const stateMsg = panelEl.querySelector('.be-state-msg');
+    function showStateMsg(text, isError) {
+      if (!stateMsg) return;
+      stateMsg.textContent = text || '';
+      stateMsg.style.color = isError ? '#d33' : '#2a7a3a';
+      if (text) setTimeout(() => { if (stateMsg.textContent === text) stateMsg.textContent = ''; }, 5000);
+    }
+    if (stateExportBtn) {
+      stateExportBtn.addEventListener('click', () => {
+        try {
+          if (window.Comic.StoryState) window.Comic.StoryState.downloadJSON();
+          showStateMsg('Estado descargado.');
+        } catch (err) {
+          showStateMsg('No se pudo descargar: ' + err.message, true);
+        }
+      });
+    }
+    if (stateImportBtn && stateFileInput) {
+      stateImportBtn.addEventListener('click', () => stateFileInput.click());
+      stateFileInput.addEventListener('change', async (e) => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (!window.Comic.StoryState) {
+          showStateMsg('Módulo de estado no disponible.', true);
+          return;
+        }
+        const replace = confirm(
+          'Importar estado del archivo:\n\n' +
+          'OK = REEMPLAZAR el estado actual (borra lo de este navegador).\n' +
+          'Cancelar = FUSIONAR con lo existente.'
+        );
+        try {
+          await window.Comic.StoryState.importFromFile(file, { replace: replace, reload: true });
+          showStateMsg('Estado importado. Recargando…');
+        } catch (err) {
+          showStateMsg('Archivo inválido: ' + err.message, true);
+        } finally {
+          stateFileInput.value = '';
+        }
+      });
+    }
 
     document.addEventListener('panel:enter', (e) => {
       if (!isOpen || !panelSelect) return;
@@ -2383,6 +3255,11 @@
     isOpen = true;
     applyEditableClass();
     bindAllDraggables();
+    // Mientras se edita, no escondemos burbujas pendientes: las mostramos
+    // todas para poder seleccionarlas y editarlas sin esperar al typewriter.
+    if (window.Comic.Typewriter && window.Comic.Typewriter.revealAll) {
+      window.Comic.Typewriter.revealAll();
+    }
   }
 
   function close() {
@@ -2417,6 +3294,10 @@
     markPlacedFromStorage();
     applyStoredFontSizes();
     applyStoredTextOverrides();
+    applyStoredTiming();
+    applyStoredBubbleTypes();
+    applyStoredBubbleSides();
+    applyStoredBubbleAudio();
     refreshPanelSelect();
     renderPanelList();
     renderGallery();
@@ -2504,6 +3385,7 @@
     removePanelById: removePanelById,
     restorePanel: restorePanel,
     deleteCurrentPanel: deleteCurrentPanel,
+    addPanelAfterCurrent: addPanelAfterCurrent,
     renderPanelList: renderPanelList,
     applyPanelOrder: applyPanelOrderList,
     // Bubble ops

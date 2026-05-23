@@ -85,38 +85,21 @@
   animation: pop 0.5s var(--t-base) both;
 }
 
-/* Nota: las burbujas son position:absolute con
-   transform: translate(-50%,-50%); por eso usamos fadeIn (sin
-   translateY) para no romper el centrado. */
-
-.panel.in-view .bubble-left {
-  animation: fadeIn 0.55s var(--t-base) both;
-  animation-delay: 0.15s;
-}
-
-.panel.in-view .bubble-right {
-  animation: fadeIn 0.55s var(--t-base) both;
-  animation-delay: 0.3s;
-}
-
-.panel.in-view .narration,
-.panel.in-view .bubble-narration {
-  animation: fadeIn 0.7s var(--t-base) both;
-  animation-delay: 0.1s;
-}
+/* Nota: las burbujas ya NO se animan por la clase .panel.in-view —
+   el typewriter las orquesta una a una con la clase .bubble--entering
+   (definida más abajo). Esto evita que se vean cajas vacías mientras
+   esperan su turno. */
 
 .panel.in-view .panel__caption {
   animation: fadeIn 0.6s var(--t-base) both;
   animation-delay: 0.2s;
 }
 
-/* === v3 fixes: suprimir re-animación de elementos ya colocados ===
-   Cuando un elemento ya fue arrastrado/posicionado, el engine le pone
-   data-placed="1" o la clase .bubble--placed. Evitamos que el observer
-   de "in-view" reaplique fadeIn cada vez que reentra al viewport,
-   lo que provocaba saltos / "escondidas" tras un drag. */
-.panel.in-view .bubble[data-placed="1"],
-.panel.in-view .bubble--placed,
+/* Elementos ya colocados (arrastrados): suprimir re-animación.
+   IMPORTANTE: dejar pasar bubble--entering para no romper la
+   secuencia rítmica de aparición tras un drag. */
+.panel.in-view .bubble[data-placed="1"]:not(.bubble--entering):not(.bubble--pending),
+.panel.in-view .bubble--placed:not(.bubble--entering):not(.bubble--pending),
 .panel.in-view .character-overlay[data-placed="1"],
 .panel.in-view .character-overlay--placed {
   animation: none !important;
@@ -198,6 +181,57 @@
   }
 }
 
+/* ============================================================
+   Cola secuencial de burbujas (typewriter.js orquesta)
+   - .bubble--pending  → en cola, totalmente oculta (ni caja ni caret)
+   - .bubble--entering → es el turno: animación bonita de entrada
+   ============================================================ */
+
+.bubble.bubble--pending {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  animation: none !important;
+}
+
+@keyframes bubbleAppear {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.55); filter: blur(4px); }
+  55%  { opacity: 1; transform: translate(-50%, -50%) scale(1.06); filter: blur(0);   }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1);    filter: blur(0);   }
+}
+
+@keyframes narrationAppear {
+  0%   { opacity: 0; transform: translate(-50%, -38%) scale(0.96); filter: blur(3px); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1);    filter: blur(0);   }
+}
+
+.bubble.bubble--entering {
+  visibility: visible !important;
+  animation: bubbleAppear 520ms cubic-bezier(0.34, 1.4, 0.55, 1) both !important;
+}
+
+.bubble.bubble--entering.narration,
+.bubble.bubble--entering.bubble-narration {
+  animation: narrationAppear 600ms cubic-bezier(0.22, 1, 0.36, 1) both !important;
+}
+
+/* ============================================================
+   Burbujas vacías (sin texto): solo visibles en modo edición.
+   La detección la hace typewriter.js (trim del contenido real) y
+   añade .bubble--empty. Así no dependemos del atributo data-full-text
+   (que puede tener espacios o no estar presente).
+   ============================================================ */
+.bubble.bubble--empty {
+  display: none !important;
+}
+
+html.edit-mode-unlocked.editor-open .bubble.bubble--empty {
+  display: inline-block !important;
+  opacity: 0.55 !important;
+  visibility: visible !important;
+  animation: none !important;
+}
+
 /* ---------- Movement-sensitive users ---------- */
 @media (prefers-reduced-motion: reduce) {
   .preloader__star,
@@ -206,9 +240,7 @@
   .mute-toggle:hover,
   .editor-toggle:hover,
   .bubble.done,
-  .panel.in-view .bubble-left,
-  .panel.in-view .bubble-right,
-  .panel.in-view .narration,
+  .bubble.bubble--entering,
   .panel.in-view .panel__caption,
   .panel.in-view .panel__index,
   .editor-panel.is-open .editor-section,

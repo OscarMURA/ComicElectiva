@@ -75,6 +75,9 @@
     hidePreloader();
     document.dispatchEvent(new CustomEvent('comic:ready'));
 
+    // Indicador de capítulo: actualizar el total y seguir el panel visible.
+    initChapterIndicator();
+
     // Immersion layer (particles). Loaded dynamically so HTML doesn't need to change.
     try {
       await loadImmersion();
@@ -84,6 +87,30 @@
     } catch (err) {
       console.warn('[Comic] Immersion failed to load:', err);
     }
+  }
+
+  function initChapterIndicator() {
+    const numEl = document.getElementById('chapter-indicator-number');
+    const totalEl = document.getElementById('chapter-indicator-total');
+    if (!numEl || !totalEl) return;
+
+    const chapters = Array.from(document.querySelectorAll('.chapter[data-chapter]'));
+    const total = chapters.length;
+    if (total > 0) totalEl.textContent = String(total);
+
+    function setActive(chapterId) {
+      if (chapterId == null) return;
+      const str = String(chapterId);
+      if (numEl.textContent !== str) numEl.textContent = str;
+    }
+
+    // Inicial: el primer capítulo cargado.
+    if (chapters[0]) setActive(chapters[0].dataset.chapter);
+
+    document.addEventListener('panel:enter', (e) => {
+      const id = e.detail && e.detail.chapter;
+      if (id) setActive(id);
+    });
   }
 
   function loadImmersion() {

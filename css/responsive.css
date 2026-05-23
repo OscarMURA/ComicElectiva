@@ -36,64 +36,147 @@
    ============================================================ */
 @media (max-width: 768px) {
 
+  /* En móvil scrolleamos el body directamente (sin scroll-snap).
+     Más confiable en navegadores móviles que la combinación de
+     overflow:hidden + container scrollable + scroll-snap. */
+  html.is-mobile,
   html.is-mobile body {
-    overflow: hidden; /* el contenedor maneja su propio scroll */
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: auto;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+    height: auto;
+    min-height: 100dvh;
   }
 
   html.is-mobile .story-container {
-    height: calc(100dvh - var(--header-height));
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    height: auto;
+    min-height: auto;
+    overflow: visible;
+    padding: 0;
   }
 
-  html.is-mobile .story-container::-webkit-scrollbar {
-    display: none;
+  html.is-mobile .chapter {
+    padding: 0;
   }
 
-  /* Cada panel = una "página" a pantalla completa (full-bleed) */
+  /* Paneles apilados, scroll libre. Cada uno con tamaño cómodo en vertical. */
   html.is-mobile .panel {
     width: 100%;
-    height: 100dvh;
-    margin: 0;
-    scroll-snap-align: start;
-    scroll-snap-stop: always;
-    display: flex;
-    flex-direction: column;
+    height: auto;
+    margin: 0 0 var(--space-md);
+    display: block;
   }
 
-  /* En mobile, el media toma toda la altura disponible.
-     Sin border-radius vertical (full-bleed), sin border lateral. */
+  /* Media con proporción vertical para móvil (más alto que ancho) y un
+     mínimo cómodo, sin recortes ni borde. */
   html.is-mobile .panel__media {
-    flex: 1;
-    aspect-ratio: auto;
-    min-height: 0;
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    min-height: 65dvh;
     border-radius: 0;
-    border-left: none;
-    border-right: none;
+    border: none;
+    box-shadow: none;
   }
 
-  /* Burbujas en mobile: 18px line-height generoso, max-width mayor */
-  html.is-mobile .bubble {
-    font-size: 18px;
-    line-height: 1.3;
-    max-width: 70%;
+  /* La imagen de fondo cubre el contenedor (object-fit cover, fallback safe) */
+  html.is-mobile .panel-bg,
+  html.is-mobile img.panel-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
-  html.is-mobile .bubble-narration,
+  /* Burbujas en mobile: forzadas a centrarse y caber en pantalla.
+     Override agresivo de cualquier inline width / font-size que Oscar
+     haya dejado puesto desde modo edición en desktop. */
+  html.is-mobile .bubble,
+  html.is-mobile .bubble[style],
+  html.is-mobile .bubble[style*="width"],
+  html.is-mobile .bubble[style*="left"] {
+    left: 50% !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: calc(100vw - 28px) !important;
+    height: auto !important;
+    max-height: none !important;
+    font-size: clamp(14px, 4.2vw, 19px) !important;
+    line-height: 1.3 !important;
+    padding: 10px 14px !important;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  html.is-mobile .bubble.bubble-narration,
   html.is-mobile .bubble.narration {
-    max-width: 85%;
+    max-width: calc(100vw - 20px) !important;
+    font-size: clamp(13px, 3.8vw, 17px) !important;
   }
 
-  /* La intro de capítulo también funciona como snap */
+  /* Sobre-escribir el font-size que pudo persistir desde edición desktop. */
+  html.is-mobile .bubble[style*="font-size"] {
+    font-size: clamp(14px, 4.2vw, 19px) !important;
+  }
+
+  /* Evitar que el panel mismo desborde el ancho del viewport */
+  html.is-mobile .panel,
+  html.is-mobile .panel__media,
+  html.is-mobile .panel__overlay {
+    max-width: 100vw;
+    overflow: hidden;
+  }
+
+  /* En móvil NO se muestran las burbujas que el usuario agregó desde el
+     editor (etiquetas tipo "Cap 1 · Panel 1 — ...", notas, pruebas, etc.).
+     El móvil es solo para lectura limpia. En desktop siguen visibles para
+     poder editarlas o borrarlas. */
+  .bubble[data-user-added="true"] {
+    display: none !important;
+  }
+
+  /* === SALVAVIDAS: las mismas reglas sin depender de html.is-mobile,
+     por si el JS no llegó a marcar la clase (modo PC + preview, etc.). === */
+  .bubble,
+  .bubble[style],
+  .bubble[style*="width"],
+  .bubble[style*="left"],
+  .bubble[style*="font-size"] {
+    left: 50% !important;
+    right: auto !important;
+    width: auto !important;
+    max-width: calc(100vw - 28px) !important;
+    height: auto !important;
+    max-height: none !important;
+    font-size: clamp(14px, 4.2vw, 19px) !important;
+    line-height: 1.3 !important;
+    padding: 10px 14px !important;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+  .bubble.bubble-narration,
+  .bubble.narration {
+    max-width: calc(100vw - 20px) !important;
+    font-size: clamp(13px, 3.8vw, 17px) !important;
+  }
+  .panel,
+  .panel__media,
+  .panel__overlay {
+    max-width: 100vw !important;
+    overflow: hidden !important;
+  }
+
+  /* Intro de capítulo en mobile: compacta para no estorbar el scroll. */
+  html.is-mobile .chapter-intro,
   html.is-mobile .chapter__intro {
-    min-height: 60dvh;
+    min-height: auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    scroll-snap-align: start;
-    padding: var(--space-lg) var(--content-padding);
+    align-items: center;
+    text-align: center;
+    padding: var(--space-md) var(--content-padding);
+    margin: 0;
   }
 
   /* Header más compacto en mobile */
@@ -148,12 +231,12 @@
 
   html.is-desktop .story-container {
     max-width: 100%;
-    padding: var(--space-lg) var(--content-padding);
+    padding: var(--space-md) clamp(1rem, 3vw, 2rem);
   }
 
-  /* Paneles centrados, hasta 1100px, aspect cinematográfico 16/10 */
+  /* Paneles centrados, ancho generoso, aspect cinematográfico 16/9 */
   html.is-desktop .panel {
-    max-width: 1100px;
+    max-width: min(1280px, 85vw);
     margin: 0 auto var(--space-xl);
     opacity: 0;
     transform: translateY(40px) scale(0.98);
@@ -168,11 +251,24 @@
     transform: translateY(0) scale(1);
   }
 
-  /* Media con aspect 16/10 + sombra dramática */
+  /* Media: 16/9 para aprovechar más ancho horizontal. */
   html.is-desktop .panel__media {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 9;
     border-radius: 16px;
-    box-shadow: 0 30px 60px -20px rgba(43, 30, 80, 0.45);
+    /* Sombra coloreada con el tinte de la imagen → se funde con el papel
+       crema. Fallback a un gris azulado para paneles sin imagen. */
+    box-shadow:
+      0 28px 70px -18px var(--panel-tint-glow, rgba(31, 42, 58, 0.45)),
+      0 8px 22px -8px var(--panel-tint-glow, rgba(31, 42, 58, 0.3));
+  }
+
+  /* Intro de capítulo: compacta, alineada al ancho del panel. */
+  html.is-desktop .chapter-intro,
+  html.is-desktop .chapter__intro {
+    max-width: min(1280px, 85vw);
+    margin: 0 auto var(--space-md);
+    padding: var(--space-md) 0;
+    text-align: left;
   }
 
   /* Parallax sutil: el JS de scrollManager ajusta --parallax-y.
@@ -218,18 +314,41 @@
    Desktop grande (≥1200px): respiramos más
    ============================================================ */
 @media (min-width: 1200px) {
-  :root {
-    --content-padding: 3rem;
-  }
-
   html.is-desktop .panel {
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
   }
 }
 
 /* ============================================================
    Editor de burbujas: variantes responsivas
+   En móvil el modo edición queda DESHABILITADO por completo:
+   el botón flotante, el panel lateral y el modal de contraseña
+   se ocultan para que el cuento se lea sin chrome de edición.
    ============================================================ */
+
+@media (max-width: 768px) {
+  .editor-toggle,
+  #editor-toggle,
+  button#editor-toggle.editor-toggle,
+  .bubble-editor,
+  .password-modal,
+  .edit-mode-hint {
+    display: none !important;
+  }
+}
+
+/* Detección por puntero: cualquier dispositivo táctil (celular, tablet)
+   queda sin botón de edición, sin importar el ancho del viewport. */
+@media (pointer: coarse) {
+  .editor-toggle,
+  #editor-toggle,
+  button#editor-toggle.editor-toggle,
+  .bubble-editor,
+  .password-modal,
+  .edit-mode-hint {
+    display: none !important;
+  }
+}
 
 /* Mobile: drawer fullscreen desde abajo + tab bar */
 @media (max-width: 768px) {
@@ -244,7 +363,7 @@
     border-top-left-radius: var(--radius-lg);
     border-top-right-radius: var(--radius-lg);
     transform: translateY(100%);
-    box-shadow: 0 -10px 28px rgba(42, 42, 92, 0.25);
+    box-shadow: 0 -10px 28px rgba(31, 42, 58, 0.25);
   }
 
   .editor-panel.is-open {

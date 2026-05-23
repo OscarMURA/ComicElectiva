@@ -1,29 +1,51 @@
 /* ============================================================
    main.css
    Variables, reset, tipografía y layout base.
-   Cuento: "Lumi y el Bosque Estrellado"
+   Cuento: "Los Hilos del Agua y el Plato de las Preguntas"
    ============================================================ */
 
-/* ---------- Variables (paleta desde data/story.json) ---------- */
+/* ---------- Variables (paleta "Hilos del Agua") ---------- */
 :root {
-  /* Paleta */
-  --color-primary: #ffd66b;   /* dorado cálido */
-  --color-secondary: #8ac6f0; /* azul cielo suave */
-  --color-accent: #f58ab5;    /* rosa mágico */
-  --color-leaf: #7ed9a6;      /* verde hoja */
-  --color-night: #2a2a5c;     /* azul noche profundo */
-  --color-cream: #fff7e6;     /* crema */
-  --color-ink: #3b2e5a;       /* tinta morada (texto) */
+  /* ===== PALETA PRINCIPAL ===== */
+  --color-primary: #1F4E79;        /* Azul profundo */
+  --color-accent: #C9A227;         /* Dorado hilo */
+  --color-bg: #F4F1E8;             /* Crema papel */
+  --color-warm: #B85C38;           /* Terracota Cali */
+  --color-text: #2C2C2C;           /* Negro suave */
+  --color-text-muted: #5A5A5A;     /* Gris suave */
 
-  /* Derivados / utilitarios */
-  --color-bg: var(--color-cream);
-  --color-text: var(--color-ink);
-  --color-muted: rgba(59, 46, 90, 0.7);
-  --color-bubble-bg: #fffbf0;
-  --color-bubble-border: var(--color-ink);
-  --color-panel-border: var(--color-ink);
-  --color-shadow: rgba(42, 42, 92, 0.18);
-  --color-shadow-strong: rgba(42, 42, 92, 0.3);
+  /* ===== NEUTROS ===== */
+  --color-bg-alt: #FFFFFF;         /* Blanco para tarjetas */
+  --color-bg-soft: #EFEAD8;        /* Crema más profunda */
+  --color-border: #E0DCC8;         /* Bordes suaves */
+
+  /* ===== ACENTOS TEMÁTICOS ===== */
+  --color-sunrise: #E8B547;        /* Amanecer */
+  --color-water: #3D7FB8;          /* Agua */
+  --color-field: #7A8B5E;          /* Campo */
+  --color-river: #9B6B9E;          /* Río atardecer */
+  --color-hope: #5BA66B;           /* Esperanza */
+
+  /* ===== ESTADOS ===== */
+  --color-link: #1F4E79;
+  --color-link-hover: #C9A227;
+  --color-success: #5BA66B;
+  --color-error: #B85C38;
+
+  /* ===== Aliases para compatibilidad con CSS heredado =====
+     El proyecto ya usaba estos nombres ampliamente; los mantenemos
+     mapeados a la nueva paleta para no romper estilos existentes. */
+  --color-secondary: var(--color-water);
+  --color-leaf: var(--color-field);
+  --color-night: #1F2A3A;           /* azul profundo casi-negro para fondos */
+  --color-cream: var(--color-bg);
+  --color-ink: var(--color-text);
+  --color-muted: var(--color-text-muted);
+  --color-bubble-bg: var(--color-bg-alt);
+  --color-bubble-border: var(--color-text);
+  --color-panel-border: var(--color-text);
+  --color-shadow: rgba(31, 42, 58, 0.18);
+  --color-shadow-strong: rgba(31, 42, 58, 0.30);
 
   /* Tipografía */
   --font-display: "Fredoka", "Comic Sans MS", system-ui, cursive;
@@ -162,20 +184,21 @@ p {
   display: flex;
   flex-direction: column;
   background:
-    radial-gradient(circle at 20% 10%, rgba(255, 214, 107, 0.18), transparent 55%),
-    radial-gradient(circle at 80% 90%, rgba(138, 198, 240, 0.18), transparent 55%),
+    radial-gradient(circle at 20% 10%, rgba(201, 162, 39, 0.18), transparent 55%),
+    radial-gradient(circle at 80% 90%, rgba(61, 127, 184, 0.18), transparent 55%),
     var(--color-cream);
 }
 
 /* ---------- Canvas de partículas inmersivas ----------
-   El canvas vive detrás de toda la historia. Lo manejará el JS. */
+   El canvas vive detrás de toda la historia. Lo manejará el JS.
+   z=0 → encima del fondo del body, debajo de los paneles (z=1). */
 #immersion-canvas {
   position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  z-index: 0;
 }
 
 /* ---------- Preloader ---------- */
@@ -208,13 +231,13 @@ p {
   width: 80px;
   height: 80px;
   color: var(--color-primary);
-  filter: drop-shadow(0 0 18px rgba(255, 214, 107, 0.7));
+  filter: drop-shadow(0 0 18px rgba(201, 162, 39, 0.7));
 }
 
 .preloader {
   background:
-    radial-gradient(ellipse at 50% 30%, rgba(255, 214, 107, 0.12), transparent 60%),
-    linear-gradient(180deg, #1c1c45 0%, var(--color-night) 60%, #14143a 100%);
+    radial-gradient(ellipse at 50% 30%, rgba(201, 162, 39, 0.12), transparent 60%),
+    linear-gradient(180deg, #182030 0%, var(--color-night) 60%, #121826 100%);
 }
 
 .preloader__text {
@@ -262,12 +285,12 @@ p {
   padding: var(--space-sm) var(--content-padding);
   background: linear-gradient(
     180deg,
-    rgba(255, 247, 230, 0.95) 0%,
-    rgba(255, 247, 230, 0.75) 100%
+    rgba(244, 241, 232, 0.95) 0%,
+    rgba(244, 241, 232, 0.75) 100%
   );
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
-  border-bottom: 2px solid rgba(59, 46, 90, 0.08);
+  border-bottom: 2px solid rgba(44, 44, 44, 0.08);
   min-height: var(--header-height);
 }
 
@@ -324,12 +347,12 @@ p {
 }
 
 .chapter-indicator__divider {
-  color: rgba(255, 247, 230, 0.4);
+  color: rgba(244, 241, 232, 0.4);
 }
 
 .chapter-indicator__total {
   font-size: var(--fs-sm);
-  color: rgba(255, 247, 230, 0.7);
+  color: rgba(244, 241, 232, 0.7);
 }
 
 /* ---------- Botón mute ---------- */
@@ -347,7 +370,7 @@ p {
 
 .mute-toggle:hover {
   transform: scale(1.06);
-  background: #ffe28f;
+  background: #E5C04A;
 }
 
 .mute-toggle:active {
@@ -382,10 +405,10 @@ p {
   z-index: 2;
   background: linear-gradient(
     180deg,
-    rgba(42, 42, 92, 0.18) 0%,
-    rgba(255, 247, 230, 0.0) 18%,
-    rgba(255, 247, 230, 0.0) 82%,
-    rgba(42, 42, 92, 0.15) 100%
+    rgba(31, 42, 58, 0.18) 0%,
+    rgba(244, 241, 232, 0.0) 18%,
+    rgba(244, 241, 232, 0.0) 82%,
+    rgba(31, 42, 58, 0.15) 100%
   );
 }
 
@@ -397,7 +420,7 @@ p {
   background: radial-gradient(
     ellipse at 50% 50%,
     transparent 50%,
-    rgba(42, 42, 92, 0.15) 100%
+    rgba(31, 42, 58, 0.15) 100%
   );
   opacity: 0.15;
   z-index: 0;
@@ -425,10 +448,10 @@ p {
   padding-bottom: 4px;
   background: linear-gradient(
     180deg,
-    rgba(255, 247, 230, 0.92) 0%,
-    rgba(255, 247, 230, 0.78) 100%
+    rgba(244, 241, 232, 0.92) 0%,
+    rgba(244, 241, 232, 0.78) 100%
   );
-  box-shadow: 0 4px 12px rgba(42, 42, 92, 0.12);
+  box-shadow: 0 4px 12px rgba(31, 42, 58, 0.12);
 }
 
 .site-header.header-shrunk .site-header__title {
@@ -452,14 +475,15 @@ p {
 .site-footer {
   padding: var(--space-lg) var(--content-padding);
   text-align: center;
-  color: var(--color-cream);
-  background: linear-gradient(180deg, var(--color-night) 0%, #1c1c45 100%);
+  color: var(--color-text-muted);
+  background: transparent;
 }
 
 .site-footer__credits {
   font-family: var(--font-display);
   font-size: var(--fs-md);
   margin-bottom: var(--space-xs);
+  color: var(--color-text);
 }
 
 .site-footer__credits strong {
@@ -468,7 +492,7 @@ p {
 
 .site-footer__hint {
   font-size: var(--fs-sm);
-  color: rgba(255, 247, 230, 0.6);
+  color: var(--color-text-muted);
   font-style: italic;
 }
 

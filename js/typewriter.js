@@ -158,6 +158,8 @@
     if (caret) caret.style.display = '';
     bubble.classList.remove('typing');
     bubble.classList.remove('tw-done');
+    bubble.classList.remove('bubble--entering');
+    bubble.classList.remove('bubble--pending');
     bubble.style.opacity = '0';
     bubble.dataset.typed = '';
   }
@@ -186,25 +188,234 @@
     return handle;
   }
 
+  // ---- Sequential per-panel orchestration ----------------------------------
+  // Bubbles in the same panel appear one-by-one in order (data-sequence asc,
+  // fallback to DOM order). After each bubble finishes typing, we wait
+  // data-delay-after ms (default DEFAULT_DELAY_AFTER) before starting the next.
+  const DEFAULT_DELAY_AFTER = 300;
+  const panelStates = new WeakMap();
+
+  function bubbleOrder(b) {
+    const raw = b && b.dataset ? b.dataset.sequence : '';
+    const seq = parseFloat(raw);
+    if (!isNaN(seq)) return seq;
+    const parent = b.parentNode;
+    if (!parent) return 0;
+    return Array.prototype.indexOf.call(parent.children, b);
+  }
+
+  function getPanelState(panel) {
+    if (!panel) return null;
+    let s = panelStates.get(panel);
+    if (!s) {
+      s = { queue: [], scheduled: false, running: false, currentBubble: null, timeoutId: 0 };
+      panelStates.set(panel, s);
+    }
+    return s;
+  }
+
+  function stopBubbleAudioFor(bubble) {
+    if (!bubble || !bubble.dataset) return;
+    const id = bubble.dataset.bubbleId;
+    if (id && window.Comic && window.Comic.AudioManager &&
+        typeof window.Comic.AudioManager.stopBubbleAudio === 'function') {
+      window.Comic.AudioManager.stopBubbleAudio(id);
+    }
+  }
+
+  function clearPanelState(panel) {
+    const s = panelStates.get(panel);
+    if (!s) return;
+    if (s.timeoutId) { clearTimeout(s.timeoutId); s.timeoutId = 0; }
+    if (s.currentBubble) {
+      const ctrl = bubbleToController.get(s.currentBubble);
+      if (ctrl) cancel(ctrl.id);
+      stopBubbleAudioFor(s.currentBubble);
+      s.currentBubble.classList.remove('bubble--entering', 'bubble--pending');
+    }
+    s.queue.forEach(function (b) {
+      stopBubbleAudioFor(b);
+      if (b && b.classList) b.classList.remove('bubble--entering', 'bubble--pending');
+    });
+    // Belt-and-suspenders: detener cualquier audio activo de burbujas del panel,
+    // incluso si la cola ya estaba vacía (audio largo que sigue después de tipear).
+    if (panel && panel.querySelectorAll) {
+      panel.querySelectorAll('.bubble[data-audio]').forEach(stopBubbleAudioFor);
+    }
+    s.queue.length = 0;
+    s.running = false;
+    s.scheduled = false;
+    s.currentBubble = null;
+  }
+
+  function typewriteBubbleWithCallback(bubble, cb) {
+    const handle = typewriteBubble(bubble);
+    if (!handle) { cb(); return; }
+    const ctrl = controllers[handle.id];
+    if (!ctrl) { setTimeout(cb, 0); return; }
+    const prev = ctrl.finish;
+    ctrl.finish = function () {
+      try { if (typeof prev === 'function') prev(); } catch (_) {}
+      cb();
+    };
+  }
+
+  function advance(panel) {
+    const s = getPanelState(panel);
+    if (!s) return;
+    const bubble = s.queue.shift();
+    if (!bubble) {
+      s.running = false;
+      s.currentBubble = null;
+      return;
+    }
+    s.currentBubble = bubble;
+    // Reveal: stop being "pending", play the entrance animation.
+    bubble.classList.remove('bubble--pending');
+    bubble.classList.add('bubble--entering');
+    // Trigger per-bubble audio if defined (set by editor or chapter JSON).
+    const audioSrc = bubble.dataset && bubble.dataset.audio;
+    if (audioSrc && window.Comic && window.Comic.AudioManager &&
+        typeof window.Comic.AudioManager.playBubbleAudio === 'function') {
+      window.Comic.AudioManager.playBubbleAudio(audioSrc, {
+        bubbleId: bubble.dataset.bubbleId || null,
+      });
+    }
+    typewriteBubbleWithCallback(bubble, () => {
+      // Strip the --entering class shortly after typing completes so the
+      // bubble settles into its final styles without the keyframed transform.
+      setTimeout(function () { bubble.classList.remove('bubble--entering'); }, 60);
+      const raw = bubble.dataset.delayAfter;
+      const n = parseInt(raw, 10);
+      const wait = isNaN(n) ? DEFAULT_DELAY_AFTER : Math.max(0, n);
+      s.timeoutId = setTimeout(() => advance(panel), wait);
+    });
+  }
+
+  function flushPanel(panel) {
+    const s = getPanelState(panel);
+    if (!s) return;
+    s.scheduled = false;
+    if (s.running) return;
+    s.queue.sort((a, b) => bubbleOrder(a) - bubbleOrder(b));
+    s.running = true;
+    // Esperar al gesto de desbloqueo: si avanzamos antes, playBubbleAudio
+    // se queda en silencio (chequea !unlocked) y la primera burbuja se tipea
+    // sin sonido.
+    const AM = window.Comic && window.Comic.AudioManager;
+    if (AM && typeof AM.isUnlocked === 'function' && !AM.isUnlocked()) {
+      document.addEventListener('audio:unlocked', function () {
+        advance(panel);
+      }, { once: true });
+      return;
+    }
+    advance(panel);
+  }
+
+  function bubbleHasText(bubble) {
+    const t = (getFullText(bubble) || '').trim();
+    return t.length > 0;
+  }
+
+  function isEditMode() {
+    try {
+      return document.documentElement.classList.contains('editor-open');
+    } catch (_) { return false; }
+  }
+
+  function revealBubbleFull(bubble) {
+    if (!bubble) return;
+    const ctrl = bubbleToController.get(bubble);
+    if (ctrl) cancel(ctrl.id);
+    const text = getFullText(bubble);
+    const parts = getTypewriterParts(bubble);
+    if (parts) {
+      parts.typed.textContent = text;
+      parts.rest.textContent = '';
+    } else {
+      const typedEl = bubble.querySelector('.dialogue__typed');
+      if (typedEl) typedEl.textContent = text;
+    }
+    const caret = bubble.querySelector('.caret');
+    if (caret) caret.style.display = 'none';
+    bubble.classList.remove('typing', 'bubble--pending', 'bubble--entering');
+    bubble.classList.add('tw-done');
+    bubble.style.opacity = '1';
+    bubble.dataset.typed = '1';
+  }
+
+  function revealAll() {
+    document.querySelectorAll('.bubble').forEach((b) => {
+      if (bubbleHasText(b)) {
+        revealBubbleFull(b);
+      } else {
+        b.classList.add('bubble--empty');
+        b.classList.remove('bubble--pending', 'bubble--entering');
+      }
+    });
+    // Clear any in-flight per-panel queues.
+    document.querySelectorAll('.panel').forEach((panel) => {
+      const s = panelStates.get(panel);
+      if (!s) return;
+      if (s.timeoutId) { clearTimeout(s.timeoutId); s.timeoutId = 0; }
+      s.queue.length = 0;
+      s.running = false;
+      s.scheduled = false;
+      s.currentBubble = null;
+    });
+  }
+
   function onBubbleTypewrite(e) {
     const bubble = e.detail && e.detail.bubble;
     if (!bubble) return;
-    // Reset if it was previously typed so it re-types on re-entry.
-    if (bubble.dataset.typed === '1') {
-      resetBubble(bubble);
+
+    // Empty bubbles: never enqueue, never animate. CSS hides them outside
+    // edit mode; in edit mode they appear semitransparent so they can be
+    // selected and given text.
+    if (!bubbleHasText(bubble)) {
+      bubble.classList.add('bubble--empty');
+      bubble.classList.remove('bubble--pending', 'bubble--entering');
+      bubble.style.opacity = '0';
+      return;
     }
-    // Small stagger if multiple bubbles in the same panel.
-    const siblings = bubble.parentNode
-      ? bubble.parentNode.querySelectorAll('.dialogue')
-      : [bubble];
-    const index = Array.prototype.indexOf.call(siblings, bubble);
-    const delay = Math.max(0, index) * 350;
-    setTimeout(() => typewriteBubble(bubble), delay);
+    bubble.classList.remove('bubble--empty');
+
+    // Edit mode: skip sequencing — show full text immediately so the author
+    // can see and select every bubble at once.
+    if (isEditMode()) {
+      revealBubbleFull(bubble);
+      return;
+    }
+
+    // Reset if it was previously typed so it re-types on re-entry.
+    if (bubble.dataset.typed === '1') resetBubble(bubble);
+
+    const panel = bubble.closest ? (bubble.closest('.panel') || bubble.parentNode) : bubble.parentNode;
+    const s = getPanelState(panel);
+    if (!s) {
+      // Fallback: type immediately.
+      typewriteBubble(bubble);
+      return;
+    }
+    if (s.queue.indexOf(bubble) === -1 && s.currentBubble !== bubble) {
+      // Hide the bubble until its turn arrives. CSS does the rest.
+      bubble.classList.add('bubble--pending');
+      bubble.classList.remove('bubble--entering');
+      s.queue.push(bubble);
+    }
+    if (!s.scheduled && !s.running) {
+      s.scheduled = true;
+      // Coalesce all bubble:typewrite events fired in the same tick.
+      requestAnimationFrame(() => flushPanel(panel));
+    }
   }
 
   function onBubbleReset(e) {
     const bubble = e.detail && e.detail.bubble;
     if (!bubble) return;
+    stopBubbleAudioFor(bubble);
+    const panel = bubble.closest ? (bubble.closest('.panel') || bubble.parentNode) : bubble.parentNode;
+    clearPanelState(panel);
     resetBubble(bubble);
   }
 
@@ -226,6 +437,8 @@
     reset: resetBubble,
     cancel: cancel,
     init: init,
+    revealAll: revealAll,
+    revealBubble: revealBubbleFull,
   };
 
   window.Typewriter = api;
