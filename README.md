@@ -1,41 +1,52 @@
-# Lumi y el Bosque Estrellado
+# Los Hilos del Agua y el Plato de las Preguntas
 
-> Un cuento ilustrado interactivo para los pequeños soñadores (3 a 7 años).
+> Un cuento ilustrado interactivo sobre el agua, la comida y la mirada
+> sensorial de un niño y su perro que recorren un día completo en el
+> Valle del Cauca.
 
-**Lumi** es una pequeña criatura luminosa que vive dentro de un árbol hueco.
-Una noche, una estrella fugaz cae cerca de su casita y la despierta. Con la
-ayuda del **Búho Sabio** y de las **lucecitas** del bosque, Lumi tendrá que
-viajar entre flores, hojas y caminitos para volver a encender las estrellas
-dormidas y devolverle el brillo al bosque.
+**Bongo**, un narrador sensorial, acompaña al lector a través de **9 escenas
+en 3 actos** mientras descubre cómo el agua se desperdicia en el patio, cómo
+la comida se tira en una galería del mercado, cómo una niña ve el reflejo de
+todo en un charco, y cómo el río Cauca termina llorando al atardecer. La
+historia cierra con una sopa familiar hecha de preguntas y una pequeña
+revolución cotidiana.
 
 El cuento se lee **desplazándose hacia abajo**: cada panel aparece a pantalla
-completa, con narración, diálogos y sonidos suaves.
+completa, con narración, diálogos tipo cómic, sonidos suaves y luciérnagas
+doradas flotando en el fondo.
 
 ---
 
 ## Cómo abrirlo
 
-### Opción 1 · Doble clic
-
-Abre `index.html` con tu navegador favorito (Firefox, Chrome, Edge).
-
-> En algunos navegadores, abrir el archivo directamente (`file://`) impide
-> cargar `data/story.json` por seguridad. Si ves la pantalla en blanco, usa
-> la opción 2.
-
-### Opción 2 · Servidor local (recomendada)
+### Opción 1 · Servidor local (recomendada — habilita edición + uploads)
 
 Desde la carpeta del proyecto:
 
 ```bash
-# Python 3 (recomendado, viene preinstalado en Linux/Mac)
-python3 -m http.server 8080
-
-# o con Node.js
-npx serve .
+python3 server.py
 ```
 
-Y abre `http://localhost:8080` en el navegador.
+Y abre `http://localhost:8000`. El servidor incluido (`server.py`) además
+de servir estáticos expone dos endpoints internos:
+
+- `POST /api/upload` — recibe imágenes/audio/video como dataURL y los
+  guarda en `assets/uploads/<sha1>.<ext>`.
+- `GET  /api/state`  — devuelve el estado del editor agregado desde
+  `js/data/scenes/*.json` (con fallback a `js/data/state.json` legacy).
+- `POST /api/state`  — recibe el snapshot, lo divide por escena y lo
+  escribe en `js/data/scenes/sceneN.json` (atómico, solo si cambia).
+
+Si quieres exponerlo en la red local usa `BIND=0.0.0.0 python3 server.py`
+(es el default) y conéctate desde otro dispositivo a `http://<tu-IP>:8000`.
+
+### Opción 2 · Doble clic (solo lectura)
+
+Abre `index.html` en el navegador. Las ediciones quedarán en `localStorage`
+del navegador y no se sincronizarán con el repo.
+
+> Algunos navegadores bloquean `fetch('./js/data/story.json')` con `file://`
+> por seguridad. Si ves la pantalla en blanco, usa la opción 1.
 
 ---
 
@@ -43,275 +54,181 @@ Y abre `http://localhost:8080` en el navegador.
 
 ```
 ComicElectiva/
-├── index.html                  # Página principal
-├── README.md                   # (este archivo)
+├── index.html
+├── README.md
+├── server.py                      # Servidor local + uploads + estado
 │
-├── css/                        # Estilos
+├── css/
 │   ├── main.css
 │   ├── panels.css
 │   ├── responsive.css
 │   └── animations.css
 │
-├── js/                         # Lógica
-│   ├── main.js                 # Arranque general
-│   ├── scrollManager.js        # Detección de panel visible
-│   ├── panelLoader.js          # Carga capítulos y construye el DOM
-│   ├── audioManager.js         # Global, ambient, sfx y narración
-│   ├── bubbleEditor.js         # Modo edición (drag, password, persistencia)
-│   ├── immersion.js            # Capa de partículas y ambiente visual
-│   └── chapters/
-│       ├── chapter1.js         # Contenido del capítulo 1
-│       ├── chapter2.js         # Contenido del capítulo 2
-│       └── chapter3.js         # Contenido del capítulo 3
-│
-├── data/
-│   └── story.json              # Metadatos: paleta, fonts, personajes, capítulos
+├── js/
+│   ├── main.js                    # Arranque general
+│   ├── scrollManager.js           # Detección del panel visible (IntersectionObserver)
+│   ├── panelLoader.js             # Construye el DOM + tinte de fondo por imagen
+│   ├── typewriter.js              # Animación máquina de escribir + sync con audio
+│   ├── audioManager.js            # Global / ambient / sfx / por burbuja
+│   ├── immersion.js               # Luciérnagas doradas detrás de los paneles
+│   ├── bubbleEditor.js            # Editor: paneles, burbujas, personajes, undo/redo
+│   ├── storyState.js              # Lista canónica de claves de localStorage
+│   ├── repoSync.js                # Sincroniza localStorage ⇄ servidor
+│   ├── chapters/
+│   │   ├── chapter1.js            # Capítulo 1: La serpiente que tose
+│   │   ├── chapter2.js            # Capítulo 2: Dentro de la gota
+│   │   ├── … (hasta chapter9.js)
+│   └── data/
+│       ├── story.json             # Metadatos globales (paleta, fonts, personajes, índice)
+│       ├── state.json             # Caché local del estado (gitignored)
+│       └── scenes/
+│           ├── scene1.json        # Ediciones de la escena 1
+│           ├── … sceneN.json
+│           └── global.json        # Galería + música compartida
 │
 └── assets/
-    ├── fonts/                  # (Reservada — usamos Google Fonts por ahora)
+    ├── fonts/
     ├── images/
-    │   ├── panels/             # cap{1,2,3}-panel{1..5}.svg
-    │   ├── characters/         # lumi.svg, buho.svg, lucesitas.svg
-    │   ├── backgrounds/        # (opcional, fondos extra)
-    │   └── ui/                 # (opcional, iconos UI)
+    │   ├── panels/                # Ilustraciones por panel
+    │   ├── characters/            # Personajes recortados
+    │   └── backgrounds/
+    ├── uploads/                   # Archivos subidos desde el editor (nombrados por hash)
     └── sounds/
-        ├── README.md           # Lista de sonidos esperados
-        ├── ambient/            # Música global + ambient por capítulo
-        ├── effects/            # Efectos puntuales (sfx)
-        └── narration/          # Voz narrada opcional por panel
+        ├── ambient/               # Música global + ambient por capítulo
+        ├── effects/               # Efectos puntuales
+        └── narration/             # Voz narrada opcional por panel
 ```
 
 ---
 
-## Cómo agregar un capítulo nuevo
+## La historia
 
-Imagina que quieres añadir el **Capítulo 4**.
+Estructurada en **3 actos**, **9 escenas**, **3 paneles cada una**:
 
-1. **Crear el archivo del capítulo** en `js/chapters/chapter4.js`:
+| #   | Acto                       | Título                                | Locación                       |
+| --- | -------------------------- | ------------------------------------- | ------------------------------ |
+| 1   | Acto I · Planteamiento     | La serpiente que tose                 | Patio · 7:00 AM                |
+| 2   | Acto I · Planteamiento     | Dentro de la gota                     | Túnel onírico                  |
+| 3   | Acto II · Confrontación    | El campo partido en dos               | Valle del Cauca · Mediodía     |
+| 4   | Acto II · Confrontación    | El callejón de la comida tirada       | Galería Alameda · 1:00 PM      |
+| 5   | Acto II · Confrontación    | La niña del charco                    | Parque · 4:00 PM               |
+| 6   | Acto II · Confrontación    | El río que llora *(clímax)*           | Río Cauca · Atardecer          |
+| 7   | Acto III · Resolución      | La sopa de preguntas                  | Cocina · 7:00 PM               |
+| 8   | Acto III · Resolución      | La pequeña revolución                 | Día siguiente · Tríptico       |
+| 9   | Acto III · Resolución      | El mapa de Bongo *(epílogo)*          | Habitación · Noche             |
 
-   ```js
-   window.Chapters = window.Chapters || {};
-   window.Chapters[4] = {
-     id: 4,
-     title: 'El nuevo amanecer',
-     ambient: 'assets/sounds/ambient/cap4.mp3',
-     panels: [
-       {
-         id: 'c4-p1',
-         image: 'assets/images/panels/cap4-panel1.svg',
-         narration: 'Aquella mañana, el bosque despertó dorado.',
-         dialogues: [
-           { speaker: 'lumi', text: '¡Mira qué bonito!', position: 'left' }
-         ],
-         sfx: 'assets/sounds/effects/sparkle.mp3'
-       }
-       // ... 4 paneles más
-     ]
-   };
-   ```
+Personajes principales (`js/data/story.json`):
 
-2. **Registrar el capítulo** en `data/story.json`, añadiéndolo al arreglo
-   `chapters`:
-
-   ```json
-   {
-     "id": 4,
-     "title": "El nuevo amanecer",
-     "scene": "Resumen breve del capítulo...",
-     "panels": 5
-   }
-   ```
-
-3. **Cargar el script** en `index.html` (junto a los otros `chapter*.js`,
-   antes de `panelLoader.js`):
-
-   ```html
-   <script defer src="js/chapters/chapter4.js"></script>
-   ```
-
-4. **Crear las imágenes** de los paneles en
-   `assets/images/panels/cap4-panel1.svg` … `cap4-panel5.svg`.
-
-5. (Opcional) Añadir el ambient `assets/sounds/ambient/cap4.mp3` y los efectos.
-
-### Formato de un panel
-
-```js
-{
-  id: 'c1-p3',                                   // identificador único
-  image: 'assets/images/panels/cap1-panel3.svg', // imagen de fondo del panel
-  narration: 'Texto del narrador.',              // opcional
-  dialogues: [                                   // opcional
-    {
-      speaker: 'lumi',                           // id del personaje
-      text: '¡Hola!',                            // diálogo corto
-      position: 'bottom-left',                   // ancla semántica
-      x: 22,                                     // % horizontal del centro
-      y: 72,                                     // % vertical del centro
-      width: 34                                  // % de ancho (opcional)
-    }
-  ],
-  sfx: 'assets/sounds/effects/ting.mp3',         // opcional
-  audio: 'assets/sounds/narration/cap1-panel3.mp3' // opcional (voz narrada)
-}
-```
-
----
-
-## Cómo agregar personajes
-
-1. Crea un SVG (o PNG con fondo transparente) en
-   `assets/images/characters/<id>.svg`. El **id** del archivo es el que usarás
-   en los diálogos.
-
-   Por ejemplo, para añadir una ardilla: `assets/images/characters/ardilla.svg`.
-
-2. Descríbelo en `data/story.json`, dentro del arreglo `characters`:
-
-   ```json
-   {
-     "id": "ardilla",
-     "name": "Ardilla Saltarina",
-     "description": "Una ardilla curiosa, color rojizo, con cola peluda."
-   }
-   ```
-
-3. Úsalo en cualquier panel:
-
-   ```js
-   { speaker: 'ardilla', text: '¡Hola, Lumi!', position: 'left' }
-   ```
-
-> El nombre que aparece en el bocadillo lo controla `panelLoader.js` a partir
-> del `speaker`. Si quieres mostrar el avatar del personaje, cárgalo desde CSS
-> o JavaScript usando la ruta `assets/images/characters/<speaker>.svg`.
-
----
-
-## Audio
-
-El cuento tiene **tres capas de audio** que se mezclan:
-
-1. **Global** — música continua del cuento entero. Se declara una sola vez en
-   `data/story.json` bajo `"globalAudio"`. Es un loop suave que acompaña toda
-   la lectura, independiente del capítulo. Archivo:
-   `assets/sounds/ambient/global.mp3`.
-2. **Ambient por capítulo** — fondo que cambia con el capítulo (noche, día,
-   vuelo). Se declara en cada `js/chapters/chapterN.js` con el campo
-   `ambient: 'assets/sounds/ambient/capN.mp3'`.
-3. **Por panel** — dos tipos opcionales:
-   - `sfx`: efecto corto puntual al entrar al panel (plop, ting, hoot…).
-     Carpeta `assets/sounds/effects/`.
-   - `audio`: voz narrada one-shot al entrar al panel (lectura del texto).
-     Carpeta `assets/sounds/narration/`. Los archivos son **opcionales**: si
-     no existen, `audioManager.js` falla silenciosamente.
-
-### Cómo subir o reemplazar audio
-
-- **Desde el editor** (modo edición activo): puedes adjuntar un archivo de
-  audio y se guarda como *data URL* en `localStorage`. Útil para probar
-  rápido en tu navegador sin tocar archivos.
-- **En disco**: simplemente coloca o reemplaza el `.mp3` en la carpeta
-  correspondiente (`ambient/`, `effects/` o `narration/`). El archivo en
-  disco gana sobre el de `localStorage` si ambos existen.
-
-Consulta la lista completa de archivos esperados en
-[`assets/sounds/README.md`](./assets/sounds/README.md).
-
-Fuentes recomendadas: [Freesound](https://freesound.org/) y
-[Pixabay Sound Effects](https://pixabay.com/sound-effects/).
+- **Bongo** — narrador sensorial. Acompaña al lector percibiendo el mundo
+  desde lo que ve, escucha, huele y siente.
+- **Narrador** — voz narrativa de fondo.
+- **Niña del charco** — aparece en la Escena 5. Curiosa, mira el reflejo en
+  el agua del parque.
 
 ---
 
 ## Modo edición
 
-Para arrastrar las burbujas de diálogo, mover personajes, cambiar textos o
-subir audio desde el navegador hay un **modo edición** protegido por
-contraseña.
+Para arrastrar burbujas, mover personajes, cambiar textos, subir audio o
+agregar nuevos paneles, hay un **modo edición** protegido por contraseña.
 
-1. Haz clic en el botón flotante con el lápiz (✏️) en la esquina.
-2. Ingresa la contraseña: **`oscar22lulu`**.
-3. La sesión queda autenticada **hasta que cierres la pestaña** o hagas clic
-   en **"Cerrar sesión de edición"**.
+1. Clic en el botón flotante con el lápiz (✏️) en la esquina inferior izquierda.
+2. Contraseña: **`oscar22lulu`**.
+3. La sesión queda autenticada hasta cerrar la pestaña o hacer logout desde el panel.
 
-Mientras estás en modo edición:
+### Qué se puede hacer
 
-- Puedes **arrastrar** las burbujas y los personajes; sus nuevas posiciones
-  se guardan automáticamente en `localStorage` (no modifican los `.js`).
-- Puedes **subir audio** desde la interfaz y queda almacenado como data URL.
-- Puedes **restablecer** todo con el botón correspondiente para volver al
-  diseño original definido en los `chapters/*.js`.
+- **Burbujas**: agregar, editar texto, mover, redimensionar, cambiar tipo
+  (diálogo, pensamiento, grito, susurro, narración), pegar audio por burbuja,
+  ajustar ritmo (orden + delay), undo/redo (`Ctrl+Z` / `Ctrl+Y`).
+- **Personajes**: subir imagen, GIF o video; ubicarlos en cualquier panel;
+  guardarlos en la galería para reutilizarlos.
+- **Fondos**: subir una imagen y el panel se tiñe automáticamente con el
+  color promedio de la imagen (fondos integrados, sin bordes duros).
+- **Paneles**: **agregar paneles nuevos** a una escena existente (`➕ Agregar
+  panel a esta escena`), reordenar con drag & drop, eliminar.
+- **Audio**: subir música global, ambient por panel, audio por burbuja.
+- **Exportar / importar** el estado completo en un solo `.json` para
+  respaldo o portar entre navegadores.
 
 ### Cambiar la contraseña
 
-Edita la constante `EDIT_PASSWORD` al inicio de `js/bubbleEditor.js`:
-
-```js
-const EDIT_PASSWORD = 'oscar22lulu'; // cámbiala por la que prefieras
-```
-
-Vuelve a recargar la página para que tome efecto. **No** se guarda ni se
-envía a ningún servidor: vive en el código fuente.
+Edita la constante `EDIT_PASSWORD` al inicio de `js/bubbleEditor.js` y recarga.
 
 ---
 
-## Posicionamiento de burbujas
+## Persistencia y colaboración
 
-Cada diálogo tiene coordenadas en porcentaje relativas al panel:
+Cuando ejecutas `server.py`, todos los cambios del editor se sincronizan
+automáticamente al repo:
 
-```js
-{
-  speaker: 'lumi',
-  text: '¡Hola!',
-  position: 'bottom-left', // ancla semántica de respaldo
-  x: 22,                   // % horizontal del centro de la burbuja
-  y: 72,                   // % vertical del centro de la burbuja
-  width: 34                // % de ancho (opcional)
-}
-```
+- **Binarios** (imagen/audio/video) suben a `assets/uploads/<sha1>.<ext>`
+  y se referencian por URL relativa — el snapshot queda pequeño.
+- **Estado del editor** se divide por escena en `js/data/scenes/sceneN.json`
+  y un `global.json` para galería/música. Cada localStorage key se asigna
+  a su escena según el prefijo del id (`^[a-z]+(\d+)-`).
 
-- `position` admite `top-left`, `top-right`, `center`, `bottom-left`,
-  `bottom-right`, `bottom-center`. Sirve de respaldo y como ancla semántica.
-- `x` y `y` van de 0 a 100, ambos referidos al **centro** de la burbuja.
-- `width` es opcional. Por defecto usa **35%** para diálogos y **80%** para
-  narraciones que ocupan el pie del panel.
+Así, dos personas editando **escenas distintas** no se chocan en git: cada
+una modifica un archivo distinto. Solo hay conflicto si dos personas editan
+la **misma** escena al mismo tiempo, o ambas tocan `global.json`.
 
-Dos formas de editarlas:
-
-1. **A mano**: cambia `x`, `y`, `width` directamente en
-   `js/chapters/chapterN.js`. Recarga la página y listo.
-2. **En modo edición**: actívalo (ver sección anterior) y arrastra cada
-   burbuja a donde quieras. La posición se guarda en `localStorage` y se
-   superpone sobre la definición del `.js`.
-
-> Consejo: si dos diálogos comparten panel, mantenlos a **más de 25% de
-> distancia** o ponlos uno arriba y otro abajo para que no se solapen.
+**Convención recomendada**: avisar por chat antes de editar una escena,
+hacer `git pull --rebase` antes de abrir el editor y `git push` apenas
+termines.
 
 ---
 
-## Inmersión
+## Audio
 
-El cuento incluye una **capa de partículas suaves** sobre los paneles
-(lucecitas, polvo de estrellas, hojitas) que aporta atmósfera sin distraer
-de la lectura. Está implementada en `js/immersion.js` y respeta la
-preferencia del sistema **`prefers-reduced-motion`**: si el usuario tiene
-movimiento reducido, las partículas se desactivan automáticamente.
+Tres capas de audio se mezclan:
+
+1. **Global** — música continua. Se declara en `js/data/story.json` como
+   `"globalAudio"`. Loop suave que acompaña toda la lectura.
+2. **Ambient por capítulo** — fondo que cambia con el capítulo. Se declara
+   en cada `js/chapters/chapterN.js` como `ambient: 'assets/sounds/ambient/capN.mp3'`.
+3. **Por panel / burbuja**:
+   - `sfx`: efecto corto al entrar al panel.
+   - `audio`: voz narrada one-shot al entrar al panel.
+   - Audio por burbuja: se reproduce cuando la burbuja arranca la animación
+     de typewriter. El typewriter espera el evento `audio:unlocked` antes
+     del primer panel para que la primera burbuja sí dispare su sonido.
+
+El primer gesto del usuario sobre la pantalla "desbloquea" el audio (política
+de autoplay del navegador). Hay un botón de mute en la esquina superior derecha.
+
+---
+
+## Inmersión visual
+
+- **Tinte de fondo automático** (`panelLoader.applyPanelTint`): el promedio
+  RGB de la imagen del panel se mezcla con blanco al 55% y se aplica como
+  background del `.panel__media`, más una sombra/aura coloreada que tiñe
+  el papel crema alrededor. Cada panel se "derrite" en el fondo en lugar
+  de cortar como una caja.
+- **Luciérnagas** (`js/immersion.js`): hasta 200 partículas doradas con
+  triple capa de halo (`globalCompositeOperation: 'lighter'`) flotan detrás
+  de los paneles. Mezcla de "luciérnagas" lentas y "polvo dorado" rápido.
+  Respeta `prefers-reduced-motion`.
+- **Typewriter** (`js/typewriter.js`): cada diálogo se escribe letra por
+  letra con pausas naturales en signos de puntuación.
 
 ---
 
 ## Paleta y tipografías
 
-Se definen en `data/story.json` y se consumen desde las hojas de estilo:
+Definidas en `js/data/story.json → theme`:
 
-| Token        | Color     | Uso                          |
-| ------------ | --------- | ---------------------------- |
-| `primary`    | `#FFD66B` | Lumi, destellos, acentos.    |
-| `secondary`  | `#8AC6F0` | Cielo, agua, frío.           |
-| `accent`     | `#F58AB5` | Flores, mejillas, dulce.     |
-| `leaf`       | `#7ED9A6` | Vegetación, suelo.           |
-| `night`      | `#2A2A5C` | Cielo de noche.              |
-| `cream`      | `#FFF7E6` | Fondos suaves, papel.        |
-| `ink`        | `#3B2E5A` | Texto, líneas, ojos.         |
+| Token       | Color     | Uso                           |
+| ----------- | --------- | ----------------------------- |
+| `primary`   | `#1F4E79` | Azul profundo (UI, acentos)   |
+| `accent`    | `#C9A227` | Dorado (acentos cálidos)      |
+| `bg`        | `#F4F1E8` | Crema papel (fondo general)   |
+| `warm`      | `#B85C38` | Naranja terracota             |
+| `sunrise`   | `#E8B547` | Amanecer / atardecer          |
+| `water`     | `#3D7FB8` | Agua / río                    |
+| `field`     | `#7A8B5E` | Campo / vegetación            |
+| `river`     | `#9B6B9E` | Río Cauca                     |
+| `hope`      | `#5BA66B` | Esperanza, sopa final         |
 
 Fuentes (Google Fonts):
 
@@ -320,21 +237,31 @@ Fuentes (Google Fonts):
 
 ---
 
+## Atajos de teclado (modo edición)
+
+| Atajo               | Acción                                     |
+| ------------------- | ------------------------------------------ |
+| `Ctrl+Z`            | Deshacer                                   |
+| `Ctrl+Y` / `Ctrl+Shift+Z` | Rehacer                              |
+| `Delete` / `Backspace` | Eliminar burbuja o personaje seleccionado |
+| Click sobre el lienzo | Deseleccionar                            |
+
+---
+
 ## Notas de accesibilidad
 
-- Todas las imágenes incluyen `alt`/`aria-label`.
-- El botón de mute permite silenciar todo el audio.
 - Las animaciones respetan `prefers-reduced-motion`.
-- Lenguaje sencillo y oraciones cortas: pensado para primeros lectores y para
+- Hay un botón de mute global.
+- Texto sencillo, oraciones cortas: pensado para primeros lectores y para
   leer en voz alta con un adulto.
 
 ---
 
 ## Créditos
 
-- **Historia, arte y código:** ComicElectiva.
-- **Personajes:** Lumi, Búho Sabio, Lucecitas.
+- **Historia, arte y código:** Oscar Muñoz (ComicElectiva).
+- **Personajes:** Bongo, Narrador, Niña del charco.
 - **Fuentes:** Fredoka & Patrick Hand (Google Fonts, OFL).
 - **Sonidos:** ver `assets/sounds/CREDITS.md` cuando se añadan.
 
-Hecho con cariño para los pequeños soñadores.
+Hecho con cariño para pensar el agua, la comida y el río Cauca.
