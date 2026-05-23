@@ -1,0 +1,235 @@
+{
+  "app": "HilosDelAgua",
+  "data": {
+    "comic-bubble-fontsizes": {
+      "c2-p1-d0": 16,
+      "c2-p3-d0": 10,
+      "c2-p3-d1": 10,
+      "c2-p4-d0": 13,
+      "c2-p4-d1": 20
+    },
+    "comic-bubble-positions": {
+      "c2-p1-d0": {
+        "x": 9.990056818181818,
+        "y": 68.125
+      },
+      "c2-p1-narration": {
+        "x": 49.60511363636363,
+        "y": 12.775
+      },
+      "c2-p2-d0": {
+        "x": 69.49289772727273,
+        "y": 24.9
+      },
+      "c2-p2-narration": {
+        "x": 47.33380681818182,
+        "y": 89.75227272727273
+      },
+      "c2-p3-d0": {
+        "x": 77.72443181818181,
+        "y": 39.461363636363636
+      },
+      "c2-p3-d1": {
+        "x": 16.350852272727273,
+        "y": 63.06136363636363
+      },
+      "c2-p3-narration": {
+        "x": 48.640625,
+        "y": 96.39545454545456
+      },
+      "c2-p4-d0": {
+        "x": 85,
+        "y": 15
+      },
+      "c2-p4-d1": {
+        "x": 27.52414772727273,
+        "y": 54.154545454545456
+      },
+      "c2-p4-narration": {
+        "x": 47.92329545454545,
+        "y": 94.27499999999999
+      },
+      "c2-p5-d0": {
+        "x": 24.284090909090907,
+        "y": 49.52045454545455
+      },
+      "c2-p5-d1": {
+        "x": 85.37642045454545,
+        "y": 52.847727272727276
+      },
+      "c2-p5-narration": {
+        "x": 49.15056818181818,
+        "y": 91.96363636363635
+      },
+      "e2-p1-d0": {
+        "x": 28.033447265625,
+        "y": 28.059895833333332
+      },
+      "e2-p1-narration": {
+        "x": 10.062255859375,
+        "y": 84.90234375
+      },
+      "e2-p2-d0": {
+        "x": 50,
+        "y": 45.013020833333336
+      },
+      "e2-p3-d0": {
+        "x": 71.96533203125,
+        "y": 71.93793402777777
+      }
+    },
+    "comic-bubble-sizes": {
+      "c2-p3-d0": {
+        "h": 94,
+        "w": 87
+      },
+      "c2-p3-d1": {
+        "h": 60,
+        "w": 78
+      },
+      "c2-p4-d0": {
+        "h": 126,
+        "w": 117
+      },
+      "c2-p4-d1": {
+        "h": 133,
+        "w": 127
+      }
+    },
+    "comic-character-sizes": {
+      "e2-p1-char-mpivhkib": {
+        "h": 399,
+        "w": 876
+      },
+      "e2-p1-char-mpivi2q0": {
+        "h": 394,
+        "w": 865
+      },
+      "e2-p2-char-mpivzdqj": {
+        "h": 198,
+        "w": 436
+      },
+      "e2-p2-char-mpiw0ase": {
+        "h": 60,
+        "w": 60
+      },
+      "e2-p2-char-mpiw0ggu": {
+        "h": 155,
+        "w": 509
+      },
+      "e2-p3-char-mpix8b9k": {
+        "h": 440,
+        "w": 966
+      },
+      "e2-p3-char-mpix8zqc": {
+        "h": 241,
+        "w": 793
+      }
+    },
+    "comic-deleted-bubbles": [
+      "e2-p1-narration",
+      "e2-p1-d0",
+      "e2-p2-d0",
+      "e2-p3-d0"
+    ],
+    "comic-panel-order": [
+      "e2-p1",
+      "e2-p2",
+      "e2-p3"
+    ],
+    "comic-user-backgrounds": {
+      "e2-p1": "assets/uploads/d6938aa72d6f1d72.png",
+      "e2-p2": "assets/uploads/e2fe20712b39c8ea.png",
+      "e2-p3": "assets/uploads/db90a949f1b02c19.png"
+    },
+    "comic-user-characters": [
+      {
+        "dataURL": "assets/uploads/e1f409685ba33f5e.png",
+        "height": 399,
+        "id": "e2-p1-char-mpivhkib",
+        "mediaType": "image",
+        "name": "bongo 2a",
+        "panelId": "e2-p1",
+        "position": "center",
+        "size": 876,
+        "x": 26.37,
+        "y": 51.69
+      },
+      {
+        "dataURL": "assets/uploads/3afd08590e758f37.png",
+        "height": 394,
+        "id": "e2-p1-char-mpivi2q0",
+        "mediaType": "image",
+        "name": "Nico 2a",
+        "panelId": "e2-p1",
+        "position": "center",
+        "size": 865,
+        "x": 73.65,
+        "y": 47.78
+      },
+      {
+        "dataURL": "assets/uploads/45f6e6fb39b5a688.png",
+        "height": 198,
+        "id": "e2-p2-char-mpivzdqj",
+        "mediaType": "image",
+        "name": "Nico 2b",
+        "panelId": "e2-p2",
+        "position": "center",
+        "size": 436,
+        "x": 31.28,
+        "y": 40
+      },
+      {
+        "dataURL": "assets/uploads/95b9e222ab103958.webp",
+        "height": 60,
+        "id": "e2-p2-char-mpiw0ase",
+        "mediaType": "image",
+        "name": "fondo de parche",
+        "panelId": "e2-p2",
+        "position": "center",
+        "size": 60,
+        "x": 34.36,
+        "y": 54.82
+      },
+      {
+        "dataURL": "assets/uploads/86b1a431c8f5323d.png",
+        "height": 155,
+        "id": "e2-p2-char-mpiw0ggu",
+        "mediaType": "image",
+        "name": "Bongo 2b",
+        "panelId": "e2-p2",
+        "position": "center",
+        "size": 509,
+        "x": 30.77,
+        "y": 54.98
+      },
+      {
+        "dataURL": "assets/uploads/1e308e2850bc0990.png",
+        "height": 440,
+        "id": "e2-p3-char-mpix8b9k",
+        "mediaType": "image",
+        "name": "NIco 2c",
+        "panelId": "e2-p3",
+        "position": "center",
+        "size": 966,
+        "x": 39.15,
+        "y": 68.56
+      },
+      {
+        "dataURL": "assets/uploads/c097ab29ea21ac29.png",
+        "height": 241,
+        "id": "e2-p3-char-mpix8zqc",
+        "mediaType": "image",
+        "name": "Bongo 2c",
+        "panelId": "e2-p3",
+        "position": "center",
+        "size": 793,
+        "x": 70.29,
+        "y": 77.19
+      }
+    ]
+  },
+  "savedAt": "2026-05-23T22:31:33.655Z",
+  "scene": "2",
+  "version": 1
+}

@@ -1,0 +1,490 @@
+{
+  "app": "HilosDelAgua",
+  "data": {
+    "comic-bubble-fontsizes": {
+      "c1-p1-umpdixex5": 13,
+      "e1-p1-d0": 16,
+      "e1-p1-narration": 40,
+      "e1-p1-ucmpiosrij": 22,
+      "e1-p2-narration": 18,
+      "e1-p3-ucmpit8u5t": 40,
+      "e1-up-mpitlb8kqmv-ucmpiufiys": 18,
+      "e1-up-mpitlb8kqmv-umpiugu7u": 19
+    },
+    "comic-bubble-positions": {
+      "c1-p1-narration": {
+        "x": 51.93892045454545,
+        "y": 88.33181818181818
+      },
+      "c1-p2-d0": {
+        "x": 88.00710227272728,
+        "y": 29.98409090909091
+      },
+      "c1-p2-narration": {
+        "x": 50.92897727272727,
+        "y": 88.08181818181818
+      },
+      "c1-p3-d0": {
+        "x": 51.65056818181818,
+        "y": 50.029545454545456
+      },
+      "c1-p3-narration": {
+        "x": 46.71590909090909,
+        "y": 88.31136363636364
+      },
+      "c1-p4-d0": {
+        "x": 73.36363636363636,
+        "y": 26.734090909090906
+      },
+      "c1-p4-narration": {
+        "x": 48.36931818181818,
+        "y": 90.3
+      },
+      "c1-p5-d0": {
+        "x": 19.964488636363637,
+        "y": 39.96818181818182
+      },
+      "c1-p5-narration": {
+        "x": 50.07954545454546,
+        "y": 90.55227272727274
+      },
+      "e1-p1-d0": {
+        "x": 28.40416666666667,
+        "y": 28.714814814814815
+      },
+      "e1-p1-narration": {
+        "x": 42.56875,
+        "y": 83.43333333333334
+      },
+      "e1-p1-umpiln37w": {
+        "x": 15,
+        "y": 75
+      },
+      "e1-p2-d0": {
+        "x": 71.940625,
+        "y": 69.9037037037037
+      },
+      "e1-p2-narration": {
+        "x": 14.267708333333335,
+        "y": 8.161111111111111
+      },
+      "e1-p2-umpij2x61": {
+        "x": 0,
+        "y": 0
+      },
+      "e1-p3-d0": {
+        "x": 50,
+        "y": 50
+      },
+      "e1-up-mpitlb8kqmv-narration": {
+        "x": 10.10625,
+        "y": 84.83333333333334
+      }
+    },
+    "comic-bubble-sizes": {
+      "c1-p1-umpdixex5": {
+        "h": 154,
+        "w": 153
+      },
+      "c1-p2-d0": {
+        "h": 153,
+        "w": 190
+      },
+      "c1-p2-umpdi73r9": {
+        "h": 93,
+        "w": 137
+      },
+      "c1-p4-d0": {
+        "h": 100,
+        "w": 210
+      },
+      "c1-p4-narration": {
+        "h": 60,
+        "w": 761
+      },
+      "c1-p5-narration": {
+        "h": 60,
+        "w": 873
+      },
+      "e1-p1-d0": {
+        "h": 105,
+        "w": 133
+      },
+      "e1-p1-narration": {
+        "h": 101,
+        "w": 1197
+      },
+      "e1-p1-ucmpiosrij": {
+        "h": 71,
+        "w": 359
+      },
+      "e1-p2-narration": {
+        "h": 68,
+        "w": 319
+      },
+      "e1-p3-ucmpit8u5t": {
+        "h": 96,
+        "w": 506
+      },
+      "e1-up-mpitlb8kqmv-ucmpiufiys": {
+        "h": 57,
+        "w": 252
+      },
+      "e1-up-mpitlb8kqmv-umpiugu7u": {
+        "h": 142,
+        "w": 285
+      }
+    },
+    "comic-bubble-text-overrides": {
+      "e1-p1-narration": " Los humanos creen que ven el mundo. Mentira. Yo, Bongo, lo huelo. Y hoy les voy a contar cómo mi humano pequeño, Nico, descubrió que el agua tiene memoria… y que el hambre tiene mapa.\n",
+      "e1-p2-narration": "Patio · 7:00 AM. En un una mañana maravillosa, Nico y Bongo salieron al patio y se dieron cuenta de un hecho inesperado\n"
+    },
+    "comic-bubble-timing": {
+      "e1-p1-umpiowomp": {
+        "sequence": 1
+      },
+      "e1-p2-ucmpiu66of": {
+        "sequence": 1
+      },
+      "e1-p2-umpiu7lse": {
+        "sequence": 1
+      },
+      "e1-p2-umpiu8fgl": {
+        "sequence": 2
+      },
+      "e1-p2-umpiu969h": {
+        "sequence": 3
+      },
+      "e1-up-mpitlb8kqmv-ucmpiubiet": {
+        "sequence": 1
+      },
+      "e1-up-mpitlb8kqmv-ucmpiufiys": {
+        "sequence": 3
+      },
+      "e1-up-mpitlb8kqmv-umpiuet0r": {
+        "sequence": 2
+      },
+      "e1-up-mpitlb8kqmv-umpiugu7u": {
+        "sequence": 4
+      },
+      "e1-up-mpitlb8kqmv-umpiuhqav": {
+        "sequence": 5
+      }
+    },
+    "comic-character-sizes": {
+      "e1-p1-char-mpioqvco": {
+        "h": 844,
+        "w": 1500
+      },
+      "e1-p2-char-mpisn8m2": {
+        "h": 422,
+        "w": 926
+      },
+      "e1-p2-char-mpisy9m9": {
+        "h": 60,
+        "w": 60
+      },
+      "e1-p2-char-mpisygbj": {
+        "h": 270,
+        "w": 886
+      },
+      "e1-up-mpitlb8kqmv-char-mpittg40": {
+        "h": 699,
+        "w": 1500
+      },
+      "e1-up-mpitlb8kqmv-char-mpity14b": {
+        "h": 60,
+        "w": 60
+      },
+      "e1-up-mpitlb8kqmv-char-mpityc8q": {
+        "h": 361,
+        "w": 1186
+      }
+    },
+    "comic-deleted-bubbles": [
+      "e1-p1-narration",
+      "e1-p1-d0",
+      "e1-p2-d0",
+      "e1-p3-d0",
+      "e1-p2-narration",
+      "e1-up-mpitlb8kqmv-narration"
+    ],
+    "comic-extra-panels": {
+      "1": [
+        {
+          "dialogues": [],
+          "id": "e1-up-mpitlb8kqmv",
+          "image": "",
+          "narration": "Nuevo panel — editá esta narración"
+        }
+      ]
+    },
+    "comic-panel-order": [
+      "e1-p1",
+      "e1-p2",
+      "e1-p3",
+      "e1-up-mpitlb8kqmv"
+    ],
+    "comic-user-backgrounds": {
+      "e1-p2": "assets/uploads/1354ccda36a78e25.png",
+      "e1-p3": "assets/uploads/5a34274287bddea9.png",
+      "e1-up-mpitlb8kqmv": "assets/uploads/702a5c54209798d1.png"
+    },
+    "comic-user-bubbles": {
+      "c1-p1": [
+        {
+          "id": "c1-p1-umpdixex5",
+          "position": "middle-left",
+          "speaker": "lumi",
+          "text": "aasasas",
+          "x": 46.19602272727273,
+          "y": 40.55909090909091
+        }
+      ],
+      "c1-p2": [
+        {
+          "id": "c1-p2-umpdi6t44",
+          "position": "bottom-left",
+          "speaker": "lumi",
+          "text": "jolaaaa",
+          "x": 81.73579545454545,
+          "y": 66.04545454545455
+        },
+        {
+          "id": "c1-p2-umpdi73r9",
+          "position": "bottom-right",
+          "speaker": "lumi",
+          "text": "sasasasas",
+          "x": 39.76136363636364,
+          "y": 47.225
+        },
+        {
+          "id": "c1-p2-umpdi7bor",
+          "position": "center",
+          "speaker": "lumi",
+          "text": "asasdasdas",
+          "x": 89.6747159090909,
+          "y": 11.027272727272727
+        },
+        {
+          "id": "c1-p2-umpdi7jh0",
+          "position": "top-left",
+          "speaker": "lumi",
+          "text": "asdasdasd",
+          "x": 67.13210227272727,
+          "y": 63.747727272727275
+        }
+      ],
+      "e1-p1": [
+        {
+          "id": "e1-p1-ucmpiosrij",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Prologo, Bongo narra su experiencia :D",
+          "type": "narration",
+          "width": 80,
+          "x": 14.787760416666668,
+          "y": 6.046296296296296
+        },
+        {
+          "id": "e1-p1-umpiowomp",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Los humanos creen que ven el mundo. Mentira. Yo, Bongo, lo huelo. Y hoy les voy a contar cómo mi humano pequeño, Nico, descubrió que el agua tiene memoria… y que el hambre tiene mapa.",
+          "type": "speech",
+          "x": 69.766845703125,
+          "y": 61.271701388888886
+        }
+      ],
+      "e1-p2": [
+        {
+          "id": "e1-p2-ucmpiu66of",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Esa mañana, el agua salió enferma.\n\nNico abrió la manguera como todos los días, \npero esta vez la serpiente verde no cantó: \ntosió un chorro café que olía a algo viejo.",
+          "type": "narration",
+          "width": 80,
+          "x": 45.47395833333333,
+          "y": 9.601851851851851
+        },
+        {
+          "id": "e1-p2-umpiu7lse",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Bongo… esta agua no está enferma. \nEstá triste.",
+          "type": "speech",
+          "x": 59.699999999999996,
+          "y": 40.59074074074074
+        },
+        {
+          "id": "e1-p2-umpiu8fgl",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Guau, Guau",
+          "type": "speech",
+          "x": 57.84583333333333,
+          "y": 58.54259259259259
+        },
+        {
+          "id": "e1-p2-umpiu969h",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Jummmm",
+          "type": "thought",
+          "x": 42.15625,
+          "y": 64.27407407407408
+        }
+      ],
+      "e1-p3": [
+        {
+          "id": "e1-p3-ucmpit8u5t",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Algo había cambiado en el aire.",
+          "type": "narration",
+          "width": 80,
+          "x": 17.96979166666667,
+          "y": 11.151851851851852
+        }
+      ],
+      "e1-up-mpitlb8kqmv": [
+        {
+          "id": "e1-up-mpitlb8kqmv-ucmpiubiet",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Nico y Bongo se quedaron quietos. \nMuy quietos.\n\nComo si entendieran, sin palabras, \nque algo importante acababa de empezar.",
+          "type": "narration",
+          "width": 80,
+          "x": 48.030208333333334,
+          "y": 5.568518518518519
+        },
+        {
+          "id": "e1-up-mpitlb8kqmv-umpiuet0r",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Y si ...",
+          "type": "thought",
+          "x": 76.18854166666667,
+          "y": 34.86666666666667
+        },
+        {
+          "id": "e1-up-mpitlb8kqmv-ucmpiufiys",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Bongo olfateó el aire y supo",
+          "type": "narration",
+          "width": 80,
+          "x": 9.726041666666667,
+          "y": 72.85925925925926
+        },
+        {
+          "id": "e1-up-mpitlb8kqmv-umpiugu7u",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "La serpiente verde no canta hoy. \nAntes cantaba claro, como campana mojada. \nHoy gruñe. Huele a monedas viejas, \na sótano, a algo que durmió mucho tiempo.",
+          "type": "thought",
+          "x": 18.208333333333336,
+          "y": 54.76296296296296
+        },
+        {
+          "id": "e1-up-mpitlb8kqmv-umpiuhqav",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Guau Guau",
+          "type": "speech",
+          "x": 37.88333333333333,
+          "y": 71.98148148148148
+        }
+      ]
+    },
+    "comic-user-characters": [
+      {
+        "dataURL": "assets/uploads/5902e25454101e3e.mp4",
+        "height": 844,
+        "id": "e1-p1-char-mpioqvco",
+        "mediaType": "video",
+        "name": "bongoNarradorVideo",
+        "panelId": "e1-p1",
+        "position": "center",
+        "size": 1500,
+        "x": 50.64,
+        "y": 49.8
+      },
+      {
+        "dataURL": "assets/uploads/1f42a2ff63da9530.png",
+        "height": 422,
+        "id": "e1-p2-char-mpisn8m2",
+        "mediaType": "image",
+        "name": "Nico e1.A",
+        "panelId": "e1-p2",
+        "position": "center",
+        "size": 926,
+        "x": 80.98,
+        "y": 63.26
+      },
+      {
+        "dataURL": "assets/uploads/95b9e222ab103958.webp",
+        "height": 60,
+        "id": "e1-p2-char-mpisy9m9",
+        "mediaType": "image",
+        "name": "fondo de parche",
+        "panelId": "e1-p2",
+        "position": "center",
+        "size": 60,
+        "x": 51.7,
+        "y": 65.94
+      },
+      {
+        "dataURL": "assets/uploads/a9a380fc60225b94.png",
+        "height": 270,
+        "id": "e1-p2-char-mpisygbj",
+        "mediaType": "image",
+        "name": "bongo e1.a",
+        "panelId": "e1-p2",
+        "position": "center",
+        "size": 886,
+        "x": 48.11,
+        "y": 70.54
+      },
+      {
+        "dataURL": "assets/uploads/aeb9d0d1884c977f.png",
+        "height": 699,
+        "id": "e1-up-mpitlb8kqmv-char-mpittg40",
+        "mediaType": "image",
+        "name": "Nico 1c",
+        "panelId": "e1-up-mpitlb8kqmv",
+        "position": "center",
+        "size": 1500,
+        "x": 68.87,
+        "y": 72.41
+      },
+      {
+        "dataURL": "assets/uploads/95b9e222ab103958.webp",
+        "height": 60,
+        "id": "e1-up-mpitlb8kqmv-char-mpity14b",
+        "mediaType": "image",
+        "name": "fondo de parche",
+        "panelId": "e1-up-mpitlb8kqmv",
+        "position": "center",
+        "size": 60,
+        "x": 29.31,
+        "y": 80.29
+      },
+      {
+        "dataURL": "assets/uploads/bb047525939ade47.png",
+        "height": 361,
+        "id": "e1-up-mpitlb8kqmv-char-mpityc8q",
+        "mediaType": "image",
+        "name": "bongo 1c",
+        "panelId": "e1-up-mpitlb8kqmv",
+        "position": "center",
+        "size": 1186,
+        "x": 25.83,
+        "y": 86.09
+      }
+    ]
+  },
+  "savedAt": "2026-05-23T22:31:33.655Z",
+  "scene": "1",
+  "version": 1
+}

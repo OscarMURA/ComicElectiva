@@ -1,0 +1,89 @@
+{
+  "app": "HilosDelAgua",
+  "data": {
+    "comic-global-audio-volume": 0,
+    "comic-user-character-gallery": [
+      {
+        "_key": "bongoNarradorVideo::assets/uploads/5902e25454101e3e.mp4",
+        "dataURL": "assets/uploads/5902e25454101e3e.mp4",
+        "mediaType": "video",
+        "name": "bongoNarradorVideo"
+      },
+      {
+        "_key": "Nico e1.A::assets/uploads/1f42a2ff63da9530.png",
+        "dataURL": "assets/uploads/1f42a2ff63da9530.png",
+        "mediaType": "image",
+        "name": "Nico e1.A"
+      },
+      {
+        "_key": "bongo e1.a::assets/uploads/a9a380fc60225b94.png",
+        "dataURL": "assets/uploads/a9a380fc60225b94.png",
+        "mediaType": "image",
+        "name": "bongo e1.a"
+      },
+      {
+        "_key": "fondo de parche::assets/uploads/95b9e222ab103958.webp",
+        "dataURL": "assets/uploads/95b9e222ab103958.webp",
+        "mediaType": "image",
+        "name": "fondo de parche"
+      },
+      {
+        "_key": "nico 1c::assets/uploads/a9a380fc60225b94.png",
+        "dataURL": "assets/uploads/a9a380fc60225b94.png",
+        "mediaType": "image",
+        "name": "nico 1c"
+      },
+      {
+        "_key": "Nico 1c::assets/uploads/aeb9d0d1884c977f.png",
+        "dataURL": "assets/uploads/aeb9d0d1884c977f.png",
+        "mediaType": "image",
+        "name": "Nico 1c"
+      },
+      {
+        "_key": "bongo 1c::assets/uploads/bb047525939ade47.png",
+        "dataURL": "assets/uploads/bb047525939ade47.png",
+        "mediaType": "image",
+        "name": "bongo 1c"
+      },
+      {
+        "_key": "bongo 2a::assets/uploads/e1f409685ba33f5e.png",
+        "dataURL": "assets/uploads/e1f409685ba33f5e.png",
+        "mediaType": "image",
+        "name": "bongo 2a"
+      },
+      {
+        "_key": "Nico 2a::assets/uploads/3afd08590e758f37.png",
+        "dataURL": "assets/uploads/3afd08590e758f37.png",
+        "mediaType": "image",
+        "name": "Nico 2a"
+      },
+      {
+        "_key": "Bongo 2b::assets/uploads/86b1a431c8f5323d.png",
+        "dataURL": "assets/uploads/86b1a431c8f5323d.png",
+        "mediaType": "image",
+        "name": "Bongo 2b"
+      },
+      {
+        "_key": "Nico 2b::assets/uploads/45f6e6fb39b5a688.png",
+        "dataURL": "assets/uploads/45f6e6fb39b5a688.png",
+        "mediaType": "image",
+        "name": "Nico 2b"
+      },
+      {
+        "_key": "NIco 2c::assets/uploads/1e308e2850bc0990.png",
+        "dataURL": "assets/uploads/1e308e2850bc0990.png",
+        "mediaType": "image",
+        "name": "NIco 2c"
+      },
+      {
+        "_key": "Bongo 2c::assets/uploads/c097ab29ea21ac29.png",
+        "dataURL": "assets/uploads/c097ab29ea21ac29.png",
+        "mediaType": "image",
+        "name": "Bongo 2c"
+      }
+    ]
+  },
+  "savedAt": "2026-05-23T22:31:33.655Z",
+  "scene": "global",
+  "version": 1
+}

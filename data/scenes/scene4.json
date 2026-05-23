@@ -1,0 +1,13 @@
+{
+  "app": "HilosDelAgua",
+  "data": {
+    "comic-panel-order": [
+      "e4-p1",
+      "e4-p2",
+      "e4-p3"
+    ]
+  },
+  "savedAt": "2026-05-23T22:31:33.655Z",
+  "scene": "4",
+  "version": 1
+}
