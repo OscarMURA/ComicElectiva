@@ -129,7 +129,7 @@
         "w": 259
       },
       "e1-p2-umpiu7lse": {
-        "h": 72,
+        "h": 60,
         "w": 419
       },
       "e1-p3-ucmpit8u5t": {
@@ -335,8 +335,8 @@
           "speaker": "narrator",
           "text": "Bongo… esta agua no está enferma. \nEstá triste.",
           "type": "speech",
-          "x": 58.37158203125,
-          "y": 34.631076388888886
+          "x": 58.38470458984375,
+          "y": 34.58930121527778
         },
         {
           "id": "e1-p2-umpiu8fgl",
@@ -404,8 +404,8 @@
           "speaker": "narrator",
           "text": "Veamos pues que pasara...",
           "type": "thought",
-          "x": 17.166748046875,
-          "y": 64.16232638888889
+          "x": 17.11578369140625,
+          "y": 64.20355902777779
         },
         {
           "id": "e1-up-mpitlb8kqmv-ucmpjcr3q7",
@@ -494,7 +494,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T21:14:45.852Z",
+  "savedAt": "2026-05-24T21:37:58.186Z",
   "scene": "1",
   "version": 1
 }

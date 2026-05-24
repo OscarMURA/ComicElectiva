@@ -2,9 +2,9 @@
   "app": "HilosDelAgua",
   "data": {
     "comic-bubble-fontsizes": {
-      "e5-p1-umpk61bp1": 26,
+      "e5-p1-umpk61bp1": 23,
       "e5-p1-umpk65yxm": 20,
-      "e5-p1-umpk6c6mu": 20,
+      "e5-p1-umpk6c6mu": 18,
       "e5-up-19e58704777zeu-umpk5mpb4": 24
     },
     "comic-bubble-positions": {
@@ -27,7 +27,7 @@
     },
     "comic-bubble-sizes": {
       "e5-p1-umpk61bp1": {
-        "h": 55,
+        "h": 74,
         "w": 1172
       },
       "e5-p1-umpk65yxm": {
@@ -35,7 +35,7 @@
         "w": 729
       },
       "e5-p1-umpk6c6mu": {
-        "h": 52,
+        "h": 69,
         "w": 842
       },
       "e5-up-19e58704777zeu-umpk5mpb4": {
@@ -152,8 +152,8 @@
           "speaker": "narrator",
           "text": "Íbamos caminando por ese laberinto al revés cuando la vimos. Estaba allí sentada, quietecita, como si fuera parte del mismo paisaje roto.",
           "type": "narration",
-          "x": 49.20654296875,
-          "y": 89.00010850694444
+          "x": 49.21112060546875,
+          "y": 88.59320746527779
         },
         {
           "id": "e5-p1-umpk62q4l",
@@ -179,8 +179,8 @@
           "speaker": "narrator",
           "text": "Qué raro... mi olfato casi no la encuentra. Esta cachorra humana huele a viento... a casi nada. Cuando alguien come bien, se siente el olor a tierra y a fuego; pero ella huele a puro aire, como si se estuviera volviendo transparente.",
           "type": "thought",
-          "x": 48.52447509765625,
-          "y": 69.63975694444444
+          "x": 48.52752685546875,
+          "y": 69.49869791666666
         }
       ],
       "e5-p2": [
@@ -338,7 +338,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T19:57:12.884Z",
+  "savedAt": "2026-05-24T21:39:37.835Z",
   "scene": "5",
   "version": 1
 }

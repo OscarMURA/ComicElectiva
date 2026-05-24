@@ -3,13 +3,13 @@
   "data": {
     "comic-bubble-fontsizes": {
       "e9-p1-umpk6lmbe": 24,
-      "e9-p1-umpk6odr5": 24,
+      "e9-p1-umpk6odr5": 27,
       "e9-p1-umpk6pbg8": 25,
       "e9-p1-umpk6rcm3": 23,
       "e9-p1-umpk6rydn": 24,
       "e9-p1-umpk6sgz3": 23,
       "e9-p2-umpk71i8b": 23,
-      "e9-p2-umpk73tpc": 22,
+      "e9-p2-umpk73tpc": 23,
       "e9-p2-umpk772pu": 24
     },
     "comic-bubble-positions": {
@@ -32,7 +32,7 @@
         "w": 756
       },
       "e9-p1-umpk6odr5": {
-        "h": 120,
+        "h": 69,
         "w": 319
       },
       "e9-p1-umpk6pbg8": {
@@ -52,15 +52,15 @@
         "w": 736
       },
       "e9-p2-umpk71i8b": {
-        "h": 84,
+        "h": 66,
         "w": 654
       },
       "e9-p2-umpk73tpc": {
-        "h": 81,
+        "h": 67,
         "w": 748
       },
       "e9-p2-umpk772pu": {
-        "h": 81,
+        "h": 61,
         "w": 729
       }
     },
@@ -146,8 +146,8 @@
           "speaker": "narrator",
           "text": "Habitación de Nico · Noche",
           "type": "narration",
-          "x": 89.76898193359375,
-          "y": 11.341688368055555
+          "x": 89.691162109375,
+          "y": 11.474609375
         },
         {
           "id": "e9-p1-umpk6pbg8",
@@ -193,8 +193,8 @@
           "speaker": "narrator",
           "text": "Esa noche Nico durmió con el cuaderno en los brazos.",
           "type": "narration",
-          "x": 18.09234619140625,
-          "y": 68.40277777777779
+          "x": 18.21441650390625,
+          "y": 68.27256944444444
         },
         {
           "id": "e9-p2-umpk72iw7",
@@ -211,8 +211,8 @@
           "speaker": "narrator",
           "text": "Y afuera, en el patio, la luna se reflejó en un balde de agua clara.",
           "type": "narration",
-          "x": 20.89996337890625,
-          "y": 79.58441840277779
+          "x": 21.75140380859375,
+          "y": 79.27517361111111
         },
         {
           "id": "e9-p2-umpk772pu",
@@ -220,8 +220,8 @@
           "speaker": "narrator",
           "text": "Y yo moví la cola otra vez. Porque sí. Porque mañana seguimos.",
           "type": "narration",
-          "x": 22.747802734375,
-          "y": 91.09157986111111
+          "x": 22.61199951171875,
+          "y": 90.14214409722221
         },
         {
           "id": "e9-p2-umpk78x6k",
@@ -285,7 +285,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T19:58:45.711Z",
+  "savedAt": "2026-05-24T21:41:27.884Z",
   "scene": "9",
   "version": 1
 }
