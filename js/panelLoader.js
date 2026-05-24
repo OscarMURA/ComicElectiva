@@ -505,18 +505,21 @@
 
   function updatePanelScale(panel) {
     if (!panel) return;
-    // Aplicamos la misma fórmula tanto en desktop como en móvil: el contenido
-    // (burbujas, personajes) escala proporcional al ancho real del panel.
-    // En móvil esto es esencial para que las cosas no se salgan del viewport.
+    // En móvil, responsive.css ya re-tipografía burbujas con clamp() y
+    // !important — aplicar scale encima dejaría el texto enano. Confiamos
+    // en CSS responsive para la lectura mobile.
+    if (window.Comic && window.Comic.isMobile) {
+      panel.style.setProperty('--panel-scale', '1');
+      return;
+    }
     const w = panel.clientWidth;
     if (!w) return;
-    // Curva con raíz cuadrada: más suave que la lineal en pantallas chicas
-    // (para legibilidad), pero igual proporcional al ancho.
+    // Curva con raíz cuadrada para que ventanas de escritorio estrechas
+    // (~600-900 px, modo lectura, sidebar abierto) reduzcan el contenido
+    // sin volverse ilegible.
     //   1280px → 1.0
     //    800px → 0.79
     //    600px → 0.68
-    //    400px → 0.56
-    //    320px → 0.50
     let scale = Math.sqrt(w / PANEL_SCALE_REFERENCE);
     if (scale > PANEL_SCALE_MAX) scale = PANEL_SCALE_MAX;
     if (scale < PANEL_SCALE_MIN) scale = PANEL_SCALE_MIN;

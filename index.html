@@ -2,38 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <!-- Viewport adaptativo: en escritorio se usa el ancho real del
-       dispositivo; en móvil/tablet se renderiza con layout de 1280 px y
-       el navegador escala para encajar exactamente en la pantalla. -->
-  <meta name="viewport" content="width=1280, initial-scale=1, viewport-fit=cover" />
-  <script>
-    (function () {
-      try {
-        var TARGET = 1280;
-        var dw = Math.min(
-          window.screen && window.screen.width ? window.screen.width : TARGET,
-          document.documentElement.clientWidth || TARGET
-        );
-        var meta = document.querySelector('meta[name="viewport"]');
-        if (!meta) return;
-        if (dw >= TARGET) {
-          meta.setAttribute(
-            'content',
-            'width=device-width, initial-scale=1, viewport-fit=cover'
-          );
-        } else {
-          var scale = (dw / TARGET).toFixed(4);
-          meta.setAttribute(
-            'content',
-            'width=' + TARGET +
-              ', initial-scale=' + scale +
-              ', minimum-scale=' + scale +
-              ', maximum-scale=5, user-scalable=yes, viewport-fit=cover'
-          );
-        }
-      } catch (e) {}
-    })();
-  </script>
+  <!-- Viewport responsive estándar. Antes forzábamos width=1280 y dejábamos
+       que el navegador escalara la vista para "encajar el cuento desktop
+       completo" en celular, pero eso bloqueaba el CSS mobile-first
+       (responsive.css) porque window.innerWidth siempre era 1280, así que
+       html.is-mobile nunca se activaba. Ahora confiamos en CSS responsive +
+       --panel-scale para una experiencia móvil real. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="description" content="Los Hilos del Agua y el Plato de las Preguntas: un cuento ilustrado interactivo." />
   <meta name="theme-color" content="#1F4E79" />
   <title>Los Hilos del Agua y el Plato de las Preguntas</title>
