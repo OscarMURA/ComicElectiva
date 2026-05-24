@@ -361,6 +361,9 @@
     // Tinte de fondo a partir de la imagen (o blanco si no hay imagen).
     applyAllPanelTints(container);
 
+    // Escala visual proporcional al ancho actual de cada panel.
+    observePanelScales(container);
+
     document.dispatchEvent(
       new CustomEvent('panels:loaded', {
         detail: { chapterCount: chapters.length },
@@ -467,6 +470,65 @@
     }
   }
 
+  // ---- Panel scale: hace que burbujas y personajes se vean ----------------
+  //      proporcionales cuando la ventana se achica.
+  //
+  // Las posiciones (left/top) ya están en %, así que escalan solas con el
+  // panel. Pero el tamaño y el font-size de las burbujas/personajes están
+  // guardados en píxeles absolutos (se fijaron desde el editor en desktop a
+  // ~1280px de ancho). En pantallas pequeñas eso hace que todo se vea enorme.
+  //
+  // Solución: se publica `--panel-scale = clientWidth / 1280` en cada panel
+  // y la CSS aplica `transform: ... scale(var(--panel-scale))` a burbujas y
+  // personajes. Como ya estaban centrados con `translate(-50%, -50%)`, la
+  // escala se aplica respecto al centro y la posición no se ve afectada.
+
+  const PANEL_SCALE_REFERENCE = 1280; // ancho de diseño (máximo en desktop)
+  const PANEL_SCALE_MIN = 0.42;       // no encoger por debajo de esto
+  const PANEL_SCALE_MAX = 1;          // y no agrandar arriba del original
+  let panelScaleObserver = null;
+
+  function updatePanelScale(panel) {
+    if (!panel) return;
+    // En móvil, responsive.css ya forza max-width 100vw con !important y
+    // tamaños propios; aplicar también scale ahí sería redundante y dejaría
+    // todo enano. Sólo escalamos en desktop.
+    if (window.Comic && window.Comic.isMobile) {
+      panel.style.setProperty('--panel-scale', '1');
+      return;
+    }
+    const w = panel.clientWidth;
+    if (!w) return;
+    let scale = w / PANEL_SCALE_REFERENCE;
+    if (scale > PANEL_SCALE_MAX) scale = PANEL_SCALE_MAX;
+    if (scale < PANEL_SCALE_MIN) scale = PANEL_SCALE_MIN;
+    // 3 decimales: suficiente precisión, evita repintar por cambios <0.001.
+    panel.style.setProperty('--panel-scale', scale.toFixed(3));
+  }
+
+  function observePanelScales(root) {
+    const scope = root || document;
+    const panels = [];
+    if (scope.nodeType === 1 && scope.classList && scope.classList.contains('panel')) {
+      panels.push(scope);
+    }
+    scope.querySelectorAll && scope.querySelectorAll('.panel').forEach((p) => {
+      if (panels.indexOf(p) === -1) panels.push(p);
+    });
+
+    // Inicializar el valor de cada panel ahora mismo (síncrono) para que
+    // burbujas y personajes nazcan ya con el tamaño correcto sin "popping".
+    panels.forEach(updatePanelScale);
+
+    if (typeof ResizeObserver !== 'function') return;
+    if (!panelScaleObserver) {
+      panelScaleObserver = new ResizeObserver((entries) => {
+        entries.forEach((entry) => updatePanelScale(entry.target));
+      });
+    }
+    panels.forEach((p) => panelScaleObserver.observe(p));
+  }
+
   function applyAllPanelTints(root) {
     const scope = root || document;
     // Si `root` es un panel concreto, incluirlo además de sus descendientes.
@@ -504,6 +566,8 @@
     renderPanelHTML: renderPanelHTML,
     applyPanelTint: applyPanelTint,
     applyAllPanelTints: applyAllPanelTints,
+    observePanelScales: observePanelScales,
+    updatePanelScale: updatePanelScale,
     POSITION_DEFAULTS: POSITION_DEFAULTS,
   };
 })();

@@ -194,15 +194,18 @@
   animation: none !important;
 }
 
+/* Las keyframes multiplican por var(--panel-scale, 1) para que la
+   animación de entrada respete el factor de escala del panel — si no, la
+   burbuja "popearía" a tamaño completo antes de encogerse. */
 @keyframes bubbleAppear {
-  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.55); filter: blur(4px); }
-  55%  { opacity: 1; transform: translate(-50%, -50%) scale(1.06); filter: blur(0);   }
-  100% { opacity: 1; transform: translate(-50%, -50%) scale(1);    filter: blur(0);   }
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(calc(var(--panel-scale, 1) * 0.55)); filter: blur(4px); }
+  55%  { opacity: 1; transform: translate(-50%, -50%) scale(calc(var(--panel-scale, 1) * 1.06)); filter: blur(0);   }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(var(--panel-scale, 1));              filter: blur(0);   }
 }
 
 @keyframes narrationAppear {
-  0%   { opacity: 0; transform: translate(-50%, -38%) scale(0.96); filter: blur(3px); }
-  100% { opacity: 1; transform: translate(-50%, -50%) scale(1);    filter: blur(0);   }
+  0%   { opacity: 0; transform: translate(-50%, -38%) scale(calc(var(--panel-scale, 1) * 0.96)); filter: blur(3px); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(var(--panel-scale, 1));              filter: blur(0);   }
 }
 
 .bubble.bubble--entering {

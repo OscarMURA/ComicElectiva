@@ -2501,6 +2501,11 @@
     if (window.Comic.PanelLoader && window.Comic.PanelLoader.applyAllPanelTints) {
       window.Comic.PanelLoader.applyAllPanelTints(newPanel);
     }
+    // Escala visual: el nuevo panel también debe respetar --panel-scale
+    // según el ancho actual del viewport.
+    if (window.Comic.PanelLoader && window.Comic.PanelLoader.observePanelScales) {
+      window.Comic.PanelLoader.observePanelScales(newPanel);
+    }
     return newPanel;
   }
 

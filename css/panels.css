@@ -72,6 +72,12 @@
   --panel-tint-soft: rgba(255, 255, 255, 0);
   --panel-tint-glow: rgba(31, 42, 58, 0.25);
   --panel-tint-wash: rgba(31, 42, 58, 0.05);
+  /* Factor de escala visual de los hijos absolutamente posicionados
+     (burbujas, personajes). El JS lo actualiza vía ResizeObserver:
+       --panel-scale = panel.clientWidth / 1280
+     Así, los tamaños en px que el usuario guardó en desktop (~1280px)
+     se ven proporcionales cuando la ventana se encoge. */
+  --panel-scale: 1;
 }
 
 /* "Aura" exterior: un wash radial que se proyecta más allá del panel y tiñe
@@ -185,7 +191,9 @@
 .bubble {
   position: absolute;
   /* left/top los pone el JS en estilos inline */
-  transform: translate(-50%, -50%);
+  /* La escala (--panel-scale) reduce el tamaño visual de la burbuja
+     cuando la ventana se achica, sin mover su centro. */
+  transform: translate(-50%, -50%) scale(var(--panel-scale, 1));
   display: inline-block;
   width: max-content;
   max-width: 38%;
@@ -297,7 +305,10 @@
 .bubble.narration,
 .bubble-narration {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /* Mantener el scale del panel: si no, al terminar la animación de entrada
+     la narración vuelve a tamaño 1.0 mientras las burbujas normales sí se
+     quedan escaladas. */
+  transform: translate(-50%, -50%) scale(var(--panel-scale, 1));
   z-index: 10;
 }
 
@@ -913,7 +924,9 @@ html.edit-mode-unlocked.editor-open .bubble[data-user-added="true"] {
 /* Apilado: fondo=1, character=5, bubble=10 */
 .character-overlay {
   position: absolute;
-  transform: translate(-50%, -50%);
+  /* La escala (--panel-scale) reduce el tamaño visual del personaje
+     cuando la ventana se achica, sin mover su centro. */
+  transform: translate(-50%, -50%) scale(var(--panel-scale, 1));
   /* left/top los pone el JS en estilos inline */
   width: 120px;
   height: auto;
@@ -984,7 +997,8 @@ html.edit-mode-unlocked.editor-open .bubble::before {
 .character-overlay.dragging {
   cursor: grabbing;
   opacity: 0.85;
-  transform: translate(-50%, -50%) scale(1.02);
+  /* 1.02 = "lift" sutil al arrastrar, sin perder el --panel-scale del panel. */
+  transform: translate(-50%, -50%) scale(calc(var(--panel-scale, 1) * 1.02));
   box-shadow: 0 18px 32px rgba(31, 42, 58, 0.4);
   filter: drop-shadow(0 8px 16px rgba(31, 42, 58, 0.35));
   z-index: 999;
@@ -1517,7 +1531,7 @@ button#editor-toggle {
 .character-overlay.dragging {
   animation: none !important;
   transition: none !important;
-  transform: translate(-50%, -50%) scale(1.02) !important;
+  transform: translate(-50%, -50%) scale(calc(var(--panel-scale, 1) * 1.02)) !important;
   cursor: grabbing !important;
   opacity: 0.95 !important;
   box-shadow: 0 18px 32px rgba(31, 42, 58, 0.4) !important;
@@ -1709,7 +1723,7 @@ html.edit-mode-unlocked.editor-open .edit-mode-hint {
 @media (prefers-reduced-motion: reduce) {
   .bubble.dragging,
   .character-overlay.dragging {
-    transform: translate(-50%, -50%) !important;
+    transform: translate(-50%, -50%) scale(var(--panel-scale, 1)) !important;
     filter: none;
   }
   .edit-mode-hint { transition: none; }

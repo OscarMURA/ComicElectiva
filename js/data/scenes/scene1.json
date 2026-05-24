@@ -185,8 +185,8 @@
         "w": 60
       },
       "e1-p2-char-mpisygbj": {
-        "h": 270,
-        "w": 886
+        "h": 245,
+        "w": 804
       },
       "e1-up-mpitlb8kqmv-char-mpittg40": {
         "h": 699,
@@ -304,8 +304,8 @@
           "text": "Esa mañana, el agua salió enferma.\n\nNico abrió la manguera como todos los días, \npero esta vez la serpiente verde no cantó: \ntosió un chorro café que olía a algo viejo.",
           "type": "narration",
           "width": 80,
-          "x": 45.47395833333333,
-          "y": 9.601851851851851
+          "x": 45.48095703125,
+          "y": 9.713541666666666
         },
         {
           "id": "e1-p2-umpiu7lse",
@@ -313,8 +313,8 @@
           "speaker": "narrator",
           "text": "Bongo… esta agua no está enferma. \nEstá triste.",
           "type": "speech",
-          "x": 59.699999999999996,
-          "y": 40.59074074074074
+          "x": 59.683837890625,
+          "y": 40.61631944444444
         },
         {
           "id": "e1-p2-umpiu8fgl",
@@ -322,8 +322,8 @@
           "speaker": "narrator",
           "text": "Guau, Guau",
           "type": "speech",
-          "x": 57.84583333333333,
-          "y": 58.54259259259259
+          "x": 61.02294921875,
+          "y": 58.95616319444444
         },
         {
           "id": "e1-p2-umpiu969h",
@@ -331,8 +331,8 @@
           "speaker": "narrator",
           "text": "Jummmm",
           "type": "thought",
-          "x": 42.15625,
-          "y": 64.27407407407408
+          "x": 40.230712890625,
+          "y": 61.57552083333333
         }
       ],
       "e1-p3": [
@@ -436,15 +436,15 @@
       },
       {
         "dataURL": "assets/uploads/a9a380fc60225b94.png",
-        "height": 270,
+        "height": 245,
         "id": "e1-p2-char-mpisygbj",
         "mediaType": "image",
         "name": "bongo e1.a",
         "panelId": "e1-p2",
         "position": "center",
-        "size": 886,
+        "size": 804,
         "x": 48.11,
-        "y": 70.54
+        "y": 70.48
       },
       {
         "dataURL": "assets/uploads/aeb9d0d1884c977f.png",
@@ -484,7 +484,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-24T00:43:29.134Z",
   "scene": "1",
   "version": 1
 }
