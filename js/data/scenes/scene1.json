@@ -172,10 +172,6 @@
       }
     },
     "comic-character-sizes": {
-      "e1-p1-char-mpioqvco": {
-        "h": 844,
-        "w": 1500
-      },
       "e1-p2-char-mpisn8m2": {
         "h": 422,
         "w": 926
@@ -226,6 +222,7 @@
       "e1-up-mpitlb8kqmv"
     ],
     "comic-user-backgrounds": {
+      "e1-p1": "assets/uploads/5902e25454101e3e.mp4",
       "e1-p2": "assets/uploads/1354ccda36a78e25.png",
       "e1-p3": "assets/uploads/5a34274287bddea9.png",
       "e1-up-mpitlb8kqmv": "assets/uploads/702a5c54209798d1.png"
@@ -292,8 +289,8 @@
           "speaker": "narrator",
           "text": "Los humanos creen que ven el mundo. Mentira. Yo, Bongo, lo huelo. Y hoy les voy a contar cómo mi humano pequeño, Nico, descubrió que el agua tiene memoria… y que el hambre tiene mapa.",
           "type": "speech",
-          "x": 69.766845703125,
-          "y": 61.271701388888886
+          "x": 75.15869140625,
+          "y": 17.779947916666668
         }
       ],
       "e1-p2": [
@@ -399,18 +396,6 @@
     },
     "comic-user-characters": [
       {
-        "dataURL": "assets/uploads/5902e25454101e3e.mp4",
-        "height": 844,
-        "id": "e1-p1-char-mpioqvco",
-        "mediaType": "video",
-        "name": "bongoNarradorVideo",
-        "panelId": "e1-p1",
-        "position": "center",
-        "size": 1500,
-        "x": 50.64,
-        "y": 49.8
-      },
-      {
         "dataURL": "assets/uploads/1f42a2ff63da9530.png",
         "height": 422,
         "id": "e1-p2-char-mpisn8m2",
@@ -484,7 +469,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T00:43:29.134Z",
+  "savedAt": "2026-05-24T01:24:15.202Z",
   "scene": "1",
   "version": 1
 }
