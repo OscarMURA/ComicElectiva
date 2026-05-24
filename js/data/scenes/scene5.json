@@ -5,6 +5,10 @@
       "e5-p2-d0": {
         "x": 26.99737548828125,
         "y": 13.148328993055555
+      },
+      "e5-up-19e58704777zeu-d0": {
+        "x": 72,
+        "y": 72
       }
     },
     "comic-character-sizes": {
@@ -27,9 +31,28 @@
       "e5-p2-char-mpjagikv": {
         "h": 311,
         "w": 683
+      },
+      "e5-up-19e58704777zeu-char-mpj8icyx": {
+        "h": 332,
+        "w": 608
+      },
+      "e5-up-19e58704777zeu-char-mpj8jm7i": {
+        "h": 155,
+        "w": 510
       }
     },
+    "comic-extra-panels": {
+      "5": [
+        {
+          "dialogues": [],
+          "id": "e5-up-19e58704777zeu",
+          "image": "",
+          "narration": ""
+        }
+      ]
+    },
     "comic-panel-order": [
+      "e5-up-19e58704777zeu",
       "e5-p1",
       "e5-p2",
       "e5-p3"
@@ -37,7 +60,8 @@
     "comic-user-backgrounds": {
       "e5-p1": "assets/uploads/8e31600dc7df54e6.png",
       "e5-p2": "assets/uploads/189a78246e0347ee.png",
-      "e5-p3": "assets/uploads/189a78246e0347ee.png"
+      "e5-p3": "assets/uploads/189a78246e0347ee.png",
+      "e5-up-19e58704777zeu": "assets/uploads/09549488280c26e5.png"
     },
     "comic-user-characters": [
       {
@@ -99,10 +123,34 @@
         "size": 683,
         "x": 22.71,
         "y": 64.32
+      },
+      {
+        "dataURL": "assets/uploads/d1bbe4269032417d.png",
+        "height": 332,
+        "id": "e5-up-19e58704777zeu-char-mpj8icyx",
+        "mediaType": "image",
+        "name": "NICO",
+        "panelId": "e5-up-19e58704777zeu",
+        "position": "center",
+        "size": 608,
+        "x": 46.83,
+        "y": 70.62
+      },
+      {
+        "dataURL": "assets/uploads/9bd33f85b385f34c.png",
+        "height": 155,
+        "id": "e5-up-19e58704777zeu-char-mpj8jm7i",
+        "mediaType": "image",
+        "name": "BONGO",
+        "panelId": "e5-up-19e58704777zeu",
+        "position": "center",
+        "size": 510,
+        "x": 48.24,
+        "y": 78.68
       }
     ]
   },
-  "savedAt": "2026-05-24T05:20:11.501Z",
+  "savedAt": "2026-05-24T05:23:33.879298Z",
   "scene": "5",
   "version": 1
 }
