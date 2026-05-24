@@ -7,6 +7,7 @@
       "e1-p1-narration": 40,
       "e1-p1-ucmpiosrij": 22,
       "e1-p2-narration": 18,
+      "e1-p2-ucmpjciwax": 20,
       "e1-p3-ucmpit8u5t": 40,
       "e1-up-mpitlb8kqmv-ucmpiufiys": 18,
       "e1-up-mpitlb8kqmv-umpiugu7u": 19
@@ -122,6 +123,10 @@
         "h": 68,
         "w": 319
       },
+      "e1-p2-ucmpjciwax": {
+        "h": 57,
+        "w": 259
+      },
       "e1-p3-ucmpit8u5t": {
         "h": 96,
         "w": 506
@@ -146,6 +151,9 @@
       "e1-p2-ucmpiu66of": {
         "sequence": 1
       },
+      "e1-p2-ucmpjciwax": {
+        "sequence": 3
+      },
       "e1-p2-umpiu7lse": {
         "sequence": 1
       },
@@ -155,11 +163,17 @@
       "e1-p2-umpiu969h": {
         "sequence": 3
       },
+      "e1-p2-umpjcg69o": {
+        "sequence": 4
+      },
       "e1-up-mpitlb8kqmv-ucmpiubiet": {
         "sequence": 1
       },
       "e1-up-mpitlb8kqmv-ucmpiufiys": {
         "sequence": 3
+      },
+      "e1-up-mpitlb8kqmv-ucmpjcr3q7": {
+        "sequence": 1
       },
       "e1-up-mpitlb8kqmv-umpiuet0r": {
         "sequence": 2
@@ -168,7 +182,13 @@
         "sequence": 4
       },
       "e1-up-mpitlb8kqmv-umpiuhqav": {
-        "sequence": 5
+        "sequence": 3
+      },
+      "e1-up-mpitlb8kqmv-umpjchtve": {
+        "sequence": 2
+      },
+      "e1-up-mpitlb8kqmv-umpjckru7": {
+        "sequence": 4
       }
     },
     "comic-character-sizes": {
@@ -310,8 +330,8 @@
           "speaker": "narrator",
           "text": "Bongo… esta agua no está enferma. \nEstá triste.",
           "type": "speech",
-          "x": 59.683837890625,
-          "y": 40.61631944444444
+          "x": 59.652099609375,
+          "y": 40.666232638888886
         },
         {
           "id": "e1-p2-umpiu8fgl",
@@ -319,17 +339,27 @@
           "speaker": "narrator",
           "text": "Guau, Guau",
           "type": "speech",
-          "x": 61.02294921875,
-          "y": 58.95616319444444
+          "x": 60.968017578125,
+          "y": 59.001736111111114
         },
         {
-          "id": "e1-p2-umpiu969h",
+          "id": "e1-p2-umpjcg69o",
           "position": "bottom-left",
           "speaker": "narrator",
-          "text": "Jummmm",
+          "text": "La serpiente verde no canta hoy. \nAntes cantaba claro, como campana mojada. \nHoy gruñe. Huele a monedas viejas, \na sótano, a algo que durmió mucho tiempo.",
           "type": "thought",
-          "x": 40.230712890625,
-          "y": 61.57552083333333
+          "x": 24.8681640625,
+          "y": 62.06163194444444
+        },
+        {
+          "id": "e1-p2-ucmpjciwax",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Bongo olfateó el aire y supo",
+          "type": "narration",
+          "width": 80,
+          "x": 47.02880859375,
+          "y": 91.90972222222223
         }
       ],
       "e1-p3": [
@@ -346,51 +376,41 @@
       ],
       "e1-up-mpitlb8kqmv": [
         {
-          "id": "e1-up-mpitlb8kqmv-ucmpiubiet",
-          "position": "bottom-center",
-          "speaker": "narrator",
-          "text": "Nico y Bongo se quedaron quietos. \nMuy quietos.\n\nComo si entendieran, sin palabras, \nque algo importante acababa de empezar.",
-          "type": "narration",
-          "width": 80,
-          "x": 48.030208333333334,
-          "y": 5.568518518518519
-        },
-        {
-          "id": "e1-up-mpitlb8kqmv-umpiuet0r",
-          "position": "bottom-left",
-          "speaker": "narrator",
-          "text": "Y si ...",
-          "type": "thought",
-          "x": 76.18854166666667,
-          "y": 34.86666666666667
-        },
-        {
-          "id": "e1-up-mpitlb8kqmv-ucmpiufiys",
-          "position": "bottom-center",
-          "speaker": "narrator",
-          "text": "Bongo olfateó el aire y supo",
-          "type": "narration",
-          "width": 80,
-          "x": 9.726041666666667,
-          "y": 72.85925925925926
-        },
-        {
-          "id": "e1-up-mpitlb8kqmv-umpiugu7u",
-          "position": "bottom-left",
-          "speaker": "narrator",
-          "text": "La serpiente verde no canta hoy. \nAntes cantaba claro, como campana mojada. \nHoy gruñe. Huele a monedas viejas, \na sótano, a algo que durmió mucho tiempo.",
-          "type": "thought",
-          "x": 18.208333333333336,
-          "y": 54.76296296296296
-        },
-        {
           "id": "e1-up-mpitlb8kqmv-umpiuhqav",
           "position": "bottom-left",
           "speaker": "narrator",
           "text": "Guau Guau",
           "type": "speech",
-          "x": 37.88333333333333,
-          "y": 71.98148148148148
+          "x": 37.919921875,
+          "y": 71.85546875
+        },
+        {
+          "id": "e1-up-mpitlb8kqmv-umpjchtve",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Y si, la toco que pasara ...",
+          "type": "thought",
+          "x": 84.796142578125,
+          "y": 30.501302083333332
+        },
+        {
+          "id": "e1-up-mpitlb8kqmv-umpjckru7",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Veamos pues que pasara...",
+          "type": "thought",
+          "x": 14.571533203125,
+          "y": 63.307291666666664
+        },
+        {
+          "id": "e1-up-mpitlb8kqmv-ucmpjcr3q7",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Con Nico nos quedamos quietos. \nMuy quietos.\n\nComo si entendieramos, sin palabras, \nque algo importante acababa de empezar.",
+          "type": "narration",
+          "width": 80,
+          "x": 49.910888671875,
+          "y": 8.296440972222221
         }
       ]
     },
@@ -404,8 +424,8 @@
         "panelId": "e1-p2",
         "position": "center",
         "size": 926,
-        "x": 80.98,
-        "y": 63.26
+        "x": 80.88,
+        "y": 63.19
       },
       {
         "dataURL": "assets/uploads/95b9e222ab103958.webp",
@@ -440,8 +460,8 @@
         "panelId": "e1-up-mpitlb8kqmv",
         "position": "center",
         "size": 1500,
-        "x": 68.87,
-        "y": 72.41
+        "x": 68.57,
+        "y": 71.78
       },
       {
         "dataURL": "assets/uploads/95b9e222ab103958.webp",
@@ -469,7 +489,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T01:24:15.202Z",
+  "savedAt": "2026-05-24T05:44:29.185Z",
   "scene": "1",
   "version": 1
 }

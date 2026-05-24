@@ -6,7 +6,19 @@
       "c2-p3-d0": 10,
       "c2-p3-d1": 10,
       "c2-p4-d0": 13,
-      "c2-p4-d1": 20
+      "c2-p4-d1": 20,
+      "e2-p1-ucmpjcti8m": 25,
+      "e2-p1-ucmpjcvvey": 22,
+      "e2-p1-ucmpjcwcz5": 26,
+      "e2-p1-ucmpjd8uxx": 25,
+      "e2-p1-umpjd81ut": 21,
+      "e2-p2-ucmpjcy8o1": 22,
+      "e2-p2-ucmpjcyngn": 22,
+      "e2-p2-umpjd2eiz": 18,
+      "e2-p2-umpjd5i4p": 10,
+      "e2-p3-ucmpjdcn3t": 26,
+      "e2-p3-ucmpjdguit": 25,
+      "e2-p3-ucmpjdytg7": 25
     },
     "comic-bubble-positions": {
       "c2-p1-d0": {
@@ -94,6 +106,89 @@
       "c2-p4-d1": {
         "h": 133,
         "w": 127
+      },
+      "e2-p1-ucmpjcti8m": {
+        "h": 57,
+        "w": 318
+      },
+      "e2-p1-ucmpjcvvey": {
+        "h": 57,
+        "w": 532
+      },
+      "e2-p1-ucmpjcwcz5": {
+        "h": 78,
+        "w": 535
+      },
+      "e2-p1-ucmpjd8uxx": {
+        "h": 77,
+        "w": 529
+      },
+      "e2-p1-umpjd81ut": {
+        "h": 60,
+        "w": 149
+      },
+      "e2-p2-ucmpjcy8o1": {
+        "h": 57,
+        "w": 224
+      },
+      "e2-p2-ucmpjcyngn": {
+        "h": 96,
+        "w": 350
+      },
+      "e2-p2-umpjd2eiz": {
+        "h": 74,
+        "w": 187
+      },
+      "e2-p2-umpjd5i4p": {
+        "h": 60,
+        "w": 170
+      }
+    },
+    "comic-bubble-timing": {
+      "e2-p1-ucmpjcti8m": {
+        "sequence": 1
+      },
+      "e2-p1-ucmpjcwcz5": {
+        "sequence": 1
+      },
+      "e2-p1-ucmpjd8uxx": {
+        "sequence": 1
+      },
+      "e2-p1-umpjclwed": {
+        "sequence": 2
+      },
+      "e2-p1-umpjcxl48": {
+        "sequence": 4
+      },
+      "e2-p1-umpjd81ut": {
+        "sequence": 3
+      },
+      "e2-p2-ucmpjcyngn": {
+        "sequence": 1
+      },
+      "e2-p2-ucmpjd0452": {
+        "sequence": 2
+      },
+      "e2-p2-umpjd2eiz": {
+        "sequence": 4
+      },
+      "e2-p2-umpjd4f75": {
+        "sequence": 3
+      },
+      "e2-p3-ucmpjdcn3t": {
+        "sequence": 1
+      },
+      "e2-p3-ucmpjdguit": {
+        "sequence": 1
+      },
+      "e2-p3-ucmpjdytg7": {
+        "sequence": 1
+      },
+      "e2-p3-umpjde8vr": {
+        "sequence": 2
+      },
+      "e2-p3-umpjdff2l": {
+        "sequence": 3
       }
     },
     "comic-character-sizes": {
@@ -142,6 +237,135 @@
       "e2-p2": "assets/uploads/e2fe20712b39c8ea.png",
       "e2-p3": "assets/uploads/db90a949f1b02c19.png"
     },
+    "comic-user-bubbles": {
+      "e2-p1": [
+        {
+          "id": "e2-p1-umpjclwed",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Wooooh, whoooh...",
+          "type": "speech",
+          "x": 80.318603515625,
+          "y": 17.91449652777778
+        },
+        {
+          "id": "e2-p1-umpjcxl48",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Guau Guau :D",
+          "type": "speech",
+          "x": 35.37841796875,
+          "y": 28.895399305555557
+        },
+        {
+          "id": "e2-p1-umpjd81ut",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "¿Qué aventura nos esperará?",
+          "type": "speech",
+          "x": 88.9013671875,
+          "y": 33.20529513888889
+        },
+        {
+          "id": "e2-p1-ucmpjd8uxx",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Nico extendió la mano… y la gota nos invitó a entrar.",
+          "type": "narration",
+          "width": 80,
+          "x": 23.43994140625,
+          "y": 7.879774305555555
+        }
+      ],
+      "e2-p2": [
+        {
+          "id": "e2-p2-ucmpjcyngn",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Y entonces… volamos",
+          "type": "narration",
+          "width": 80,
+          "x": 50.350341796875,
+          "y": 7.549913194444445
+        },
+        {
+          "id": "e2-p2-ucmpjd0452",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "No hacia adelante. Hacia adentro.\nAl alrededor flotaban recuerdos:\nuna abuela lavando ropa en un río limpio,\nun niño bebiendo de una totuma,\nuna nube reventando sobre los Farallones,\nun pez plateado saltando.",
+          "type": "narration",
+          "width": 80,
+          "x": 48.236083984375,
+          "y": 91.38888888888889
+        },
+        {
+          "id": "e2-p2-umpjd2eiz",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Lo entiendo, el agua se acuerda de todo.",
+          "type": "thought",
+          "x": 65.384521484375,
+          "y": 48.78038194444444
+        },
+        {
+          "id": "e2-p2-umpjd4f75",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Bongo, Cada gota… tiene memoria de dónde estuvo.",
+          "type": "speech",
+          "x": 18.12255859375,
+          "y": 28.370225694444446
+        },
+        {
+          "id": "e2-p2-umpjd5x2n",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Guau Guau",
+          "type": "speech",
+          "x": 38.526611328125,
+          "y": 53.190104166666664
+        }
+      ],
+      "e2-p3": [
+        {
+          "id": "e2-p3-umpjde8vr",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Bongo, ¿sabes dónde caímos?",
+          "type": "speech",
+          "x": 22.381591796875,
+          "y": 44.00390625
+        },
+        {
+          "id": "e2-p3-umpjdff2l",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Uy, ni yo sé...",
+          "type": "thought",
+          "x": 79.990234375,
+          "y": 61.87934027777777
+        },
+        {
+          "id": "e2-p3-umpjdg044",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Guau Guan :0",
+          "type": "speech",
+          "x": 83.006591796875,
+          "y": 72.98611111111111
+        },
+        {
+          "id": "e2-p3-ucmpjdytg7",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Aterrizamos suavemente. Como si la gota nos hubiera dejado allí… para que vieramos algo.",
+          "type": "narration",
+          "width": 80,
+          "x": 50.03662109375,
+          "y": 9.08420138888889
+        }
+      ]
+    },
     "comic-user-characters": [
       {
         "dataURL": "assets/uploads/e1f409685ba33f5e.png",
@@ -152,8 +376,8 @@
         "panelId": "e2-p1",
         "position": "center",
         "size": 876,
-        "x": 26.37,
-        "y": 51.69
+        "x": 26.48,
+        "y": 51.67
       },
       {
         "dataURL": "assets/uploads/3afd08590e758f37.png",
@@ -164,7 +388,7 @@
         "panelId": "e2-p1",
         "position": "center",
         "size": 865,
-        "x": 73.65,
+        "x": 73.61,
         "y": 47.78
       },
       {
@@ -188,8 +412,8 @@
         "panelId": "e2-p2",
         "position": "center",
         "size": 60,
-        "x": 34.36,
-        "y": 54.82
+        "x": 53.19,
+        "y": 55.55
       },
       {
         "dataURL": "assets/uploads/86b1a431c8f5323d.png",
@@ -200,8 +424,8 @@
         "panelId": "e2-p2",
         "position": "center",
         "size": 509,
-        "x": 30.77,
-        "y": 54.98
+        "x": 49.37,
+        "y": 55.36
       },
       {
         "dataURL": "assets/uploads/1e308e2850bc0990.png",
@@ -212,8 +436,8 @@
         "panelId": "e2-p3",
         "position": "center",
         "size": 966,
-        "x": 39.15,
-        "y": 68.56
+        "x": 39.17,
+        "y": 68.51
       },
       {
         "dataURL": "assets/uploads/c097ab29ea21ac29.png",
@@ -229,7 +453,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-24T06:18:19.873Z",
   "scene": "2",
   "version": 1
 }
