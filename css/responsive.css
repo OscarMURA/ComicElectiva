@@ -166,6 +166,25 @@
     overflow: hidden !important;
   }
 
+  /* Personajes en mobile: clamp del ancho relativo al viewport para que no
+     dominen el panel. El usuario los crea en desktop con tamaño px (ej.
+     200-300 px); en celular eso ocupa 60-80 % del ancho. Aquí los
+     limitamos a ~45 vw manteniendo proporción (height: auto). */
+  html.is-mobile .character-overlay,
+  html.is-mobile .character-overlay[style],
+  html.is-mobile .character-overlay[style*="width"],
+  html.is-mobile .character-overlay[style*="height"] {
+    max-width: 45vw !important;
+    max-height: 60vh !important;
+    height: auto !important;
+  }
+  /* Salvavidas sin depender de html.is-mobile (si el JS no llegó a marcar). */
+  .character-overlay,
+  .character-overlay[style] {
+    max-width: 45vw;
+    max-height: 60vh;
+  }
+
   /* Intro de capítulo en mobile: compacta para no estorbar el scroll. */
   html.is-mobile .chapter-intro,
   html.is-mobile .chapter__intro {
