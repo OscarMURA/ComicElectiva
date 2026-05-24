@@ -11,7 +11,7 @@
       "e2-p1-ucmpjcvvey": 22,
       "e2-p1-ucmpjcwcz5": 26,
       "e2-p1-ucmpjd8uxx": 25,
-      "e2-p1-umpjd81ut": 21,
+      "e2-p1-umpjd81ut": 10,
       "e2-p2-ucmpjcy8o1": 22,
       "e2-p2-ucmpjcyngn": 22,
       "e2-p2-umpjd2eiz": 18,
@@ -263,8 +263,8 @@
           "speaker": "narrator",
           "text": "¿Qué aventura nos esperará?",
           "type": "speech",
-          "x": 88.9013671875,
-          "y": 33.20529513888889
+          "x": 88.4429931640625,
+          "y": 33.54763454861111
         },
         {
           "id": "e2-p1-ucmpjd8uxx",
@@ -453,7 +453,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T06:18:19.873Z",
+  "savedAt": "2026-05-24T14:44:43.387Z",
   "scene": "2",
   "version": 1
 }

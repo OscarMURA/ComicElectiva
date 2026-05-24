@@ -182,10 +182,64 @@
         "dataURL": "assets/uploads/ea0392d187e949d0.png",
         "mediaType": "image",
         "name": "Luz y NICO"
+      },
+      {
+        "_key": "personaje::assets/uploads/9011c34f82cba70f.png",
+        "dataURL": "assets/uploads/9011c34f82cba70f.png",
+        "mediaType": "image",
+        "name": "personaje"
+      },
+      {
+        "_key": "Nico::assets/uploads/a7d6bb2c1738f979.png",
+        "dataURL": "assets/uploads/a7d6bb2c1738f979.png",
+        "mediaType": "image",
+        "name": "Nico"
+      },
+      {
+        "_key": "NICO::assets/uploads/664b0415e15ba8d0.png",
+        "dataURL": "assets/uploads/664b0415e15ba8d0.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "NICO::assets/uploads/191bc75ea050e421.png",
+        "dataURL": "assets/uploads/191bc75ea050e421.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "flecha::assets/uploads/7344a94ad31ac2a1.png",
+        "dataURL": "assets/uploads/7344a94ad31ac2a1.png",
+        "mediaType": "image",
+        "name": "flecha"
+      },
+      {
+        "_key": "BONGO::assets/uploads/9cbc58c2042b9651.png",
+        "dataURL": "assets/uploads/9cbc58c2042b9651.png",
+        "mediaType": "image",
+        "name": "BONGO"
+      },
+      {
+        "_key": "NICO Y BONGO::assets/uploads/5822d8759eee52f3.png",
+        "dataURL": "assets/uploads/5822d8759eee52f3.png",
+        "mediaType": "image",
+        "name": "NICO Y BONGO"
+      },
+      {
+        "_key": "NICO Y BONGO::assets/uploads/5e404cb3eebd52f8.png",
+        "dataURL": "assets/uploads/5e404cb3eebd52f8.png",
+        "mediaType": "image",
+        "name": "NICO Y BONGO"
+      },
+      {
+        "_key": "NICO Y BONGO::assets/uploads/3aca4aced1bbcdfc.png",
+        "dataURL": "assets/uploads/3aca4aced1bbcdfc.png",
+        "mediaType": "image",
+        "name": "NICO Y BONGO"
       }
     ]
   },
-  "savedAt": "2026-05-24T04:34:31.131Z",
+  "savedAt": "2026-05-24T17:22:27.270Z",
   "scene": "global",
   "version": 1
 }

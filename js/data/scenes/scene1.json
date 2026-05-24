@@ -8,6 +8,7 @@
       "e1-p1-ucmpiosrij": 22,
       "e1-p2-narration": 18,
       "e1-p2-ucmpjciwax": 20,
+      "e1-p2-umpiu7lse": 22,
       "e1-p3-ucmpit8u5t": 40,
       "e1-up-mpitlb8kqmv-ucmpiufiys": 18,
       "e1-up-mpitlb8kqmv-umpiugu7u": 19
@@ -126,6 +127,10 @@
       "e1-p2-ucmpjciwax": {
         "h": 57,
         "w": 259
+      },
+      "e1-p2-umpiu7lse": {
+        "h": 60,
+        "w": 419
       },
       "e1-p3-ucmpit8u5t": {
         "h": 96,
@@ -330,8 +335,8 @@
           "speaker": "narrator",
           "text": "Bongo… esta agua no está enferma. \nEstá triste.",
           "type": "speech",
-          "x": 59.652099609375,
-          "y": 40.666232638888886
+          "x": 59.613037109375,
+          "y": 40.72808159722222
         },
         {
           "id": "e1-p2-umpiu8fgl",
@@ -489,7 +494,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T05:44:29.185Z",
+  "savedAt": "2026-05-24T14:44:58.798Z",
   "scene": "1",
   "version": 1
 }

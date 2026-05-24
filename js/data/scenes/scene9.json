@@ -1,13 +1,103 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-positions": {
+      "e9-p1-d0": {
+        "x": 11.32049560546875,
+        "y": 18.809678819444446
+      },
+      "e9-p1-narration": {
+        "x": 9.64508056640625,
+        "y": 40.49750434027778
+      },
+      "e9-p2-d0": {
+        "x": 73.0010986328125,
+        "y": 69.20301649305556
+      }
+    },
+    "comic-character-sizes": {
+      "e9-p1-char-mpjysnzo": {
+        "h": 591,
+        "w": 1280
+      },
+      "e9-p1-char-mpjyx6e0": {
+        "h": 205,
+        "w": 400
+      },
+      "e9-p1-char-mpjz0kp4": {
+        "h": 60,
+        "w": 94
+      },
+      "e9-p1-char-mpjzf7ks": {
+        "h": 184,
+        "w": 605
+      },
+      "e9-p2-char-mpk1p5xf": {
+        "h": 554,
+        "w": 554
+      }
+    },
     "comic-panel-order": [
       "e9-p1",
       "e9-p2",
       "e9-p3"
+    ],
+    "comic-user-backgrounds": {
+      "e9-p1": "assets/uploads/ab025bbbe312b45c.png",
+      "e9-p2": "assets/uploads/7a9d110ca232c6d1.png"
+    },
+    "comic-user-characters": [
+      {
+        "dataURL": "assets/uploads/191bc75ea050e421.png",
+        "height": 591,
+        "id": "e9-p1-char-mpjysnzo",
+        "mediaType": "image",
+        "name": "NICO",
+        "panelId": "e9-p1",
+        "position": "center",
+        "size": 1280,
+        "x": 59.26,
+        "y": 74.16
+      },
+      {
+        "dataURL": "assets/uploads/7344a94ad31ac2a1.png",
+        "height": 60,
+        "id": "e9-p1-char-mpjz0kp4",
+        "mediaType": "image",
+        "name": "flecha",
+        "panelId": "e9-p1",
+        "position": "center",
+        "size": 94,
+        "x": 81.3,
+        "y": 73.19
+      },
+      {
+        "dataURL": "assets/uploads/9cbc58c2042b9651.png",
+        "height": 184,
+        "id": "e9-p1-char-mpjzf7ks",
+        "mediaType": "image",
+        "name": "BONGO",
+        "panelId": "e9-p1",
+        "position": "center",
+        "size": 605,
+        "x": 21.28,
+        "y": 87.85
+      },
+      {
+        "dataURL": "assets/uploads/3aca4aced1bbcdfc.png",
+        "height": 554,
+        "id": "e9-p2-char-mpk1p5xf",
+        "mediaType": "image",
+        "name": "NICO Y BONGO",
+        "panelId": "e9-p2",
+        "position": "left",
+        "size": 554,
+        "x": 30.12,
+        "y": 36.2
+      }
     ]
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-24T17:22:39.603Z",
   "scene": "9",
   "version": 1
 }
