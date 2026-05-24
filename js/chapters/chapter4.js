@@ -22,14 +22,8 @@ window.Chapters[4] = {
       dialogues: [
         { speaker: 'bongo', text: '...', position: 'center', x: 50, y: 50, width: 40 }
       ]
-    },
-    {
-      id: 'e4-p3',
-      image: '',
-      narration: '',
-      dialogues: [
-        { speaker: 'bongo', text: '...', position: 'bottom-right', x: 72, y: 72, width: 35 }
-      ]
     }
+    // Nota: el panel 'e4-p3' se movió a la escena 5 como su primer panel
+    // (ver js/data/scenes/scene5.json → comic-extra-panels[5]).
   ]
 };
