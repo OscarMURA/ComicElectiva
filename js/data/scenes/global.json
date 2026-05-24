@@ -80,10 +80,112 @@
         "dataURL": "assets/uploads/c097ab29ea21ac29.png",
         "mediaType": "image",
         "name": "Bongo 2c"
+      },
+      {
+        "_key": "NICO::assets/uploads/a8fa0efc2d1be1c1.png",
+        "dataURL": "assets/uploads/a8fa0efc2d1be1c1.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "BONGO::assets/uploads/ca2e3e1fb7d33e85.png",
+        "dataURL": "assets/uploads/ca2e3e1fb7d33e85.png",
+        "mediaType": "image",
+        "name": "BONGO"
+      },
+      {
+        "_key": "DON EFRAÍN::assets/uploads/552b91fd2eee6d3f.png",
+        "dataURL": "assets/uploads/552b91fd2eee6d3f.png",
+        "mediaType": "image",
+        "name": "DON EFRAÍN"
+      },
+      {
+        "_key": "NICO::assets/uploads/624447d8b3c9f51d.png",
+        "dataURL": "assets/uploads/624447d8b3c9f51d.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "BONGO::assets/uploads/baa99ed158dba48c.png",
+        "dataURL": "assets/uploads/baa99ed158dba48c.png",
+        "mediaType": "image",
+        "name": "BONGO"
+      },
+      {
+        "_key": "BONGO::assets/uploads/e452d91f9b999a48.png",
+        "dataURL": "assets/uploads/e452d91f9b999a48.png",
+        "mediaType": "image",
+        "name": "BONGO"
+      },
+      {
+        "_key": "bola::assets/uploads/d5b33375c343b696.png",
+        "dataURL": "assets/uploads/d5b33375c343b696.png",
+        "mediaType": "image",
+        "name": "bola"
+      },
+      {
+        "_key": "NICO::assets/uploads/196b073d841f3599.png",
+        "dataURL": "assets/uploads/196b073d841f3599.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "NICO::assets/uploads/0d7c1745389295a6.png",
+        "dataURL": "assets/uploads/0d7c1745389295a6.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "BONGO::assets/uploads/65716bbf66b5e365.png",
+        "dataURL": "assets/uploads/65716bbf66b5e365.png",
+        "mediaType": "image",
+        "name": "BONGO"
+      },
+      {
+        "_key": "NICO::assets/uploads/32b92a8da3220b8c.png",
+        "dataURL": "assets/uploads/32b92a8da3220b8c.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "BONGO::assets/uploads/0000ed9f9cc41c67.png",
+        "dataURL": "assets/uploads/0000ed9f9cc41c67.png",
+        "mediaType": "image",
+        "name": "BONGO"
+      },
+      {
+        "_key": "NICO::assets/uploads/d1bbe4269032417d.png",
+        "dataURL": "assets/uploads/d1bbe4269032417d.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "BONGO::assets/uploads/9bd33f85b385f34c.png",
+        "dataURL": "assets/uploads/9bd33f85b385f34c.png",
+        "mediaType": "image",
+        "name": "BONGO"
+      },
+      {
+        "_key": "LUZ::assets/uploads/cc09efc803e5c1ec.png",
+        "dataURL": "assets/uploads/cc09efc803e5c1ec.png",
+        "mediaType": "image",
+        "name": "LUZ"
+      },
+      {
+        "_key": "NICO::assets/uploads/ac91ab39dba262e3.png",
+        "dataURL": "assets/uploads/ac91ab39dba262e3.png",
+        "mediaType": "image",
+        "name": "NICO"
+      },
+      {
+        "_key": "Luz y NICO::assets/uploads/ea0392d187e949d0.png",
+        "dataURL": "assets/uploads/ea0392d187e949d0.png",
+        "mediaType": "image",
+        "name": "Luz y NICO"
       }
     ]
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-24T04:34:31.131Z",
   "scene": "global",
   "version": 1
 }

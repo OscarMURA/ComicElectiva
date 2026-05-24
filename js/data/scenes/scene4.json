@@ -1,13 +1,128 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-positions": {
+      "e4-p2-d0": {
+        "x": 16.08123779296875,
+        "y": 32.177734375
+      },
+      "e4-p3-d0": {
+        "x": 72,
+        "y": 72
+      }
+    },
+    "comic-character-sizes": {
+      "e4-p1-char-mpj8c3w7": {
+        "h": 416,
+        "w": 915
+      },
+      "e4-p1-char-mpj8cxza": {
+        "h": 108,
+        "w": 238
+      },
+      "e4-p2-char-mpj8ebu6": {
+        "h": 370,
+        "w": 813
+      },
+      "e4-p2-char-mpj8fxlx": {
+        "h": 208,
+        "w": 683
+      },
+      "e4-p3-char-mpj8icyx": {
+        "h": 332,
+        "w": 608
+      },
+      "e4-p3-char-mpj8jm7i": {
+        "h": 155,
+        "w": 510
+      }
+    },
     "comic-panel-order": [
       "e4-p1",
       "e4-p2",
       "e4-p3"
+    ],
+    "comic-user-backgrounds": {
+      "e4-p1": "assets/uploads/7791e53013e8a464.png",
+      "e4-p2": "assets/uploads/2589c1bd106ca244.png",
+      "e4-p3": "assets/uploads/09549488280c26e5.png"
+    },
+    "comic-user-characters": [
+      {
+        "dataURL": "assets/uploads/0d7c1745389295a6.png",
+        "height": 416,
+        "id": "e4-p1-char-mpj8c3w7",
+        "mediaType": "image",
+        "name": "NICO",
+        "panelId": "e4-p1",
+        "position": "center",
+        "size": 915,
+        "x": 67.91,
+        "y": 69.94
+      },
+      {
+        "dataURL": "assets/uploads/65716bbf66b5e365.png",
+        "height": 108,
+        "id": "e4-p1-char-mpj8cxza",
+        "mediaType": "image",
+        "name": "BONGO",
+        "panelId": "e4-p1",
+        "position": "center",
+        "size": 238,
+        "x": 38.64,
+        "y": 66.3
+      },
+      {
+        "dataURL": "assets/uploads/32b92a8da3220b8c.png",
+        "height": 370,
+        "id": "e4-p2-char-mpj8ebu6",
+        "mediaType": "image",
+        "name": "NICO",
+        "panelId": "e4-p2",
+        "position": "center",
+        "size": 813,
+        "x": 52.88,
+        "y": 68.67
+      },
+      {
+        "dataURL": "assets/uploads/0000ed9f9cc41c67.png",
+        "height": 208,
+        "id": "e4-p2-char-mpj8fxlx",
+        "mediaType": "image",
+        "name": "BONGO",
+        "panelId": "e4-p2",
+        "position": "center",
+        "size": 683,
+        "x": 61.5,
+        "y": 81.1
+      },
+      {
+        "dataURL": "assets/uploads/d1bbe4269032417d.png",
+        "height": 332,
+        "id": "e4-p3-char-mpj8icyx",
+        "mediaType": "image",
+        "name": "NICO",
+        "panelId": "e4-p3",
+        "position": "center",
+        "size": 608,
+        "x": 46.83,
+        "y": 70.62
+      },
+      {
+        "dataURL": "assets/uploads/9bd33f85b385f34c.png",
+        "height": 155,
+        "id": "e4-p3-char-mpj8jm7i",
+        "mediaType": "image",
+        "name": "BONGO",
+        "panelId": "e4-p3",
+        "position": "center",
+        "size": 510,
+        "x": 48.24,
+        "y": 78.68
+      }
     ]
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-24T03:46:27.255Z",
   "scene": "4",
   "version": 1
 }

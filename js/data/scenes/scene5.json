@@ -1,13 +1,108 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-positions": {
+      "e5-p2-d0": {
+        "x": 26.99737548828125,
+        "y": 13.148328993055555
+      }
+    },
+    "comic-character-sizes": {
+      "e5-p1-char-mpj90noa": {
+        "h": 478,
+        "w": 804
+      },
+      "e5-p1-char-mpj97s8a": {
+        "h": 542,
+        "w": 1191
+      },
+      "e5-p1-char-mpj9dfog": {
+        "h": 307,
+        "w": 675
+      },
+      "e5-p2-char-mpja9lbn": {
+        "h": 471,
+        "w": 794
+      },
+      "e5-p2-char-mpjagikv": {
+        "h": 311,
+        "w": 683
+      }
+    },
     "comic-panel-order": [
       "e5-p1",
       "e5-p2",
       "e5-p3"
+    ],
+    "comic-user-backgrounds": {
+      "e5-p1": "assets/uploads/8e31600dc7df54e6.png",
+      "e5-p2": "assets/uploads/189a78246e0347ee.png",
+      "e5-p3": "assets/uploads/189a78246e0347ee.png"
+    },
+    "comic-user-characters": [
+      {
+        "dataURL": "assets/uploads/cc09efc803e5c1ec.png",
+        "height": 478,
+        "id": "e5-p1-char-mpj90noa",
+        "mediaType": "image",
+        "name": "LUZ",
+        "panelId": "e5-p1",
+        "position": "center",
+        "size": 804,
+        "x": 50.29,
+        "y": 40.36
+      },
+      {
+        "dataURL": "assets/uploads/ac91ab39dba262e3.png",
+        "height": 542,
+        "id": "e5-p1-char-mpj97s8a",
+        "mediaType": "image",
+        "name": "NICO",
+        "panelId": "e5-p1",
+        "position": "center",
+        "size": 1191,
+        "x": 32.43,
+        "y": 41.85
+      },
+      {
+        "dataURL": "assets/uploads/baa99ed158dba48c.png",
+        "height": 307,
+        "id": "e5-p1-char-mpj9dfog",
+        "mediaType": "image",
+        "name": "BONGO",
+        "panelId": "e5-p1",
+        "position": "center",
+        "size": 675,
+        "x": 16.96,
+        "y": 59.3
+      },
+      {
+        "dataURL": "assets/uploads/ea0392d187e949d0.png",
+        "height": 471,
+        "id": "e5-p2-char-mpja9lbn",
+        "mediaType": "image",
+        "name": "Luz y NICO",
+        "panelId": "e5-p2",
+        "position": "center",
+        "size": 794,
+        "x": 42.53,
+        "y": 52.62
+      },
+      {
+        "dataURL": "assets/uploads/baa99ed158dba48c.png",
+        "height": 311,
+        "id": "e5-p2-char-mpjagikv",
+        "mediaType": "image",
+        "name": "BONGO",
+        "panelId": "e5-p2",
+        "position": "center",
+        "size": 683,
+        "x": 22.71,
+        "y": 64.32
+      }
     ]
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-24T04:40:03.711Z",
   "scene": "5",
   "version": 1
 }
