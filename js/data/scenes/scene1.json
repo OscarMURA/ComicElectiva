@@ -335,8 +335,8 @@
           "speaker": "narrator",
           "text": "Bongo… esta agua no está enferma. \nEstá triste.",
           "type": "speech",
-          "x": 59.613037109375,
-          "y": 40.72808159722222
+          "x": 58.38470458984375,
+          "y": 34.58930121527778
         },
         {
           "id": "e1-p2-umpiu8fgl",
@@ -353,8 +353,8 @@
           "speaker": "narrator",
           "text": "La serpiente verde no canta hoy. \nAntes cantaba claro, como campana mojada. \nHoy gruñe. Huele a monedas viejas, \na sótano, a algo que durmió mucho tiempo.",
           "type": "thought",
-          "x": 24.8681640625,
-          "y": 62.06163194444444
+          "x": 29.00848388671875,
+          "y": 51.55164930555556
         },
         {
           "id": "e1-p2-ucmpjciwax",
@@ -386,8 +386,8 @@
           "speaker": "narrator",
           "text": "Guau Guau",
           "type": "speech",
-          "x": 37.919921875,
-          "y": 71.85546875
+          "x": 39.81781005859375,
+          "y": 69.10536024305556
         },
         {
           "id": "e1-up-mpitlb8kqmv-umpjchtve",
@@ -404,8 +404,8 @@
           "speaker": "narrator",
           "text": "Veamos pues que pasara...",
           "type": "thought",
-          "x": 14.571533203125,
-          "y": 63.307291666666664
+          "x": 17.11578369140625,
+          "y": 64.20355902777779
         },
         {
           "id": "e1-up-mpitlb8kqmv-ucmpjcr3q7",
@@ -494,7 +494,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T14:44:58.798Z",
+  "savedAt": "2026-05-24T17:50:04.309Z",
   "scene": "1",
   "version": 1
 }

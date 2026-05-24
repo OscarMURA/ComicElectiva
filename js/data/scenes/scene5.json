@@ -1,14 +1,87 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-fontsizes": {
+      "e5-p1-umpk61bp1": 26,
+      "e5-p1-umpk65yxm": 20,
+      "e5-p1-umpk6c6mu": 20,
+      "e5-up-19e58704777zeu-umpk5mpb4": 24
+    },
     "comic-bubble-positions": {
+      "e5-p1-d0": {
+        "x": 28.0426025390625,
+        "y": 28.076171875
+      },
+      "e5-p1-narration": {
+        "x": 15.51513671875,
+        "y": 85.96462673611111
+      },
       "e5-p2-d0": {
-        "x": 26.99737548828125,
-        "y": 13.148328993055555
+        "x": 27.0416259765625,
+        "y": 13.275824652777779
       },
       "e5-up-19e58704777zeu-d0": {
         "x": 72,
         "y": 72
+      }
+    },
+    "comic-bubble-sizes": {
+      "e5-p1-umpk61bp1": {
+        "h": 55,
+        "w": 1172
+      },
+      "e5-p1-umpk65yxm": {
+        "h": 177,
+        "w": 729
+      },
+      "e5-p1-umpk6c6mu": {
+        "h": 52,
+        "w": 842
+      },
+      "e5-up-19e58704777zeu-umpk5mpb4": {
+        "h": 55,
+        "w": 486
+      }
+    },
+    "comic-bubble-text-overrides": {
+      "e5-p1-d0": "Bongo… ella tiene hambre"
+    },
+    "comic-bubble-timing": {
+      "e5-p1-umpk61bp1": {
+        "sequence": 1
+      },
+      "e5-p1-umpk62q4l": {
+        "sequence": 3
+      },
+      "e5-p1-umpk65yxm": {
+        "sequence": 2
+      },
+      "e5-p1-umpk69ga2": {
+        "sequence": 4
+      },
+      "e5-p1-umpk6c6mu": {
+        "sequence": 2
+      },
+      "e5-p2-umpk6ev3a": {
+        "sequence": 1
+      },
+      "e5-p2-umpk6frjz": {
+        "sequence": 3
+      },
+      "e5-p2-umpk6i6m2": {
+        "sequence": 2
+      },
+      "e5-up-19e58704777zeu-umpk5lyn3": {
+        "sequence": 2
+      },
+      "e5-up-19e58704777zeu-umpk5mpb4": {
+        "sequence": 1
+      },
+      "e5-up-19e58704777zeu-umpk5rbvn": {
+        "sequence": 3
+      },
+      "e5-up-19e58704777zeu-umpk5sj5c": {
+        "sequence": 4
       }
     },
     "comic-character-sizes": {
@@ -41,6 +114,11 @@
         "w": 631
       }
     },
+    "comic-deleted-bubbles": [
+      "e5-p1-narration",
+      "e5-p1-d0",
+      "e5-p2-d0"
+    ],
     "comic-deleted-panels": [
       "e5-p3"
     ],
@@ -66,6 +144,113 @@
       "e5-p3": "assets/uploads/189a78246e0347ee.png",
       "e5-up-19e58704777zeu": "assets/uploads/09549488280c26e5.png"
     },
+    "comic-user-bubbles": {
+      "e5-p1": [
+        {
+          "id": "e5-p1-umpk61bp1",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Íbamos caminando por ese laberinto al revés cuando la vimos. Estaba allí sentada, quietecita, como si fuera parte del mismo paisaje roto.",
+          "type": "narration",
+          "x": 49.20654296875,
+          "y": 89.00010850694444
+        },
+        {
+          "id": "e5-p1-umpk62q4l",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Bongo… ella tiene hambre",
+          "type": "speech",
+          "x": 33.55560302734375,
+          "y": 12.413194444444445
+        },
+        {
+          "id": "e5-p1-umpk69ga2",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Guau Guau",
+          "type": "speech",
+          "x": 21.44012451171875,
+          "y": 49.22146267361111
+        },
+        {
+          "id": "e5-p1-umpk6c6mu",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Qué raro... mi olfato casi no la encuentra. Esta cachorra humana huele a viento... a casi nada. Cuando alguien come bien, se siente el olor a tierra y a fuego; pero ella huele a puro aire, como si se estuviera volviendo transparente.",
+          "type": "thought",
+          "x": 48.52447509765625,
+          "y": 69.63975694444444
+        }
+      ],
+      "e5-p2": [
+        {
+          "id": "e5-p2-umpk6ev3a",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Toma... Guardé este hilo del campo para vos. Así la comida nunca más se va a olvidar de buscarte.",
+          "type": "speech",
+          "x": 52.75115966796875,
+          "y": 22.151692708333336
+        },
+        {
+          "id": "e5-p2-umpk6frjz",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Ahí lo entendí. Los hilos rotos por la codicia sí podían volver a unirse. Solo hacía falta un corazón lo bastante limpio para amarrarlos otra vez, uno por uno.",
+          "type": "narration",
+          "x": 44.09332275390625,
+          "y": 88.97569444444444
+        },
+        {
+          "id": "e5-p2-umpk6i6m2",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Gracias... Ya no tengo tanto miedo.",
+          "type": "speech",
+          "x": 62.469482421875,
+          "y": 50.900607638888886
+        }
+      ],
+      "e5-up-19e58704777zeu": [
+        {
+          "id": "e5-up-19e58704777zeu-umpk5lyn3",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Llegamos a un parque que se parecía a uno de Cali… pero estaba al revés. Los árboles tenían las raíces en el cielo.",
+          "type": "narration",
+          "x": 43.231201171875,
+          "y": 11.3037109375
+        },
+        {
+          "id": "e5-up-19e58704777zeu-umpk5mpb4",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Parque de los Poetas · 4:00 PM",
+          "type": "narration",
+          "x": 11.07940673828125,
+          "y": 91.68023003472221
+        },
+        {
+          "id": "e5-up-19e58704777zeu-umpk5rbvn",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Este lugar se parece al parque donde jugamos siempre... pero todo está patas arriba. Se siente... raro",
+          "type": "speech",
+          "x": 56.64825439453125,
+          "y": 47.68880208333333
+        },
+        {
+          "id": "e5-up-19e58704777zeu-umpk5sj5c",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Guau Guau :0",
+          "type": "speech",
+          "x": 57.27996826171875,
+          "y": 88.10492621527779
+        }
+      ]
+    },
     "comic-user-characters": [
       {
         "dataURL": "assets/uploads/cc09efc803e5c1ec.png",
@@ -88,8 +273,8 @@
         "panelId": "e5-p1",
         "position": "center",
         "size": 1191,
-        "x": 32.43,
-        "y": 41.85
+        "x": 32.56,
+        "y": 41.96
       },
       {
         "dataURL": "assets/uploads/baa99ed158dba48c.png",
@@ -112,8 +297,8 @@
         "panelId": "e5-p2",
         "position": "center",
         "size": 794,
-        "x": 42.53,
-        "y": 52.62
+        "x": 42.54,
+        "y": 52.61
       },
       {
         "dataURL": "assets/uploads/baa99ed158dba48c.png",
@@ -153,7 +338,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T17:32:34.112Z",
+  "savedAt": "2026-05-24T19:57:12.884Z",
   "scene": "5",
   "version": 1
 }

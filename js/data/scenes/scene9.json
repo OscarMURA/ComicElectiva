@@ -1,18 +1,105 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-fontsizes": {
+      "e9-p1-umpk6lmbe": 24,
+      "e9-p1-umpk6odr5": 24,
+      "e9-p1-umpk6pbg8": 25,
+      "e9-p1-umpk6rcm3": 23,
+      "e9-p1-umpk6rydn": 24,
+      "e9-p1-umpk6sgz3": 23,
+      "e9-p2-umpk71i8b": 23,
+      "e9-p2-umpk73tpc": 22,
+      "e9-p2-umpk772pu": 24
+    },
     "comic-bubble-positions": {
       "e9-p1-d0": {
-        "x": 11.32049560546875,
-        "y": 18.809678819444446
+        "x": 11.395263671875,
+        "y": 18.91547309027778
       },
       "e9-p1-narration": {
-        "x": 9.64508056640625,
-        "y": 40.49750434027778
+        "x": 15.58837890625,
+        "y": 7.636176215277778
       },
       "e9-p2-d0": {
-        "x": 73.0010986328125,
-        "y": 69.20301649305556
+        "x": 72.955322265625,
+        "y": 69.13519965277779
+      }
+    },
+    "comic-bubble-sizes": {
+      "e9-p1-umpk6lmbe": {
+        "h": 55,
+        "w": 756
+      },
+      "e9-p1-umpk6odr5": {
+        "h": 120,
+        "w": 319
+      },
+      "e9-p1-umpk6pbg8": {
+        "h": 80,
+        "w": 859
+      },
+      "e9-p1-umpk6rcm3": {
+        "h": 55,
+        "w": 772
+      },
+      "e9-p1-umpk6rydn": {
+        "h": 55,
+        "w": 757
+      },
+      "e9-p1-umpk6sgz3": {
+        "h": 55,
+        "w": 736
+      },
+      "e9-p2-umpk71i8b": {
+        "h": 84,
+        "w": 654
+      },
+      "e9-p2-umpk73tpc": {
+        "h": 81,
+        "w": 748
+      },
+      "e9-p2-umpk772pu": {
+        "h": 81,
+        "w": 729
+      }
+    },
+    "comic-bubble-text-overrides": {
+      "e9-p1-narration": "Habitación · Noche"
+    },
+    "comic-bubble-timing": {
+      "e9-p1-umpk6odr5": {
+        "sequence": 1
+      },
+      "e9-p1-umpk6pbg8": {
+        "delayAfter": 50,
+        "sequence": 2
+      },
+      "e9-p1-umpk6rcm3": {
+        "sequence": 3
+      },
+      "e9-p1-umpk6rydn": {
+        "delayAfter": 0,
+        "sequence": 4
+      },
+      "e9-p1-umpk6sgz3": {
+        "delayAfter": 50,
+        "sequence": 5
+      },
+      "e9-p2-umpk71i8b": {
+        "sequence": 1
+      },
+      "e9-p2-umpk72iw7": {
+        "sequence": 3
+      },
+      "e9-p2-umpk73tpc": {
+        "sequence": 2
+      },
+      "e9-p2-umpk772pu": {
+        "sequence": 5
+      },
+      "e9-p2-umpk78x6k": {
+        "sequence": 4
       }
     },
     "comic-character-sizes": {
@@ -37,6 +124,11 @@
         "w": 554
       }
     },
+    "comic-deleted-bubbles": [
+      "e9-p1-d0",
+      "e9-p1-narration",
+      "e9-p2-d0"
+    ],
     "comic-panel-order": [
       "e9-p1",
       "e9-p2",
@@ -45,6 +137,102 @@
     "comic-user-backgrounds": {
       "e9-p1": "assets/uploads/ab025bbbe312b45c.png",
       "e9-p2": "assets/uploads/7a9d110ca232c6d1.png"
+    },
+    "comic-user-bubbles": {
+      "e9-p1": [
+        {
+          "id": "e9-p1-umpk6odr5",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Habitación de Nico · Noche",
+          "type": "narration",
+          "x": 89.76898193359375,
+          "y": 11.341688368055555
+        },
+        {
+          "id": "e9-p1-umpk6pbg8",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Esa noche Nico no quiso dormir todavía. Sacó su cuaderno y empezó a dibujar.",
+          "type": "narration",
+          "x": 28.25775146484375,
+          "y": 24.690755208333336
+        },
+        {
+          "id": "e9-p1-umpk6rcm3",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "No era un dibujo cualquiera. Era un mapa. Pero el mapa no tenía calles. Tenía hilos.",
+          "type": "narration",
+          "x": 27.41851806640625,
+          "y": 36.44205729166667
+        },
+        {
+          "id": "e9-p1-umpk6rydn",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Una gota… un río… un canal… un cultivo… una galería… un plato… una boca.",
+          "type": "narration",
+          "x": 26.1749267578125,
+          "y": 48.1201171875
+        },
+        {
+          "id": "e9-p1-umpk6sgz3",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Y al final del mapa, me dibujó a mí. Porque sin mí, nadie hubiera olido el camino.",
+          "type": "narration",
+          "x": 26.28173828125,
+          "y": 60.6689453125
+        }
+      ],
+      "e9-p2": [
+        {
+          "id": "e9-p2-umpk71i8b",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Esa noche Nico durmió con el cuaderno en los brazos.",
+          "type": "narration",
+          "x": 18.09234619140625,
+          "y": 68.40277777777779
+        },
+        {
+          "id": "e9-p2-umpk72iw7",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Mañana seguimos, Bongo. El mundo tiene muchos hilos sueltos.",
+          "type": "speech",
+          "x": 45.55206298828125,
+          "y": 18.70659722222222
+        },
+        {
+          "id": "e9-p2-umpk73tpc",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Y afuera, en el patio, la luna se reflejó en un balde de agua clara.",
+          "type": "narration",
+          "x": 20.89996337890625,
+          "y": 79.58441840277779
+        },
+        {
+          "id": "e9-p2-umpk772pu",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Y yo moví la cola otra vez. Porque sí. Porque mañana seguimos.",
+          "type": "narration",
+          "x": 22.747802734375,
+          "y": 91.09157986111111
+        },
+        {
+          "id": "e9-p2-umpk78x6k",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Guau...",
+          "type": "speech",
+          "x": 40.42205810546875,
+          "y": 51.47026909722222
+        }
+      ]
     },
     "comic-user-characters": [
       {
@@ -56,8 +244,8 @@
         "panelId": "e9-p1",
         "position": "center",
         "size": 1280,
-        "x": 59.26,
-        "y": 74.16
+        "x": 59.2,
+        "y": 73.91
       },
       {
         "dataURL": "assets/uploads/7344a94ad31ac2a1.png",
@@ -92,12 +280,12 @@
         "panelId": "e9-p2",
         "position": "left",
         "size": 554,
-        "x": 30.12,
-        "y": 36.2
+        "x": 29.55,
+        "y": 37.9
       }
     ]
   },
-  "savedAt": "2026-05-24T17:22:39.603Z",
+  "savedAt": "2026-05-24T19:58:45.711Z",
   "scene": "9",
   "version": 1
 }

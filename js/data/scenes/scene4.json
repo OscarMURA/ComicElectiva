@@ -1,10 +1,53 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-fontsizes": {
+      "e4-p1-umpk4y2s8": 22,
+      "e4-p1-umpk56rcz": 21
+    },
     "comic-bubble-positions": {
+      "e4-p1-narration": {
+        "x": 17.138671875,
+        "y": 92.73546006944444
+      },
       "e4-p2-d0": {
-        "x": 16.08123779296875,
-        "y": 32.177734375
+        "x": 16.1468505859375,
+        "y": 32.23741319444444
+      }
+    },
+    "comic-bubble-sizes": {
+      "e4-p1-umpk4y2s8": {
+        "h": 60,
+        "w": 507
+      }
+    },
+    "comic-bubble-text-overrides": {
+      "e4-p1-narration": "Galería Alameda · 1:00 PM "
+    },
+    "comic-bubble-timing": {
+      "e4-p1-umpk4qotj": {
+        "sequence": 1
+      },
+      "e4-p1-umpk4veyg": {
+        "sequence": 2
+      },
+      "e4-p1-umpk4wa6c": {
+        "sequence": 2
+      },
+      "e4-p1-umpk4y2s8": {
+        "sequence": 4
+      },
+      "e4-p1-umpk56rcz": {
+        "sequence": 3
+      },
+      "e4-p2-umpk58za2": {
+        "sequence": 2
+      },
+      "e4-p2-umpk59khq": {
+        "sequence": 3
+      },
+      "e4-p2-umpk5c0xq": {
+        "sequence": 1
       }
     },
     "comic-character-sizes": {
@@ -25,6 +68,10 @@
         "w": 683
       }
     },
+    "comic-deleted-bubbles": [
+      "e4-p1-narration",
+      "e4-p2-d0"
+    ],
     "comic-deleted-panels": [
       "e4-p3"
     ],
@@ -36,6 +83,75 @@
       "e4-p1": "assets/uploads/7791e53013e8a464.png",
       "e4-p2": "assets/uploads/2589c1bd106ca244.png"
     },
+    "comic-user-bubbles": {
+      "e4-p1": [
+        {
+          "id": "e4-p1-umpk4qotj",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Galería Alameda · 1:00 PM",
+          "type": "narration",
+          "x": 10.09521484375,
+          "y": 92.09255642361111
+        },
+        {
+          "id": "e4-p1-umpk4wa6c",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Mi nariz se volvió loca. Olía a fiesta. Olía a cumpleaños. Olía a que aquí podrían comer mil perros, mil niños, mil abuelos.",
+          "type": "narration",
+          "x": 51.6021728515625,
+          "y": 11.688910590277777
+        },
+        {
+          "id": "e4-p1-umpk4y2s8",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Pero nadie comía. La comida lloraba sola tirada en el suelo.",
+          "type": "thought",
+          "x": 21.92840576171875,
+          "y": 53.33116319444444
+        },
+        {
+          "id": "e4-p1-umpk56rcz",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Bongo... pero si todas estas frutas están buenas. ¿Por qué las tiraron?",
+          "type": "speech",
+          "x": 80.084228515625,
+          "y": 75.830078125
+        }
+      ],
+      "e4-p2": [
+        {
+          "id": "e4-p2-umpk58za2",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Bongo… mirá.",
+          "type": "speech",
+          "x": 43.14422607421875,
+          "y": 52.64756944444444
+        },
+        {
+          "id": "e4-p2-umpk59khq",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Cada fruta tiene un hilo. Y los hilos van a alguna parte… pero alguien los cortó.",
+          "type": "speech",
+          "x": 30.206298828125,
+          "y": 72.42296006944444
+        },
+        {
+          "id": "e4-p2-umpk5c0xq",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Los humanos creen que la comida nace en las cajas, pero cada fruto tiene un hilo invisible que lo une a la tierra y a la boca de quien lo necesita. Alguien cortó esos hilos... y dejó al mundo a oscuras.",
+          "type": "narration",
+          "x": 46.441650390625,
+          "y": 12.906901041666666
+        }
+      ]
+    },
     "comic-user-characters": [
       {
         "dataURL": "assets/uploads/0d7c1745389295a6.png",
@@ -46,8 +162,8 @@
         "panelId": "e4-p1",
         "position": "center",
         "size": 915,
-        "x": 67.91,
-        "y": 69.94
+        "x": 67.84,
+        "y": 69.8
       },
       {
         "dataURL": "assets/uploads/65716bbf66b5e365.png",
@@ -70,8 +186,8 @@
         "panelId": "e4-p2",
         "position": "center",
         "size": 813,
-        "x": 52.88,
-        "y": 68.67
+        "x": 52.87,
+        "y": 68.6
       },
       {
         "dataURL": "assets/uploads/0000ed9f9cc41c67.png",
@@ -87,7 +203,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T05:23:33.879298Z",
+  "savedAt": "2026-05-24T19:04:47.148Z",
   "scene": "4",
   "version": 1
 }

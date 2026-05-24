@@ -78,7 +78,7 @@
     { id: 'narration', label: 'Narración (caja oscura)' },
   ];
   const BUBBLE_TYPE_CLASSES = BUBBLE_TYPES.map((t) => 'bubble-type-' + t.id);
-  const POS_CLASSES = ['bubble-left', 'bubble-right', 'bubble-center'];
+  const POS_CLASSES = ['bubble-left', 'bubble-right', 'bubble-top-left', 'bubble-top-right', 'bubble-center'];
   const NARRATION_CLASSES = ['bubble-narration', 'narration', 'dialogue--narration'];
 
   // ---- State -----------------------------------------------------------------
@@ -2143,7 +2143,7 @@
   function saveBubbleSide(bubbleId, side) {
     if (!bubbleId) return;
     const map = loadBubbleSides();
-    if (side === 'left' || side === 'right') {
+    if (side === 'left' || side === 'right' || side === 'top-left' || side === 'top-right') {
       map[bubbleId] = side;
     } else {
       delete map[bubbleId];
@@ -2155,6 +2155,8 @@
     if (!el) return null;
     if (el.classList.contains('bubble-narration') || el.classList.contains('narration')) return null;
     if (el.classList.contains('bubble-right')) return 'right';
+    if (el.classList.contains('bubble-top-left')) return 'top-left';
+    if (el.classList.contains('bubble-top-right')) return 'top-right';
     if (el.classList.contains('bubble-left')) return 'left';
     return null;
   }
@@ -2162,8 +2164,7 @@
   function applyBubbleSide(el, side) {
     if (!el) return;
     if (el.classList.contains('bubble-narration') || el.classList.contains('narration')) return;
-    // Strip side classes; keep center untouched if no side requested.
-    el.classList.remove('bubble-left', 'bubble-right');
+    el.classList.remove('bubble-left', 'bubble-right', 'bubble-top-left', 'bubble-top-right');
     Array.from(el.classList).forEach((c) => {
       if (/^dialogue--(top|bottom|middle)-(left|right)$/.test(c)) el.classList.remove(c);
     });
@@ -2175,6 +2176,12 @@
       el.classList.add('bubble-right');
       el.dataset.position = 'bottom-right';
       el.classList.add('dialogue--bottom-right');
+    } else if (side === 'top-left') {
+      el.classList.add('bubble-top-left');
+      el.dataset.position = 'top-left';
+    } else if (side === 'top-right') {
+      el.classList.add('bubble-top-right');
+      el.dataset.position = 'top-right';
     } else {
       // Default to left as a safe fallback.
       el.classList.add('bubble-left');
@@ -2826,9 +2833,13 @@
       '<div class="be-side-toggle" role="group" aria-label="Lado de la cola" ' +
         'style="display:flex;gap:8px;margin-bottom:10px">' +
       '<button type="button" class="be-side-btn" data-side="left" aria-pressed="false" ' +
-        'title="Cola hacia la izquierda">← Izquierda</button>' +
+        'title="Cola abajo izquierda">↙ Abajo izq</button>' +
       '<button type="button" class="be-side-btn" data-side="right" aria-pressed="false" ' +
-        'title="Cola hacia la derecha">Derecha →</button>' +
+        'title="Cola abajo derecha">Abajo der ↘</button>' +
+      '<button type="button" class="be-side-btn" data-side="top-left" aria-pressed="false" ' +
+        'title="Cola arriba izquierda">↖ Arriba izq</button>' +
+      '<button type="button" class="be-side-btn" data-side="top-right" aria-pressed="false" ' +
+        'title="Cola arriba derecha">Arriba der ↗</button>' +
       '</div>' +
       '</div>' +
       '<div class="bubble-editor__actions" style="display:flex;gap:6px;flex-wrap:wrap">' +
