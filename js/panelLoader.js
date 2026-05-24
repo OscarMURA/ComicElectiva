@@ -440,14 +440,23 @@
     return 'rgba(' + Math.round(rgb.r) + ',' + Math.round(rgb.g) + ',' + Math.round(rgb.b) + ',' + a + ')';
   }
 
-  function applyPanelTint(imgEl) {
-    if (!imgEl) return;
-    const media = imgEl.closest('.panel__media');
-    const panel = imgEl.closest('.panel');
+  // Devuelve true si el medio tiene pixels disponibles para sampling.
+  // Para <img>: naturalWidth > 0. Para <video>: readyState >= 2 (HAVE_CURRENT_DATA).
+  function mediaHasPixels(el) {
+    if (!el) return false;
+    if (el.tagName === 'VIDEO') return el.readyState >= 2 && el.videoWidth > 0;
+    return el.complete && el.naturalWidth > 0;
+  }
+
+  function applyPanelTint(mediaEl) {
+    if (!mediaEl) return;
+    const media = mediaEl.closest('.panel__media');
+    const panel = mediaEl.closest('.panel');
     if (!media) return;
+    const isVideo = mediaEl.tagName === 'VIDEO';
     const run = () => {
-      if (!imgEl.naturalWidth) return;
-      const raw = computeAverageRgb(imgEl);
+      if (!mediaHasPixels(mediaEl)) return;
+      const raw = computeAverageRgb(mediaEl);
       if (!raw) return;
       // Fondo del panel: matiz pastel suave (mezcla con blanco).
       const soft = mixWithWhite(raw, 0.55);
@@ -460,11 +469,17 @@
         panel.style.setProperty('--panel-tint-wash', rgbaStr(raw, 0.18));
       }
     };
-    if (imgEl.complete && imgEl.naturalWidth > 0) {
+    if (mediaHasPixels(mediaEl)) {
       run();
+    } else if (isVideo) {
+      // loadeddata = el primer frame ya está disponible para drawImage.
+      mediaEl.addEventListener('loadeddata', run, { once: true });
+      mediaEl.addEventListener('error', () => {
+        media.style.backgroundColor = '#ffffff';
+      }, { once: true });
     } else {
-      imgEl.addEventListener('load', run, { once: true });
-      imgEl.addEventListener('error', () => {
+      mediaEl.addEventListener('load', run, { once: true });
+      mediaEl.addEventListener('error', () => {
         media.style.backgroundColor = '#ffffff';
       }, { once: true });
     }
@@ -541,11 +556,12 @@
       if (panels.indexOf(p) === -1) panels.push(p);
     });
     panels.forEach((p) => {
-      const img = p.querySelector('img.panel-bg');
+      // Acepta tanto <img class="panel-bg"> como <video class="panel-bg">.
+      const bg = p.querySelector('img.panel-bg, video.panel-bg');
       const placeholder = p.querySelector('.panel-bg--placeholder');
       const media = p.querySelector('.panel__media');
-      if (img) {
-        applyPanelTint(img);
+      if (bg) {
+        applyPanelTint(bg);
       } else if (placeholder && media) {
         media.style.backgroundColor = '#ffffff';
       }

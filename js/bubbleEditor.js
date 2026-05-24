@@ -1829,29 +1829,77 @@
   }
 
   // ---- Backgrounds -----------------------------------------------------------
-  function applyBackground(panel, dataURL) {
+  // Soporta imagen o video como fondo. Detecta el tipo del src (data URL o
+  // extensión) y crea el elemento adecuado, preservando `data-original-src`
+  // y `data-user-bg` cuando reemplaza el elemento.
+  function applyBackground(panel, src) {
     if (!panel) return;
     const media = panel.querySelector('.panel__media') || panel;
-    let img = media.querySelector('img.panel-bg');
-    if (!img) {
-      const placeholder = media.querySelector('.panel-bg');
-      img = document.createElement('img');
-      img.className = 'panel-bg';
-      img.alt = '';
-      if (placeholder && placeholder.parentNode) {
-        placeholder.parentNode.replaceChild(img, placeholder);
-      } else {
-        media.insertBefore(img, media.firstChild);
+    const mediaType = detectMediaType(src);
+    const wantedTag = mediaType === 'video' ? 'VIDEO' : 'IMG';
+    let current = media.querySelector('.panel-bg');
+    let originalSrc = '';
+    let needsNewElement = false;
+
+    if (current && current.tagName === wantedTag) {
+      // Mismo tipo → solo actualizamos src.
+      originalSrc = current.dataset.originalSrc || current.getAttribute('src') || '';
+    } else {
+      // Tipo distinto (o no había nada) → reemplazo.
+      if (current) {
+        originalSrc = current.dataset.originalSrc || current.getAttribute('src') || '';
       }
+      needsNewElement = true;
     }
-    if (!img.dataset.originalSrc) {
-      img.dataset.originalSrc = img.getAttribute('src') || '';
+
+    if (needsNewElement) {
+      const next = mediaType === 'video'
+        ? document.createElement('video')
+        : document.createElement('img');
+      next.className = 'panel-bg';
+      if (mediaType === 'image') {
+        next.alt = '';
+        next.loading = 'lazy';
+        next.decoding = 'async';
+      } else {
+        // Video: autoplay silencioso, en loop, in-line (especialmente iOS).
+        next.autoplay = true;
+        next.loop = true;
+        next.muted = true;
+        next.defaultMuted = true;
+        next.playsInline = true;
+        next.setAttribute('autoplay', '');
+        next.setAttribute('loop', '');
+        next.setAttribute('muted', '');
+        next.setAttribute('playsinline', '');
+        next.controls = false;
+        next.disablePictureInPicture = true;
+      }
+      if (current && current.parentNode) {
+        current.parentNode.replaceChild(next, current);
+      } else {
+        media.insertBefore(next, media.firstChild);
+      }
+      current = next;
     }
-    img.src = dataURL;
-    img.dataset.userBg = 'true';
-    // Recalcular el tinte del panel con la nueva imagen (cuando cargue).
+
+    if (!current.dataset.originalSrc) {
+      // La primera vez que tocamos este panel: guardamos lo que había antes
+      // para poder restaurarlo con "Quitar fondo personalizado".
+      current.dataset.originalSrc = originalSrc;
+    }
+    current.src = src;
+    current.dataset.userBg = 'true';
+    current.dataset.mediaType = mediaType;
+
+    if (mediaType === 'video') {
+      // Asegura que arranque (algunos navegadores requieren un kick).
+      try { const p = current.play(); if (p && p.catch) p.catch(() => {}); } catch (_) {}
+    }
+
+    // Recalcular el tinte del panel con el nuevo medio.
     if (window.Comic.PanelLoader && window.Comic.PanelLoader.applyPanelTint) {
-      window.Comic.PanelLoader.applyPanelTint(img);
+      window.Comic.PanelLoader.applyPanelTint(current);
     }
   }
 
@@ -1891,17 +1939,32 @@
     const panelId = getCurrentPanelId();
     const panel = getPanelById(panelId);
     if (!panel) return;
-    const img = panel.querySelector('img.panel-bg');
-    if (img && img.dataset.originalSrc) {
-      const original = img.dataset.originalSrc;
-      img.src = original;
-      delete img.dataset.userBg;
-      const media = panel.querySelector('.panel__media');
-      if (!original) {
-        // No había imagen original → fondo blanco.
+    const media = panel.querySelector('.panel__media');
+    const current = panel.querySelector('.panel-bg');
+    if (current && current.dataset.originalSrc !== undefined) {
+      const original = current.dataset.originalSrc || '';
+      // El "original" de chapter*.js siempre es una imagen (o vacío). Si el
+      // usuario había puesto un video, debemos cambiar la etiqueta de vuelta
+      // a <img>; applyBackground hace exactamente eso cuando el src es de tipo
+      // imagen, así que delegamos en él para evitar lógica duplicada.
+      if (original) {
+        applyBackground(panel, original);
+        const nextBg = panel.querySelector('.panel-bg');
+        // applyBackground marca userBg=true; al ser una restauración del
+        // original, lo limpiamos para reflejar el estado real.
+        if (nextBg) {
+          delete nextBg.dataset.userBg;
+          // Preservar el originalSrc; ya quedó en applyBackground.
+        }
+      } else {
+        // No había imagen original → volver al placeholder en blanco.
+        if (current.parentNode) {
+          const placeholder = document.createElement('div');
+          placeholder.className = 'panel-bg panel-bg--placeholder';
+          placeholder.setAttribute('aria-hidden', 'true');
+          current.parentNode.replaceChild(placeholder, current);
+        }
         if (media) media.style.backgroundColor = '#ffffff';
-      } else if (window.Comic.PanelLoader && window.Comic.PanelLoader.applyPanelTint) {
-        window.Comic.PanelLoader.applyPanelTint(img);
       }
     }
     const data = loadBackgrounds();
@@ -2585,8 +2648,13 @@
   }
 
   function getPanelThumbSrc(panel) {
-    const img = panel.querySelector('img.panel-bg');
-    return img && img.src ? img.src : '';
+    // Acepta tanto imagen como video como fondo del panel.
+    const el = panel.querySelector('img.panel-bg, video.panel-bg');
+    if (!el || !el.src) return { src: '', type: 'image' };
+    return {
+      src: el.src,
+      type: el.tagName === 'VIDEO' ? 'video' : 'image',
+    };
   }
 
   function renderPanelList() {
@@ -2596,10 +2664,16 @@
       .map((p) => {
         const pid = p.dataset.panelId || '';
         const label = escapeHtml(getPanelLabel(p));
-        const src = getPanelThumbSrc(p);
-        const thumb = src
-          ? '<img class="be-panel-item__thumb" src="' + escapeHtml(src) + '" alt="" />'
-          : '<span class="be-panel-item__thumb be-panel-item__thumb--empty"></span>';
+        const thumbInfo = getPanelThumbSrc(p);
+        let thumb;
+        if (!thumbInfo.src) {
+          thumb = '<span class="be-panel-item__thumb be-panel-item__thumb--empty"></span>';
+        } else if (thumbInfo.type === 'video') {
+          thumb = '<video class="be-panel-item__thumb" src="' + escapeHtml(thumbInfo.src) +
+                  '" muted playsinline preload="metadata"></video>';
+        } else {
+          thumb = '<img class="be-panel-item__thumb" src="' + escapeHtml(thumbInfo.src) + '" alt="" />';
+        }
         return (
           '<li class="be-panel-item" draggable="true" data-panel-id="' + escapeHtml(pid) + '" ' +
           'style="display:flex;align-items:center;gap:8px;padding:6px 8px;margin:4px 0;' +
@@ -2803,7 +2877,8 @@
       '</section>' +
       '<section class="be-section">' +
       '<h3>Fondo del panel actual</h3>' +
-      '<label>Cambiar fondo<input type="file" class="be-bg-file" accept="image/*" /></label>' +
+      '<label>Cambiar fondo (imagen o video)<input type="file" class="be-bg-file" accept="image/*,video/*" /></label>' +
+      '<p style="margin:4px 0 6px;font-size:11px;opacity:0.7">Los videos se reproducen en bucle, silenciados, y el panel calcula su tinte a partir del primer fotograma.</p>' +
       '<button type="button" class="be-bg-remove">Quitar fondo personalizado</button>' +
       '</section>' +
       '<section class="be-section">' +
