@@ -32,15 +32,18 @@
         "h": 311,
         "w": 683
       },
-      "e5-up-19e58704777zeu-char-mpj8icyx": {
-        "h": 332,
-        "w": 608
-      },
       "e5-up-19e58704777zeu-char-mpj8jm7i": {
         "h": 155,
         "w": 510
+      },
+      "e5-up-19e58704777zeu-char-mpk21h0p": {
+        "h": 287,
+        "w": 631
       }
     },
+    "comic-deleted-panels": [
+      "e5-p3"
+    ],
     "comic-extra-panels": {
       "5": [
         {
@@ -125,18 +128,6 @@
         "y": 64.32
       },
       {
-        "dataURL": "assets/uploads/d1bbe4269032417d.png",
-        "height": 332,
-        "id": "e5-up-19e58704777zeu-char-mpj8icyx",
-        "mediaType": "image",
-        "name": "NICO",
-        "panelId": "e5-up-19e58704777zeu",
-        "position": "center",
-        "size": 608,
-        "x": 46.83,
-        "y": 70.62
-      },
-      {
         "dataURL": "assets/uploads/9bd33f85b385f34c.png",
         "height": 155,
         "id": "e5-up-19e58704777zeu-char-mpj8jm7i",
@@ -147,10 +138,22 @@
         "size": 510,
         "x": 48.24,
         "y": 78.68
+      },
+      {
+        "dataURL": "assets/uploads/f87338838461b1a7.png",
+        "height": 287,
+        "id": "e5-up-19e58704777zeu-char-mpk21h0p",
+        "mediaType": "image",
+        "name": "NICO",
+        "panelId": "e5-up-19e58704777zeu",
+        "position": "center",
+        "size": 631,
+        "x": 44.44,
+        "y": 71.81
       }
     ]
   },
-  "savedAt": "2026-05-24T05:23:33.879298Z",
+  "savedAt": "2026-05-24T17:32:34.112Z",
   "scene": "5",
   "version": 1
 }

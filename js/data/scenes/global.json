@@ -236,10 +236,16 @@
         "dataURL": "assets/uploads/3aca4aced1bbcdfc.png",
         "mediaType": "image",
         "name": "NICO Y BONGO"
+      },
+      {
+        "_key": "NICO::assets/uploads/f87338838461b1a7.png",
+        "dataURL": "assets/uploads/f87338838461b1a7.png",
+        "mediaType": "image",
+        "name": "NICO"
       }
     ]
   },
-  "savedAt": "2026-05-24T17:22:27.270Z",
+  "savedAt": "2026-05-24T17:32:02.836Z",
   "scene": "global",
   "version": 1
 }
