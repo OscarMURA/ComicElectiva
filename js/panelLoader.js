@@ -499,22 +499,25 @@
   // escala se aplica respecto al centro y la posición no se ve afectada.
 
   const PANEL_SCALE_REFERENCE = 1280; // ancho de diseño (máximo en desktop)
-  const PANEL_SCALE_MIN = 0.42;       // no encoger por debajo de esto
+  const PANEL_SCALE_MIN = 0.45;       // no encoger por debajo de esto (legibilidad)
   const PANEL_SCALE_MAX = 1;          // y no agrandar arriba del original
   let panelScaleObserver = null;
 
   function updatePanelScale(panel) {
     if (!panel) return;
-    // En móvil, responsive.css ya forza max-width 100vw con !important y
-    // tamaños propios; aplicar también scale ahí sería redundante y dejaría
-    // todo enano. Sólo escalamos en desktop.
-    if (window.Comic && window.Comic.isMobile) {
-      panel.style.setProperty('--panel-scale', '1');
-      return;
-    }
+    // Aplicamos la misma fórmula tanto en desktop como en móvil: el contenido
+    // (burbujas, personajes) escala proporcional al ancho real del panel.
+    // En móvil esto es esencial para que las cosas no se salgan del viewport.
     const w = panel.clientWidth;
     if (!w) return;
-    let scale = w / PANEL_SCALE_REFERENCE;
+    // Curva con raíz cuadrada: más suave que la lineal en pantallas chicas
+    // (para legibilidad), pero igual proporcional al ancho.
+    //   1280px → 1.0
+    //    800px → 0.79
+    //    600px → 0.68
+    //    400px → 0.56
+    //    320px → 0.50
+    let scale = Math.sqrt(w / PANEL_SCALE_REFERENCE);
     if (scale > PANEL_SCALE_MAX) scale = PANEL_SCALE_MAX;
     if (scale < PANEL_SCALE_MIN) scale = PANEL_SCALE_MIN;
     // 3 decimales: suficiente precisión, evita repintar por cambios <0.001.
