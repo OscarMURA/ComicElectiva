@@ -5,7 +5,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[3] = {
   id: 3,
   title: 'El campo partido en dos',
-  ambient: 'assets/sounds/ambient/cap3.mp3',
+  ambient: 'synth:cap3',
   panels: [
     {
       id: 'e3-p1',

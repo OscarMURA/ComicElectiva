@@ -96,11 +96,11 @@
     return dialogues.map((d, i) => renderDialogue(d, panelId, i)).join('');
   }
 
-  function renderPanel(panel, chapterId) {
+  function renderPanel(panel, chapterId, chapterAmbient) {
     const id = escapeHtml(panel.id != null ? panel.id : '');
     const image = escapeHtml(panel.image || '');
     const sfx = escapeHtml(panel.sfx || '');
-    const ambient = escapeHtml(panel.ambient || '');
+    const ambient = escapeHtml(panel.ambient || chapterAmbient || '');
     const chapter = escapeHtml(chapterId);
 
     const attrs = [
@@ -164,6 +164,13 @@
     if (!data) return [];
     if (Array.isArray(data)) return data;
     return Array.isArray(data.panels) ? data.panels : [];
+  }
+
+  function getChapterAmbient(chapterId, chapterMeta) {
+    if (chapterMeta && chapterMeta.ambient) return chapterMeta.ambient;
+    const chapters = window.Chapters || {};
+    const data = chapters[chapterId] || chapters[String(chapterId)];
+    return data && data.ambient ? data.ambient : '';
   }
 
   function loadDeletedPanels() {
@@ -325,7 +332,8 @@
           ? extraPanels[ch.id]
           : (Array.isArray(extraPanels[String(ch.id)]) ? extraPanels[String(ch.id)] : []);
         const panels = base.concat(extras).filter((p) => !isDeletedPanel(p.id));
-        const panelsHtml = panels.map((p) => renderPanel(p, ch.id)).join('');
+        const chapterAmbient = getChapterAmbient(ch.id, ch);
+        const panelsHtml = panels.map((p) => renderPanel(p, ch.id, chapterAmbient)).join('');
         return (
           '<article class="chapter" data-chapter="' +
           escapeHtml(ch.id) +

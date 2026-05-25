@@ -5,7 +5,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[8] = {
   id: 8,
   title: 'La pequeña revolución',
-  ambient: 'assets/sounds/ambient/cap8.mp3',
+  ambient: 'synth:cap8',
   panels: [
     {
       id: 'e8-p1',

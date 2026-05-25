@@ -5,7 +5,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[2] = {
   id: 2,
   title: 'Dentro de la gota',
-  ambient: 'assets/sounds/ambient/cap2.mp3',
+  ambient: 'synth:cap2',
   panels: [
     {
       id: 'e2-p1',

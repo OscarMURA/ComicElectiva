@@ -19,6 +19,11 @@
         "y": 32.23741319444444
       }
     },
+    "comic-bubble-sides": {
+      "e4-p1-umpk4y2s8": "right",
+      "e4-p2-umpk58za2": "right",
+      "e4-p2-umpk59khq": "top-right"
+    },
     "comic-bubble-sizes": {
       "e4-p1-umpk4y2s8": {
         "h": 60,
@@ -212,7 +217,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T07:52:36.494Z",
+  "savedAt": "2026-05-25T09:06:08.335Z",
   "scene": "4",
   "version": 1
 }

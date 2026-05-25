@@ -6,7 +6,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[9] = {
   id: 9,
   title: 'El mapa de Bongo',
-  ambient: 'assets/sounds/ambient/cap9.mp3',
+  ambient: 'synth:cap9',
   panels: [
     {
       id: 'e9-p1',

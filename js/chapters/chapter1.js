@@ -11,7 +11,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[1] = {
   id: 1,
   title: 'La serpiente que tose',
-  ambient: 'assets/sounds/ambient/cap1.mp3',
+  ambient: 'synth:cap1',
   panels: [
     {
       id: 'e1-p1',

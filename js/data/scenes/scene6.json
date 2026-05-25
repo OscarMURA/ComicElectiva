@@ -3,7 +3,7 @@
   "data": {
     "comic-bubble-fontsizes": {
       "e6-p1-narration": 36,
-      "e6-p1-umpklg4xt": 22,
+      "e6-p1-umpklg4xt": 27,
       "e6-p2-umpky9qoe": 26,
       "e6-p3-umpkybb3x": 22
     },
@@ -13,8 +13,8 @@
         "y": 28.059895833333332
       },
       "e6-p1-narration": {
-        "x": 12.467041015625,
-        "y": 84.87413194444444
+        "x": 88.367919921875,
+        "y": 27.430555555555557
       },
       "e6-p2-d0": {
         "x": 50,
@@ -25,14 +25,21 @@
         "y": 71.93495713702545
       }
     },
+    "comic-bubble-sides": {
+      "e6-p1-umpklg4xt": "left",
+      "e6-p3-umpkybb3x": "right",
+      "e6-p3-umpkyemv0": "right",
+      "e6-p3-umpkyfa20": "right",
+      "e6-p3-umpkyfw1v": "top-right"
+    },
     "comic-bubble-sizes": {
       "e6-p1-narration": {
         "h": 91,
         "w": 322
       },
       "e6-p1-umpklg4xt": {
-        "h": 88,
-        "w": 572
+        "h": 126,
+        "w": 793
       },
       "e6-p3-umpkybb3x": {
         "h": 41,
@@ -41,6 +48,29 @@
     },
     "comic-bubble-text-overrides": {
       "e6-p1-narration": "Río Cauca · Atardecer"
+    },
+    "comic-bubble-timing": {
+      "e6-p2-umpkxzol6": {
+        "sequence": 2
+      },
+      "e6-p2-umpky9qoe": {
+        "sequence": 1
+      },
+      "e6-p3-umpkybb3x": {
+        "delayAfter": 400,
+        "sequence": 1
+      },
+      "e6-p3-umpkye24y": {
+        "delayAfter": 500,
+        "sequence": 2
+      },
+      "e6-p3-umpkyfa20": {
+        "delayAfter": 400,
+        "sequence": 3
+      },
+      "e6-p3-umpkyfw1v": {
+        "sequence": 4
+      }
     },
     "comic-character-sizes": {
       "e6-p1-char-mpki6rf5": {
@@ -91,8 +121,8 @@
           "speaker": "narrator",
           "text": "Llegamos al final del viaje. Al río que carga el agua de toda la región. Y estaba enfermo.",
           "type": "thought",
-          "x": 79.14794921875,
-          "y": 9.518229166666666
+          "x": 31.236572265625,
+          "y": 87.02039930555556
         }
       ],
       "e6-p2": [
@@ -102,8 +132,8 @@
           "speaker": "narrator",
           "text": "¡Yo te oigo! ¡No estás sola!",
           "type": "speech",
-          "x": 86.70166015625,
-          "y": 45.73784722222222
+          "x": 86.644287109375,
+          "y": 45.748697916666664
         },
         {
           "id": "e6-p2-umpky9qoe",
@@ -111,8 +141,8 @@
           "speaker": "narrator",
           "text": "Aquí empieza todo. La gran guardiana de agua está enferma. Su cuerpo rechaza la contaminación que la invade.",
           "type": "narration",
-          "x": 39.43359375,
-          "y": 6.727430555555555
+          "x": 39.449462890625,
+          "y": 6.846788194444445
         }
       ],
       "e6-p3": [
@@ -122,8 +152,8 @@
           "speaker": "narrator",
           "text": "Niño…",
           "type": "speech",
-          "x": 41.739501953125,
-          "y": 15.010850694444445
+          "x": 41.751708984375,
+          "y": 15.106336805555557
         },
         {
           "id": "e6-p3-umpkye24y",
@@ -131,8 +161,8 @@
           "speaker": "narrator",
           "text": "Cada cosa que botan a mí… sale de la boca de alguien hambriento.",
           "type": "speech",
-          "x": 75.592041015625,
-          "y": 17.936197916666664
+          "x": 75.5517578125,
+          "y": 18.02517361111111
         },
         {
           "id": "e6-p3-umpkyfa20",
@@ -140,8 +170,8 @@
           "speaker": "narrator",
           "text": "Cada cosa que limpian de mí… llena un plato.",
           "type": "speech",
-          "x": 23.763427734375,
-          "y": 26.091579861111114
+          "x": 23.8037109375,
+          "y": 26.15668402777778
         },
         {
           "id": "e6-p3-umpkyfw1v",
@@ -149,8 +179,8 @@
           "speaker": "narrator",
           "text": "¿Entendés ahora… por qué el agua y el hambre son la misma HISTORIA?",
           "type": "speech",
-          "x": 26.4208984375,
-          "y": 72.12673611111111
+          "x": 26.45751953125,
+          "y": 72.06380208333333
         }
       ]
     },
@@ -164,8 +194,8 @@
         "panelId": "e6-p1",
         "position": "right",
         "size": 1134,
-        "x": 60.64,
-        "y": 64.92
+        "x": 63.42,
+        "y": 66
       },
       {
         "dataURL": "assets/uploads/771aa2304444179c.png",
@@ -176,8 +206,8 @@
         "panelId": "e6-p1",
         "position": "right",
         "size": 788,
-        "x": 87.72,
-        "y": 78.29
+        "x": 90.49,
+        "y": 80.21
       },
       {
         "dataURL": "assets/uploads/cd7f2c5627dca80d.png",
@@ -229,7 +259,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T08:39:05.994Z",
+  "savedAt": "2026-05-25T09:17:57.721Z",
   "scene": "6",
   "version": 1
 }

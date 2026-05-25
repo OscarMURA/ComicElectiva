@@ -8,6 +8,7 @@
       "e9-p1-umpk6rcm3": 23,
       "e9-p1-umpk6rydn": 24,
       "e9-p1-umpk6sgz3": 23,
+      "e9-p1-umpl00chn": 21,
       "e9-p2-umpk71i8b": 23,
       "e9-p2-umpk73tpc": 23,
       "e9-p2-umpk772pu": 24,
@@ -35,6 +36,10 @@
         "y": 84.90234375
       }
     },
+    "comic-bubble-sides": {
+      "e9-p2-umpk78x6k": "top-left",
+      "e9-p2-umpkxnmao": "top-left"
+    },
     "comic-bubble-sizes": {
       "e9-p1-umpk6lmbe": {
         "h": 55,
@@ -59,6 +64,10 @@
       "e9-p1-umpk6sgz3": {
         "h": 55,
         "w": 736
+      },
+      "e9-p1-umpl00chn": {
+        "h": 57,
+        "w": 724
       },
       "e9-p2-umpk71i8b": {
         "h": 66,
@@ -147,7 +156,8 @@
     ],
     "comic-user-backgrounds": {
       "e9-p1": "assets/uploads/ab025bbbe312b45c.png",
-      "e9-p2": "assets/uploads/7a9d110ca232c6d1.png"
+      "e9-p2": "assets/uploads/7a9d110ca232c6d1.png",
+      "e9-p3": "assets/uploads/ae878f2f7d981f61.mp4"
     },
     "comic-user-bubbles": {
       "e9-p1": [
@@ -188,13 +198,13 @@
           "y": 48.1201171875
         },
         {
-          "id": "e9-p1-umpk6sgz3",
+          "id": "e9-p1-umpl00chn",
           "position": "bottom-center",
           "speaker": "narrator",
-          "text": "Y al final del mapa, me dibujó a mí. Porque sin mí, nadie hubiera olido el camino.",
+          "text": "Y al final del mapa, me dibujó a mí. Porque sin mí, nadie hubiera olfateado el camino.",
           "type": "narration",
-          "x": 26.28173828125,
-          "y": 60.6689453125
+          "x": 26.217041015624996,
+          "y": 60.813802083333336
         }
       ],
       "e9-p2": [
@@ -296,7 +306,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T08:17:18.371Z",
+  "savedAt": "2026-05-25T09:25:34.566Z",
   "scene": "9",
   "version": 1
 }

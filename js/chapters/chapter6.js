@@ -5,7 +5,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[6] = {
   id: 6,
   title: 'El río que llora',
-  ambient: 'assets/sounds/ambient/cap6.mp3',
+  ambient: 'synth:cap6',
   panels: [
     {
       id: 'e6-p1',

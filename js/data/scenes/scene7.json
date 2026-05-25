@@ -2,8 +2,8 @@
   "app": "HilosDelAgua",
   "data": {
     "comic-bubble-fontsizes": {
-      "e7-p1-umpkyhlw3": 21,
-      "e7-p1-umpkyinnr": 33,
+      "e7-p1-umpkyhlw3": 24,
+      "e7-p1-umpkyinnr": 30,
       "e7-p2-umpkymx8e": 28,
       "e7-p2-umpkynogm": 30,
       "e7-p2-umpkyo8it": 30,
@@ -23,13 +23,18 @@
         "y": 50
       }
     },
+    "comic-bubble-sides": {
+      "e7-p1-umpkyhlw3": "right",
+      "e7-p1-umpkyk0lp": "right",
+      "e7-p1-umpkylqf4": "top-right"
+    },
     "comic-bubble-sizes": {
       "e7-p1-umpkyhlw3": {
-        "h": 41,
-        "w": 282
+        "h": 117,
+        "w": 278
       },
       "e7-p1-umpkyinnr": {
-        "h": 57,
+        "h": 70,
         "w": 278
       },
       "e7-p2-umpkymx8e": {
@@ -54,12 +59,15 @@
     },
     "comic-bubble-timing": {
       "e7-p1-umpkyhlw3": {
+        "delayAfter": 400,
         "sequence": 1
       },
       "e7-p1-umpkyk0lp": {
+        "delayAfter": 400,
         "sequence": 2
       },
       "e7-p1-umpkylqf4": {
+        "delayAfter": 400,
         "sequence": 3
       }
     },
@@ -106,8 +114,8 @@
           "speaker": "narrator",
           "text": "Mamá… ¿por qué nosotros comemos sancocho y Luz no?",
           "type": "speech",
-          "x": 50.087890625,
-          "y": 33.14887152777778
+          "x": 50.081787109375,
+          "y": 33.37673611111111
         },
         {
           "id": "e7-p1-umpkyinnr",
@@ -115,8 +123,8 @@
           "speaker": "narrator",
           "text": "Cocina · 7:00 PM",
           "type": "narration",
-          "x": 9.37744140625,
-          "y": 6.239149305555555
+          "x": 9.564208984375,
+          "y": 6.599392361111112
         },
         {
           "id": "e7-p1-umpkyk0lp",
@@ -124,8 +132,8 @@
           "speaker": "narrator",
           "text": "Hay preguntas que no tienen respuesta de un día, mijo. Tienen respuesta de toda una vida.",
           "type": "speech",
-          "x": 61.246337890625,
-          "y": 15.40798611111111
+          "x": 61.209716796875,
+          "y": 15.598958333333332
         },
         {
           "id": "e7-p1-umpkylqf4",
@@ -133,8 +141,8 @@
           "speaker": "narrator",
           "text": "¿Vos qué creés que se puede hacer?",
           "type": "speech",
-          "x": 67.57080078125,
-          "y": 80.234375
+          "x": 67.542724609375,
+          "y": 80.14973958333333
         }
       ],
       "e7-p2": [
@@ -218,7 +226,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T08:46:53.640Z",
+  "savedAt": "2026-05-25T09:19:52.552Z",
   "scene": "7",
   "version": 1
 }

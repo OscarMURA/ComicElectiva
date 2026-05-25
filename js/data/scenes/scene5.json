@@ -25,6 +25,11 @@
         "y": 72
       }
     },
+    "comic-bubble-sides": {
+      "e5-p1-umpk6c6mu": "top-left",
+      "e5-p2-umpk6i6m2": "top-left",
+      "e5-up-19e58704777zeu-umpk5sj5c": "top-left"
+    },
     "comic-bubble-sizes": {
       "e5-p1-umpk61bp1": {
         "h": 74,
@@ -139,6 +144,7 @@
       "e5-p3"
     ],
     "comic-user-backgrounds": {
+      "e5-p1": "assets/uploads/8e31600dc7df54e6.png",
       "e5-p2": "assets/uploads/189a78246e0347ee.png",
       "e5-p3": "assets/uploads/189a78246e0347ee.png",
       "e5-up-19e58704777zeu": "assets/uploads/09549488280c26e5.png"
@@ -337,7 +343,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T07:53:24.101Z",
+  "savedAt": "2026-05-25T09:14:29.971Z",
   "scene": "5",
   "version": 1
 }

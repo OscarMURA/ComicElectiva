@@ -5,7 +5,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[4] = {
   id: 4,
   title: 'El callejón de la comida tirada',
-  ambient: 'assets/sounds/ambient/cap4.mp3',
+  ambient: 'synth:cap4',
   panels: [
     {
       id: 'e4-p1',

@@ -11,6 +11,7 @@
   const PANEL_AUDIO_KEY = 'comic-user-panel-audio';
   const CROSSFADE_MS = 1200;
   const AMBIENT_VOLUME = 0.5;
+  const SYNTH_AMBIENT_VOLUME = 0.16;
   const SFX_VOLUME = 0.7;
   const GLOBAL_DEFAULT_VOLUME = 0.3;
 
@@ -23,6 +24,10 @@
   const brokenAudio = new Set();
   let muteBtn = null;
   let overlay = null;
+  let synthContext = null;
+  let synthMaster = null;
+  let currentSynth = null;
+  let currentSynthKey = null;
 
   // Global background music (loops across whole story).
   let globalAudio = null;
@@ -66,6 +71,189 @@
     return a;
   }
 
+  function getAudioContext() {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    if (!Ctx) return null;
+    if (!synthContext) {
+      synthContext = new Ctx();
+      synthMaster = synthContext.createGain();
+      synthMaster.gain.value = muted ? 0 : SYNTH_AMBIENT_VOLUME;
+      synthMaster.connect(synthContext.destination);
+    }
+    if (synthContext.state === 'suspended') {
+      const p = synthContext.resume();
+      if (p && p.catch) p.catch(() => {});
+    }
+    return synthContext;
+  }
+
+  function isSynthAmbientKey(key) {
+    return /^synth:cap[1-9]$/.test(String(key || ''));
+  }
+
+  function synthChapterFromKey(key) {
+    const match = String(key || '').match(/cap([1-9])/);
+    return match ? match[1] : '1';
+  }
+
+  const SYNTH_PRESETS = {
+    '1': { root: 196, scale: [0, 3, 7, 10], wave: 'sine', color: 'water' },
+    '2': { root: 220, scale: [0, 5, 7, 12], wave: 'triangle', color: 'dream' },
+    '3': { root: 174.61, scale: [0, 4, 7, 9], wave: 'sine', color: 'field' },
+    '4': { root: 164.81, scale: [0, 3, 5, 10], wave: 'triangle', color: 'street' },
+    '5': { root: 246.94, scale: [0, 4, 7, 12], wave: 'sine', color: 'spark' },
+    '6': { root: 146.83, scale: [0, 3, 7, 8], wave: 'sawtooth', color: 'river' },
+    '7': { root: 185, scale: [0, 5, 7, 10], wave: 'triangle', color: 'kitchen' },
+    '8': { root: 261.63, scale: [0, 4, 7, 11], wave: 'sine', color: 'hope' },
+    '9': { root: 207.65, scale: [0, 3, 7, 12], wave: 'triangle', color: 'night' },
+  };
+
+  function note(root, semitone, octave) {
+    return root * Math.pow(2, (semitone + octave * 12) / 12);
+  }
+
+  function scheduleTone(ctx, out, freq, start, duration, opts) {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    const filter = ctx.createBiquadFilter();
+    const attack = opts.attack || 1.2;
+    const release = opts.release || 2.4;
+    const peak = opts.gain || 0.06;
+    const end = start + duration;
+
+    osc.type = opts.wave || 'sine';
+    osc.frequency.setValueAtTime(freq, start);
+    if (opts.detune) osc.detune.setValueAtTime(opts.detune, start);
+
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(opts.cutoff || 900, start);
+    filter.Q.setValueAtTime(opts.q || 0.6, start);
+
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(Math.max(0.0002, peak), start + attack);
+    gain.gain.setValueAtTime(Math.max(0.0002, peak), Math.max(start + attack, end - release));
+    gain.gain.exponentialRampToValueAtTime(0.0001, end);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(out);
+    osc.start(start);
+    osc.stop(end + 0.05);
+  }
+
+  function createSynthAmbient(key) {
+    const ctx = getAudioContext();
+    if (!ctx) return null;
+
+    const chapter = synthChapterFromKey(key);
+    const preset = SYNTH_PRESETS[chapter] || SYNTH_PRESETS['1'];
+    const rootGain = ctx.createGain();
+    const padGain = ctx.createGain();
+    const bellGain = ctx.createGain();
+    const delay = ctx.createDelay();
+    const feedback = ctx.createGain();
+
+    rootGain.gain.value = 0.0001;
+    padGain.gain.value = 0.8;
+    bellGain.gain.value = preset.color === 'river' ? 0.08 : 0.18;
+    delay.delayTime.value = 0.32;
+    feedback.gain.value = 0.22;
+
+    padGain.connect(rootGain);
+    bellGain.connect(delay);
+    bellGain.connect(rootGain);
+    delay.connect(feedback);
+    feedback.connect(delay);
+    delay.connect(rootGain);
+    rootGain.connect(synthMaster);
+
+    let step = 0;
+    let stopped = false;
+    const intervals = [];
+
+    function schedulePad() {
+      if (stopped) return;
+      const now = ctx.currentTime + 0.05;
+      const progression = [
+        [0, 2, 3],
+        [1, 2, 3],
+        [0, 1, 3],
+        [0, 2, 4],
+      ];
+      const chord = progression[step % progression.length];
+      chord.forEach((scaleIndex, i) => {
+        const semi = preset.scale[scaleIndex % preset.scale.length] || 0;
+        scheduleTone(ctx, padGain, note(preset.root, semi, i === 0 ? -1 : 0), now, 7.8, {
+          wave: preset.wave,
+          gain: i === 0 ? 0.045 : 0.032,
+          attack: 1.8,
+          release: 3.4,
+          cutoff: preset.color === 'river' ? 520 : 820,
+          detune: i === 2 ? 5 : -4,
+        });
+      });
+      scheduleTone(ctx, padGain, note(preset.root, 0, -2), now, 7.8, {
+        wave: 'sine',
+        gain: 0.026,
+        attack: 2.4,
+        release: 3.8,
+        cutoff: 360,
+      });
+      step++;
+    }
+
+    function scheduleBell() {
+      if (stopped) return;
+      const now = ctx.currentTime + 0.05;
+      const semi = preset.scale[(step + 1) % preset.scale.length] || 0;
+      scheduleTone(ctx, bellGain, note(preset.root, semi, 1), now, 2.8, {
+        wave: 'sine',
+        gain: preset.color === 'hope' ? 0.075 : 0.05,
+        attack: 0.02,
+        release: 2.2,
+        cutoff: 2400,
+      });
+    }
+
+    schedulePad();
+    scheduleBell();
+    intervals.push(setInterval(schedulePad, 5200));
+    intervals.push(setInterval(scheduleBell, 3900));
+
+    return {
+      gain: rootGain,
+      stop: function () {
+        stopped = true;
+        intervals.forEach(clearInterval);
+      },
+    };
+  }
+
+  function stopSynthAmbient(layer) {
+    if (!layer) return;
+    try { layer.stop(); } catch (e) { /* ignore */ }
+  }
+
+  function playSynthAmbient(key) {
+    if (!unlocked) { pendingAmbientKey = key; return; }
+    if (key === currentSynthKey && currentSynth) return;
+    const next = createSynthAmbient(key);
+    if (!next) return;
+    const previous = currentSynth;
+    currentSynth = next;
+    currentSynthKey = key;
+    currentAmbientKey = key;
+    fadeGainTo(next.gain, muted ? 0.0001 : 1, CROSSFADE_MS);
+    if (previous) {
+      fadeGainTo(previous.gain, 0.0001, CROSSFADE_MS, () => stopSynthAmbient(previous));
+    }
+    if (currentAmbient) {
+      const old = currentAmbient;
+      currentAmbient = null;
+      fadeTo(old, 0, CROSSFADE_MS, () => stopAudio(old));
+    }
+  }
+
   function fadeTo(audio, target, duration, onDone) {
     if (!audio) { if (onDone) onDone(); return; }
     const start = audio.volume;
@@ -74,6 +262,22 @@
     function step(now) {
       const t = Math.min(1, (now - startTime) / duration);
       try { audio.volume = Math.max(0, Math.min(1, start + delta * t)); }
+      catch (e) { /* ignore */ }
+      if (t < 1) requestAnimationFrame(step);
+      else if (onDone) onDone();
+    }
+    requestAnimationFrame(step);
+  }
+
+  function fadeGainTo(gainNode, target, duration, onDone) {
+    if (!gainNode || !gainNode.gain) { if (onDone) onDone(); return; }
+    const param = gainNode.gain;
+    const start = param.value;
+    const delta = target - start;
+    const startTime = performance.now();
+    function step(now) {
+      const t = Math.min(1, (now - startTime) / duration);
+      try { param.value = Math.max(0.0001, start + delta * t); }
       catch (e) { /* ignore */ }
       if (t < 1) requestAnimationFrame(step);
       else if (onDone) onDone();
@@ -181,8 +385,13 @@
   // ---- Ambient (per chapter) -------------------------------------------------
   function playAmbient(key) {
     if (!key) return;
+    if (key === currentAmbientKey && currentSynth) return;
     if (key === currentAmbientKey && currentAmbient && !currentAmbient.paused) return;
     if (!unlocked) { pendingAmbientKey = key; return; }
+    if (isSynthAmbientKey(key)) {
+      playSynthAmbient(key);
+      return;
+    }
     const url = buildAmbientUrl(key);
     if (!url) return;
     const next = createAudio(url, { loop: true, volume: 0 });
@@ -192,6 +401,18 @@
     const previous = currentAmbient;
     currentAmbient = next;
     currentAmbientKey = key;
+    if (currentSynth) {
+      const oldSynth = currentSynth;
+      currentSynth = null;
+      currentSynthKey = null;
+      fadeGainTo(oldSynth.gain, 0.0001, CROSSFADE_MS, () => stopSynthAmbient(oldSynth));
+    }
+    next.addEventListener('error', () => {
+      if (currentAmbient !== next) return;
+      currentAmbient = null;
+      stopAudio(next);
+      playSynthAmbient('synth:cap' + synthChapterFromKey(key));
+    }, { once: true });
     fadeTo(next, targetVol, CROSSFADE_MS);
     if (previous) fadeTo(previous, 0, CROSSFADE_MS, () => stopAudio(previous));
   }
@@ -297,6 +518,12 @@
     }
     if (globalAudio) {
       try { globalAudio.volume = muted ? 0 : globalVolume; } catch (e) {}
+    }
+    if (currentSynth && currentSynth.gain) {
+      try { currentSynth.gain.gain.value = muted ? 0 : 1; } catch (e) {}
+    }
+    if (synthMaster) {
+      try { synthMaster.gain.value = muted ? 0 : SYNTH_AMBIENT_VOLUME; } catch (e) {}
     }
     if (muteBtn) {
       muteBtn.setAttribute('aria-pressed', muted ? 'true' : 'false');

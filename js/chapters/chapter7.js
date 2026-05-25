@@ -5,7 +5,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[7] = {
   id: 7,
   title: 'La sopa de preguntas',
-  ambient: 'assets/sounds/ambient/cap7.mp3',
+  ambient: 'synth:cap7',
   panels: [
     {
       id: 'e7-p1',

@@ -5,7 +5,7 @@ window.Chapters = window.Chapters || {};
 window.Chapters[5] = {
   id: 5,
   title: 'La niña del charco',
-  ambient: 'assets/sounds/ambient/cap5.mp3',
+  ambient: 'synth:cap5',
   panels: [
     {
       id: 'e5-p1',

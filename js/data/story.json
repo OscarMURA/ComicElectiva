@@ -3,7 +3,7 @@
   "subtitle": "Un cuento ilustrado interactivo",
   "author": "Narrativas Visuales",
   "language": "es",
-  "globalAudio": "assets/sounds/ambient/global.mp3",
+  "globalAudio": "",
   "theme": {
     "palette": {
       "primary": "#1F4E79",

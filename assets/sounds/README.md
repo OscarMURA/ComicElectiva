@@ -70,6 +70,17 @@ silenciosamente y el panel se reproduce sin voz.
 
 ## Cómo se referencian desde el código
 
+El proyecto también puede usar música generada por código, sin archivos de
+audio externos. Para eso, cada capítulo puede declarar:
+
+```js
+ambient: 'synth:cap1'
+```
+
+El `AudioManager` crea una pista instrumental suave y hace crossfade al cambiar
+de capítulo. Si prefieres usar archivos reales, reemplaza ese valor por una ruta
+como `assets/sounds/ambient/cap1.mp3`.
+
 Cada panel en `js/chapters/chapterN.js` puede tener un campo `sfx`:
 
 ```js

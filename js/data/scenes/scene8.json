@@ -5,11 +5,11 @@
       "e8-p1-ucmpkxog57": 26,
       "e8-p1-umpkxarzp": 21,
       "e8-p1-umpkxcwh2": 23,
-      "e8-p2-ucmpkxle1d": 26,
+      "e8-p2-ucmpkxle1d": 33,
       "e8-p2-umpkxepam": 20,
       "e8-p2-umpkxhy48": 27,
-      "e8-p3-umpkxpoo6": 31,
-      "e8-p3-umpkxqssw": 24
+      "e8-p3-umpkxpoo6": 29,
+      "e8-p3-umpkxqssw": 26
     },
     "comic-bubble-positions": {
       "e8-p1-d0": {
@@ -29,9 +29,15 @@
         "y": 71.93793402777777
       }
     },
+    "comic-bubble-sides": {
+      "e8-p1-umpkxbt6c": "top-right",
+      "e8-p1-umpkxcwh2": "top-right",
+      "e8-p2-umpkxfdzw": "top-left",
+      "e8-p2-umpkxhy48": "right"
+    },
     "comic-bubble-sizes": {
       "e8-p1-umpkxarzp": {
-        "h": 54,
+        "h": 108,
         "w": 284
       },
       "e8-p1-umpkxcwh2": {
@@ -47,16 +53,30 @@
         "w": 211
       },
       "e8-p3-umpkxpoo6": {
-        "h": 57,
+        "h": 73,
         "w": 397
       },
       "e8-p3-umpkxqssw": {
-        "h": 57,
+        "h": 97,
         "w": 588
       }
     },
     "comic-bubble-text-overrides": {
       "e8-p1-narration": "Nadie le había agradecido al viejo en mucho tiempo. Su sombrero se sintió más liviano."
+    },
+    "comic-bubble-timing": {
+      "e8-p1-ucmpkxog57": {
+        "delayAfter": 400,
+        "sequence": 3
+      },
+      "e8-p1-umpkxarzp": {
+        "delayAfter": 550,
+        "sequence": 1
+      },
+      "e8-p1-umpkxbt6c": {
+        "delayAfter": 300,
+        "sequence": 2
+      }
     },
     "comic-character-sizes": {
       "e8-p1-char-mpkth16b": {
@@ -116,8 +136,8 @@
           "speaker": "narrator",
           "text": "Don Efraín… le traje esto. Para que sepa que sus tomates son los más bonitos.",
           "type": "speech",
-          "x": 71.800537109375,
-          "y": 22.315538194444446
+          "x": 71.697998046875,
+          "y": 22.54340277777778
         },
         {
           "id": "e8-p1-umpkxbt6c",
@@ -125,8 +145,8 @@
           "speaker": "narrator",
           "text": "Mijo… mijo… gracias.",
           "type": "speech",
-          "x": 19.82177734375,
-          "y": 37.81684027777778
+          "x": 19.8681640625,
+          "y": 37.849392361111114
         },
         {
           "id": "e8-p1-ucmpkxog57",
@@ -135,8 +155,8 @@
           "text": "Nadie le había agradecido al viejo en mucho tiempo. Su sombrero se sintió más liviano.",
           "type": "narration",
           "width": 80,
-          "x": 34.111328125,
-          "y": 90.13237847222221
+          "x": 34.1357421875,
+          "y": 90.01953125
         }
       ],
       "e8-p2": [
@@ -165,8 +185,8 @@
           "text": "Algunas cosas no se dicen. Se entregan.",
           "type": "narration",
           "width": 80,
-          "x": 75.10009765625,
-          "y": 5.319010416666667
+          "x": 76.66015625,
+          "y": 5.687934027777778
         }
       ],
       "e8-p3": [
@@ -176,8 +196,8 @@
           "speaker": "narrator",
           "text": "No arreglamos el mundo.",
           "type": "narration",
-          "x": 13.96484375,
-          "y": 4.678819444444445
+          "x": 14.0771484375,
+          "y": 4.928385416666667
         },
         {
           "id": "e8-p3-umpkxqssw",
@@ -185,8 +205,8 @@
           "speaker": "narrator",
           "text": "Pero le cosimos un parche. Y a veces los parches sostienen más que las cosas nuevas.",
           "type": "narration",
-          "x": 22.169189453125,
-          "y": 86.3671875
+          "x": 22.29736328125,
+          "y": 86.06119791666667
         }
       ]
     },
@@ -311,7 +331,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T08:20:15.687Z",
+  "savedAt": "2026-05-25T09:22:00.825Z",
   "scene": "8",
   "version": 1
 }
