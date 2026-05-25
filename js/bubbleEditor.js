@@ -964,11 +964,11 @@
     const type = bubble.type || 'speech';
     const isNarration = type === 'narration';
     const pos = bubble.position || (isNarration ? 'bottom-center' : 'bottom-left');
-    const posClass = (pos === 'left' || pos === 'top-left' || pos === 'bottom-left')
-      ? 'bubble-left'
-      : (pos === 'right' || pos === 'top-right' || pos === 'bottom-right')
-        ? 'bubble-right'
-        : 'bubble-center';
+    const posClass = pos === 'top-left'   ? 'bubble-top-left'
+      : pos === 'top-right'  ? 'bubble-top-right'
+      : (pos === 'left' || pos === 'bottom-left')  ? 'bubble-left'
+      : (pos === 'right' || pos === 'bottom-right') ? 'bubble-right'
+      : 'bubble-center';
     if (isNarration) {
       wrapper.className = 'bubble bubble-narration narration dialogue dialogue--narration dialogue--user bubble-type-narration';
     } else {
@@ -2108,11 +2108,11 @@
       // Restore a sensible side-tail variant.
       NARRATION_CLASSES.forEach((c) => el.classList.remove(c));
       const pos = el.dataset.position || 'bottom-left';
-      const posClass = (pos === 'left' || pos === 'top-left' || pos === 'bottom-left')
-        ? 'bubble-left'
-        : (pos === 'right' || pos === 'top-right' || pos === 'bottom-right')
-          ? 'bubble-right'
-          : 'bubble-center';
+      const posClass = pos === 'top-left'  ? 'bubble-top-left'
+        : pos === 'top-right' ? 'bubble-top-right'
+        : (pos === 'left' || pos === 'bottom-left')  ? 'bubble-left'
+        : (pos === 'right' || pos === 'bottom-right') ? 'bubble-right'
+        : 'bubble-center';
       el.classList.add(posClass, 'dialogue--' + pos);
       el.style.width = '';
     }

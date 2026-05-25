@@ -6,6 +6,10 @@
       "e4-p1-umpk56rcz": 21
     },
     "comic-bubble-positions": {
+      "e4-p1-d0": {
+        "x": 28.0426025390625,
+        "y": 28.076171875
+      },
       "e4-p1-narration": {
         "x": 17.138671875,
         "y": 92.73546006944444
@@ -70,7 +74,8 @@
     },
     "comic-deleted-bubbles": [
       "e4-p1-narration",
-      "e4-p2-d0"
+      "e4-p2-d0",
+      "e4-p1-d0"
     ],
     "comic-deleted-panels": [
       "e4-p3"
@@ -118,8 +123,8 @@
           "speaker": "narrator",
           "text": "Bongo... pero si todas estas frutas están buenas. ¿Por qué las tiraron?",
           "type": "speech",
-          "x": 80.084228515625,
-          "y": 75.830078125
+          "x": 79.9652099609375,
+          "y": 75.12749565972221
         }
       ],
       "e4-p2": [
@@ -129,8 +134,8 @@
           "speaker": "narrator",
           "text": "Bongo… mirá.",
           "type": "speech",
-          "x": 43.14422607421875,
-          "y": 52.64756944444444
+          "x": 43.16864013671875,
+          "y": 51.5869140625
         },
         {
           "id": "e4-p2-umpk59khq",
@@ -203,7 +208,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T19:04:47.148Z",
+  "savedAt": "2026-05-25T01:45:56.644Z",
   "scene": "4",
   "version": 1
 }
