@@ -19,6 +19,17 @@ doradas flotando en el fondo.
 
 ## Cómo abrirlo
 
+### En línea
+
+Sitio desplegado para PC y móvil:
+
+```text
+https://oscarmura.github.io/ComicElectiva/
+```
+
+La versión en línea funciona como lectura interactiva estática. Para editar,
+subir archivos o guardar cambios al repo, usa el servidor local descrito abajo.
+
 ### Opción 1 · Servidor local (recomendada — habilita edición + uploads)
 
 Desde la carpeta del proyecto:
