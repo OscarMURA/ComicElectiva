@@ -24,6 +24,10 @@
       "e9-p2-d0": {
         "x": 72.955322265625,
         "y": 69.13519965277779
+      },
+      "e9-p3-d0": {
+        "x": 71.96533203125,
+        "y": 69.94357638888889
       }
     },
     "comic-bubble-sizes": {
@@ -127,7 +131,8 @@
     "comic-deleted-bubbles": [
       "e9-p1-d0",
       "e9-p1-narration",
-      "e9-p2-d0"
+      "e9-p2-d0",
+      "e9-p3-d0"
     ],
     "comic-panel-order": [
       "e9-p1",
@@ -202,8 +207,8 @@
           "speaker": "narrator",
           "text": "Mañana seguimos, Bongo. El mundo tiene muchos hilos sueltos.",
           "type": "speech",
-          "x": 45.56732177734375,
-          "y": 19.09450954861111
+          "x": 45.55206298828125,
+          "y": 18.70659722222222
         },
         {
           "id": "e9-p2-umpk73tpc",
@@ -229,8 +234,8 @@
           "speaker": "narrator",
           "text": "Guau...",
           "type": "speech",
-          "x": 39.94598388671875,
-          "y": 50.75141059027778
+          "x": 40.42205810546875,
+          "y": 51.47026909722222
         }
       ]
     },
@@ -285,7 +290,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T02:41:33.983Z",
+  "savedAt": "2026-05-25T07:22:20.668Z",
   "scene": "9",
   "version": 1
 }

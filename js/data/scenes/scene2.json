@@ -250,8 +250,8 @@
           "speaker": "narrator",
           "text": "Wooooh, whoooh...",
           "type": "speech",
-          "x": 58.24432373046875,
-          "y": 21.544053819444446
+          "x": 58.9630126953125,
+          "y": 20.128038194444446
         },
         {
           "id": "e2-p1-umpjcxl48",
@@ -259,8 +259,8 @@
           "speaker": "narrator",
           "text": "Guau Guau :D",
           "type": "speech",
-          "x": 35.36376953125,
-          "y": 29.801432291666668
+          "x": 35.406494140625,
+          "y": 28.968641493055557
         },
         {
           "id": "e2-p1-umpjd81ut",
@@ -268,8 +268,8 @@
           "speaker": "narrator",
           "text": "¿Qué aventura nos esperará?",
           "type": "speech",
-          "x": 79.864501953125,
-          "y": 17.274305555555554
+          "x": 80.3741455078125,
+          "y": 17.222764756944446
         },
         {
           "id": "e2-p1-ucmpjd8uxx",
@@ -309,8 +309,8 @@
           "speaker": "narrator",
           "text": "Lo entiendo, el agua se acuerda de todo.",
           "type": "thought",
-          "x": 60.78033447265625,
-          "y": 38.35991753472222
+          "x": 59.942626953125,
+          "y": 36.8896484375
         },
         {
           "id": "e2-p2-umpjd4f75",
@@ -318,8 +318,8 @@
           "speaker": "narrator",
           "text": "Bongo, Cada gota… tiene memoria de dónde estuvo.",
           "type": "speech",
-          "x": 18.939208984375,
-          "y": 25.80023871527778
+          "x": 18.42803955078125,
+          "y": 25.80837673611111
         },
         {
           "id": "e2-p2-umpjd5x2n",
@@ -327,8 +327,8 @@
           "speaker": "narrator",
           "text": "Guau Guau",
           "type": "speech",
-          "x": 48.26202392578125,
-          "y": 68.67947048611111
+          "x": 47.467041015625,
+          "y": 68.59266493055556
         }
       ],
       "e2-p3": [
@@ -338,8 +338,8 @@
           "speaker": "narrator",
           "text": "Bongo, ¿sabes dónde caímos?",
           "type": "speech",
-          "x": 26.62811279296875,
-          "y": 41.34385850694444
+          "x": 25.9521484375,
+          "y": 42.33127170138889
         },
         {
           "id": "e2-p3-umpjdff2l",
@@ -347,8 +347,8 @@
           "speaker": "narrator",
           "text": "Uy, ni yo sé...",
           "type": "thought",
-          "x": 77.27203369140625,
-          "y": 60.294596354166664
+          "x": 77.47802734375,
+          "y": 60.37055121527778
         },
         {
           "id": "e2-p3-ucmpjdytg7",
@@ -366,8 +366,8 @@
           "speaker": "narrator",
           "text": "Guau Guau :0",
           "type": "speech",
-          "x": 60.82916259765625,
-          "y": 85.63096788194444
+          "x": 60.52398681640625,
+          "y": 87.17990451388889
         }
       ]
     },
@@ -381,8 +381,8 @@
         "panelId": "e2-p1",
         "position": "center",
         "size": 876,
-        "x": 26.57,
-        "y": 51.65
+        "x": 26.48,
+        "y": 51.67
       },
       {
         "dataURL": "assets/uploads/3afd08590e758f37.png",
@@ -441,8 +441,8 @@
         "panelId": "e2-p3",
         "position": "center",
         "size": 966,
-        "x": 39.21,
-        "y": 68.38
+        "x": 39.19,
+        "y": 68.44
       },
       {
         "dataURL": "assets/uploads/c097ab29ea21ac29.png",
@@ -458,7 +458,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T02:40:06.716Z",
+  "savedAt": "2026-05-25T04:09:21.006Z",
   "scene": "2",
   "version": 1
 }

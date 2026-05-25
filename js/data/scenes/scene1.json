@@ -335,8 +335,8 @@
           "speaker": "narrator",
           "text": "Bongo… esta agua no está enferma. \nEstá triste.",
           "type": "speech",
-          "x": 58.35113525390625,
-          "y": 34.00065104166667
+          "x": 58.38470458984375,
+          "y": 34.58930121527778
         },
         {
           "id": "e1-p2-umpiu8fgl",
@@ -344,8 +344,8 @@
           "speaker": "narrator",
           "text": "Guau, Guau",
           "type": "speech",
-          "x": 60.82611083984375,
-          "y": 57.552083333333336
+          "x": 60.968017578125,
+          "y": 59.001736111111114
         },
         {
           "id": "e1-p2-umpjcg69o",
@@ -353,8 +353,8 @@
           "speaker": "narrator",
           "text": "La serpiente verde no canta hoy. \nAntes cantaba claro, como campana mojada. \nHoy gruñe. Huele a monedas viejas, \na sótano, a algo que durmió mucho tiempo.",
           "type": "thought",
-          "x": 29.08782958984375,
-          "y": 51.01996527777778
+          "x": 29.00848388671875,
+          "y": 51.55164930555556
         },
         {
           "id": "e1-p2-ucmpjciwax",
@@ -386,8 +386,8 @@
           "speaker": "narrator",
           "text": "Guau Guau",
           "type": "speech",
-          "x": 39.75982666015625,
-          "y": 68.45160590277779
+          "x": 39.81781005859375,
+          "y": 69.10536024305556
         },
         {
           "id": "e1-up-mpitlb8kqmv-umpjchtve",
@@ -395,8 +395,8 @@
           "speaker": "narrator",
           "text": "Y si, la toco que pasara ...",
           "type": "thought",
-          "x": 84.39483642578125,
-          "y": 30.696614583333332
+          "x": 84.796142578125,
+          "y": 30.501302083333332
         },
         {
           "id": "e1-up-mpitlb8kqmv-umpjckru7",
@@ -404,8 +404,8 @@
           "speaker": "narrator",
           "text": "Veamos pues que pasara...",
           "type": "thought",
-          "x": 17.14630126953125,
-          "y": 63.582356770833336
+          "x": 17.11578369140625,
+          "y": 64.20355902777779
         },
         {
           "id": "e1-up-mpitlb8kqmv-ucmpjcr3q7",
@@ -494,7 +494,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T02:39:40.755Z",
+  "savedAt": "2026-05-25T04:09:21.006Z",
   "scene": "1",
   "version": 1
 }

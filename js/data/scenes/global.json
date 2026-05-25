@@ -1,34 +1,6 @@
 {
   "app": "HilosDelAgua",
   "data": {
-    "comic-bubble-sides": {
-      "e1-p2-umpiu7lse": "right",
-      "e1-p2-umpjcg69o": "right",
-      "e1-up-mpitlb8kqmv-umpjckru7": "right",
-      "e2-p1-umpjclwed": "right",
-      "e2-p2-umpjd4f75": "right",
-      "e2-p2-umpjd5x2n": "top-right",
-      "e2-p3-umpjde8vr": "right",
-      "e2-p3-umpjdg044": "top-right",
-      "e2-p3-umpk38qjp": "top-right",
-      "e3-p1-umpk2kos5": "right",
-      "e3-p1-umpk2lttv": "right",
-      "e3-p1-umpk399u0": "top-right",
-      "e3-p2-umpk3hfy7": "right",
-      "e3-p3-umpk3jrqs": "right",
-      "e3-p3-umpk4ebf8": "top-left",
-      "e4-p1-umpk4wwhu": "right",
-      "e4-p1-umpk4y2s8": "right",
-      "e4-p1-umpk56rcz": "top-left",
-      "e4-p2-umpk58za2": "right",
-      "e4-p2-umpk59khq": "top-right",
-      "e5-p1-umpk65yxm": "top-left",
-      "e5-p1-umpk6c6mu": "top-left",
-      "e5-p2-umpk6i6m2": "top-left",
-      "e5-up-19e58704777zeu-umpk5rbvn": "left",
-      "e5-up-19e58704777zeu-umpk5sj5c": "top-left",
-      "e9-p2-umpk78x6k": "top-left"
-    },
     "comic-global-audio-volume": 0,
     "comic-user-character-gallery": [
       {
@@ -336,10 +308,100 @@
         "dataURL": "assets/uploads/3002f77535935ff8.png",
         "mediaType": "image",
         "name": "Nico6C"
+      },
+      {
+        "_key": "EO::assets/uploads/82f5d9d1679d4049.png",
+        "dataURL": "assets/uploads/82f5d9d1679d4049.png",
+        "mediaType": "image",
+        "name": "EO"
+      },
+      {
+        "_key": "7A::assets/uploads/bb53335176f360b6.png",
+        "dataURL": "assets/uploads/bb53335176f360b6.png",
+        "mediaType": "image",
+        "name": "7A"
+      },
+      {
+        "_key": "7A::assets/uploads/8a0c35ef723f217e.png",
+        "dataURL": "assets/uploads/8a0c35ef723f217e.png",
+        "mediaType": "image",
+        "name": "7A"
+      },
+      {
+        "_key": "s::assets/uploads/65456acf031844f1.png",
+        "dataURL": "assets/uploads/65456acf031844f1.png",
+        "mediaType": "image",
+        "name": "s"
+      },
+      {
+        "_key": "8a::assets/uploads/f856a419606c5606.png",
+        "dataURL": "assets/uploads/f856a419606c5606.png",
+        "mediaType": "image",
+        "name": "8a"
+      },
+      {
+        "_key": "8aa::assets/uploads/6b43ade727c03363.png",
+        "dataURL": "assets/uploads/6b43ade727c03363.png",
+        "mediaType": "image",
+        "name": "8aa"
+      },
+      {
+        "_key": "epa colombia::assets/uploads/4d4f1b6a9803f514.png",
+        "dataURL": "assets/uploads/4d4f1b6a9803f514.png",
+        "mediaType": "image",
+        "name": "epa colombia"
+      },
+      {
+        "_key": "eoe::assets/uploads/cdcd647becdc48f2.png",
+        "dataURL": "assets/uploads/cdcd647becdc48f2.png",
+        "mediaType": "image",
+        "name": "eoe"
+      },
+      {
+        "_key": "personaje::assets/uploads/4d4f1b6a9803f514.png",
+        "dataURL": "assets/uploads/4d4f1b6a9803f514.png",
+        "mediaType": "image",
+        "name": "personaje"
+      },
+      {
+        "_key": "personaje::assets/uploads/3b07bcc3e17c37e8.png",
+        "dataURL": "assets/uploads/3b07bcc3e17c37e8.png",
+        "mediaType": "image",
+        "name": "personaje"
+      },
+      {
+        "_key": "personaje::assets/uploads/e0a2cc88c3f8da8b.png",
+        "dataURL": "assets/uploads/e0a2cc88c3f8da8b.png",
+        "mediaType": "image",
+        "name": "personaje"
+      },
+      {
+        "_key": "personaje::assets/uploads/32cc2297cb6ae81a.png",
+        "dataURL": "assets/uploads/32cc2297cb6ae81a.png",
+        "mediaType": "image",
+        "name": "personaje"
+      },
+      {
+        "_key": "personaje::assets/uploads/f49744158fe58305.png",
+        "dataURL": "assets/uploads/f49744158fe58305.png",
+        "mediaType": "image",
+        "name": "personaje"
+      },
+      {
+        "_key": "personaje::assets/uploads/1b331147f4c46798.png",
+        "dataURL": "assets/uploads/1b331147f4c46798.png",
+        "mediaType": "image",
+        "name": "personaje"
+      },
+      {
+        "_key": "personaje::assets/uploads/2273aa65f2d93a09.png",
+        "dataURL": "assets/uploads/2273aa65f2d93a09.png",
+        "mediaType": "image",
+        "name": "personaje"
       }
     ]
   },
-  "savedAt": "2026-05-25T03:54:23.430Z",
+  "savedAt": "2026-05-25T07:21:57.287Z",
   "scene": "global",
   "version": 1
 }

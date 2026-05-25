@@ -6,10 +6,6 @@
       "e4-p1-umpk56rcz": 21
     },
     "comic-bubble-positions": {
-      "e4-p1-d0": {
-        "x": 28.0426025390625,
-        "y": 28.076171875
-      },
       "e4-p1-narration": {
         "x": 17.138671875,
         "y": 92.73546006944444
@@ -74,8 +70,7 @@
     },
     "comic-deleted-bubbles": [
       "e4-p1-narration",
-      "e4-p2-d0",
-      "e4-p1-d0"
+      "e4-p2-d0"
     ],
     "comic-deleted-panels": [
       "e4-p3"
@@ -114,8 +109,8 @@
           "speaker": "narrator",
           "text": "Pero nadie comía. La comida lloraba sola tirada en el suelo.",
           "type": "thought",
-          "x": 21.4508056640625,
-          "y": 53.47764756944444
+          "x": 21.92840576171875,
+          "y": 53.33116319444444
         },
         {
           "id": "e4-p1-umpk56rcz",
@@ -123,8 +118,8 @@
           "speaker": "narrator",
           "text": "Bongo... pero si todas estas frutas están buenas. ¿Por qué las tiraron?",
           "type": "speech",
-          "x": 79.84619140625,
-          "y": 74.60394965277779
+          "x": 80.084228515625,
+          "y": 75.830078125
         }
       ],
       "e4-p2": [
@@ -134,8 +129,8 @@
           "speaker": "narrator",
           "text": "Bongo… mirá.",
           "type": "speech",
-          "x": 43.38836669921875,
-          "y": 51.052517361111114
+          "x": 43.14422607421875,
+          "y": 52.64756944444444
         },
         {
           "id": "e4-p2-umpk59khq",
@@ -143,8 +138,8 @@
           "speaker": "narrator",
           "text": "Cada fruta tiene un hilo. Y los hilos van a alguna parte… pero alguien los cortó.",
           "type": "speech",
-          "x": 30.2825927734375,
-          "y": 72.61013454861111
+          "x": 30.206298828125,
+          "y": 72.42296006944444
         },
         {
           "id": "e4-p2-umpk5c0xq",
@@ -208,7 +203,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T02:40:38.822Z",
+  "savedAt": "2026-05-25T04:09:21.006Z",
   "scene": "4",
   "version": 1
 }

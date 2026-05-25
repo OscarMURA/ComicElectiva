@@ -1,16 +1,106 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-positions": {
+      "e7-p1-d0": {
+        "x": 28.033447265625,
+        "y": 28.059895833333332
+      },
+      "e7-p1-narration": {
+        "x": 7.326660156250001,
+        "y": 32.24826388888889
+      },
+      "e7-p2-d0": {
+        "x": 50,
+        "y": 50
+      }
+    },
+    "comic-character-sizes": {
+      "e7-p1-char-mpkqsi7y": {
+        "h": 630,
+        "w": 473
+      },
+      "e7-p1-char-mpkqt3bi": {
+        "h": 679,
+        "w": 509
+      },
+      "e7-p1-char-mpkr26m8": {
+        "h": 60,
+        "w": 60
+      },
+      "e7-p1-char-mpkr2kny": {
+        "h": 434,
+        "w": 326
+      }
+    },
+    "comic-deleted-bubbles": [
+      "e7-p1-d0",
+      "e7-p2-d0"
+    ],
+    "comic-deleted-panels": [
+      "e7-p3"
+    ],
     "comic-panel-order": [
       "e7-p1",
       "e7-p2",
       "e7-p3"
     ],
     "comic-user-backgrounds": {
-      "e7-p2": "assets/uploads/f108a5f3a8e0b793.png"
-    }
+      "e7-p1": "assets/uploads/918ced5f44f9f06c.png",
+      "e7-p2": "assets/uploads/68d04321748294e0.png"
+    },
+    "comic-user-characters": [
+      {
+        "dataURL": "assets/uploads/8a0c35ef723f217e.png",
+        "height": 630,
+        "id": "e7-p1-char-mpkqsi7y",
+        "mediaType": "image",
+        "name": "7A",
+        "panelId": "e7-p1",
+        "position": "right",
+        "size": 473,
+        "x": 68.37,
+        "y": 68.38
+      },
+      {
+        "dataURL": "assets/uploads/65456acf031844f1.png",
+        "height": 679,
+        "id": "e7-p1-char-mpkqt3bi",
+        "mediaType": "image",
+        "name": "s",
+        "panelId": "e7-p1",
+        "position": "right",
+        "size": 509,
+        "x": 83.76,
+        "y": 62.4
+      },
+      {
+        "dataURL": "assets/uploads/95b9e222ab103958.webp",
+        "height": 60,
+        "id": "e7-p1-char-mpkr26m8",
+        "mediaType": "image",
+        "name": "fondo de parche",
+        "panelId": "e7-p1",
+        "position": "right",
+        "size": 60,
+        "x": 18.07,
+        "y": 69.42
+      },
+      {
+        "dataURL": "assets/uploads/bb53335176f360b6.png",
+        "height": 434,
+        "id": "e7-p1-char-mpkr2kny",
+        "mediaType": "image",
+        "name": "7A",
+        "panelId": "e7-p1",
+        "position": "right",
+        "size": 326,
+        "x": 15.47,
+        "y": 75.34
+      }
+    ]
   },
-  "savedAt": "2026-05-25T03:30:49.485Z",
+  "savedAt": "2026-05-25T05:57:39.084Z",
   "scene": "7",
   "version": 1
 }

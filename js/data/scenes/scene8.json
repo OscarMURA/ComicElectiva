@@ -1,13 +1,191 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-positions": {
+      "e8-p1-d0": {
+        "x": 28.033447265625,
+        "y": 28.059895833333332
+      },
+      "e8-p2-d0": {
+        "x": 50,
+        "y": 50
+      },
+      "e8-p3-d0": {
+        "x": 71.96533203125,
+        "y": 71.93793402777777
+      }
+    },
+    "comic-character-sizes": {
+      "e8-p1-char-mpkth16b": {
+        "h": 334,
+        "w": 268
+      },
+      "e8-p1-char-mpkthloj": {
+        "h": 560,
+        "w": 448
+      },
+      "e8-p2-char-mpku8zsk": {
+        "h": 401,
+        "w": 267
+      },
+      "e8-p3-char-mpkvlne5": {
+        "h": 327,
+        "w": 245
+      },
+      "e8-p3-char-mpkvm93y": {
+        "h": 395,
+        "w": 296
+      },
+      "e8-p3-char-mpkvms6b": {
+        "h": 465,
+        "w": 349
+      },
+      "e8-p3-char-mpkvnhgz": {
+        "h": 493,
+        "w": 370
+      },
+      "e8-p3-char-mpkvorn8": {
+        "h": 457,
+        "w": 342
+      }
+    },
+    "comic-deleted-bubbles": [
+      "e8-p1-d0",
+      "e8-p2-d0",
+      "e8-p3-d0"
+    ],
     "comic-panel-order": [
       "e8-p1",
       "e8-p2",
       "e8-p3"
+    ],
+    "comic-user-backgrounds": {
+      "e8-p1": "assets/uploads/6dd56645853a9239.png",
+      "e8-p2": "assets/uploads/3956dfba45e81cd3.png",
+      "e8-p3": "assets/uploads/3042bbe8c4b4aaf7.png"
+    },
+    "comic-user-characters": [
+      {
+        "dataURL": "assets/uploads/f856a419606c5606.png",
+        "height": 334,
+        "id": "e8-p1-char-mpkth16b",
+        "mediaType": "image",
+        "name": "8a",
+        "panelId": "e8-p1",
+        "position": "right",
+        "size": 268,
+        "x": 78.07,
+        "y": 81.81
+      },
+      {
+        "dataURL": "assets/uploads/6b43ade727c03363.png",
+        "height": 560,
+        "id": "e8-p1-char-mpkthloj",
+        "mediaType": "image",
+        "name": "8aa",
+        "panelId": "e8-p1",
+        "position": "right",
+        "size": 448,
+        "x": 56.88,
+        "y": 63.85
+      },
+      {
+        "dataURL": "assets/uploads/4d4f1b6a9803f514.png",
+        "height": 401,
+        "id": "e8-p2-char-mpku8zsk",
+        "mediaType": "image",
+        "name": "epa colombia",
+        "panelId": "e8-p2",
+        "position": "right",
+        "size": 267,
+        "x": 60.52,
+        "y": 52.44
+      },
+      {
+        "dataURL": "assets/uploads/cdcd647becdc48f2.png",
+        "id": "e8-p2-char-mpku9jdc",
+        "mediaType": "image",
+        "name": "eoe",
+        "panelId": "e8-p2",
+        "position": "right",
+        "size": 400,
+        "x": 78.04,
+        "y": 63.85
+      },
+      {
+        "dataURL": "assets/uploads/3b07bcc3e17c37e8.png",
+        "id": "e8-p2-char-mpkuagdv",
+        "mediaType": "image",
+        "name": "personaje",
+        "panelId": "e8-p2",
+        "position": "right",
+        "size": 400,
+        "x": 42.55,
+        "y": 60.01
+      },
+      {
+        "dataURL": "assets/uploads/e0a2cc88c3f8da8b.png",
+        "height": 327,
+        "id": "e8-p3-char-mpkvlne5",
+        "mediaType": "image",
+        "name": "personaje",
+        "panelId": "e8-p3",
+        "position": "right",
+        "size": 245,
+        "x": 59.5,
+        "y": 74.56
+      },
+      {
+        "dataURL": "assets/uploads/32cc2297cb6ae81a.png",
+        "height": 395,
+        "id": "e8-p3-char-mpkvm93y",
+        "mediaType": "image",
+        "name": "personaje",
+        "panelId": "e8-p3",
+        "position": "right",
+        "size": 296,
+        "x": 78.32,
+        "y": 57.05
+      },
+      {
+        "dataURL": "assets/uploads/f49744158fe58305.png",
+        "height": 465,
+        "id": "e8-p3-char-mpkvms6b",
+        "mediaType": "image",
+        "name": "personaje",
+        "panelId": "e8-p3",
+        "position": "right",
+        "size": 349,
+        "x": 45.24,
+        "y": 61.92
+      },
+      {
+        "dataURL": "assets/uploads/1b331147f4c46798.png",
+        "height": 493,
+        "id": "e8-p3-char-mpkvnhgz",
+        "mediaType": "image",
+        "name": "personaje",
+        "panelId": "e8-p3",
+        "position": "right",
+        "size": 370,
+        "x": 65,
+        "y": 57.8
+      },
+      {
+        "dataURL": "assets/uploads/2273aa65f2d93a09.png",
+        "height": 457,
+        "id": "e8-p3-char-mpkvorn8",
+        "mediaType": "image",
+        "name": "personaje",
+        "panelId": "e8-p3",
+        "position": "left",
+        "size": 342,
+        "x": 28.91,
+        "y": 57.85
+      }
     ]
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-25T07:22:06.137Z",
   "scene": "8",
   "version": 1
 }
