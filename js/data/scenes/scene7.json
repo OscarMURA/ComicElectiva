@@ -5,9 +5,12 @@
       "e7-p1",
       "e7-p2",
       "e7-p3"
-    ]
+    ],
+    "comic-user-backgrounds": {
+      "e7-p2": "assets/uploads/f108a5f3a8e0b793.png"
+    }
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-25T03:30:49.485Z",
   "scene": "7",
   "version": 1
 }

@@ -270,10 +270,76 @@
         "dataURL": "assets/uploads/f87338838461b1a7.png",
         "mediaType": "image",
         "name": "NICO"
+      },
+      {
+        "_key": "Nico6a::assets/uploads/bac138618308d74e.png",
+        "dataURL": "assets/uploads/bac138618308d74e.png",
+        "mediaType": "image",
+        "name": "Nico6a"
+      },
+      {
+        "_key": "NIco6a::assets/uploads/bac138618308d74e.png",
+        "dataURL": "assets/uploads/bac138618308d74e.png",
+        "mediaType": "image",
+        "name": "NIco6a"
+      },
+      {
+        "_key": "personaje::assets/uploads/9fcedcb2bf0cda61.png",
+        "dataURL": "assets/uploads/9fcedcb2bf0cda61.png",
+        "mediaType": "image",
+        "name": "personaje"
+      },
+      {
+        "_key": "Bongo6A::assets/uploads/771aa2304444179c.png",
+        "dataURL": "assets/uploads/771aa2304444179c.png",
+        "mediaType": "image",
+        "name": "Bongo6A"
+      },
+      {
+        "_key": "Bongo6B::assets/uploads/d2af280c1f2810af.png",
+        "dataURL": "assets/uploads/d2af280c1f2810af.png",
+        "mediaType": "image",
+        "name": "Bongo6B"
+      },
+      {
+        "_key": "Bongo6BB::assets/uploads/0929f125c91f52a2.png",
+        "dataURL": "assets/uploads/0929f125c91f52a2.png",
+        "mediaType": "image",
+        "name": "Bongo6BB"
+      },
+      {
+        "_key": "Nico6A::assets/uploads/cd7f2c5627dca80d.png",
+        "dataURL": "assets/uploads/cd7f2c5627dca80d.png",
+        "mediaType": "image",
+        "name": "Nico6A"
+      },
+      {
+        "_key": "Bongueiro::assets/uploads/847873d03d7c8237.png",
+        "dataURL": "assets/uploads/847873d03d7c8237.png",
+        "mediaType": "image",
+        "name": "Bongueiro"
+      },
+      {
+        "_key": "6c::assets/uploads/fcd7b1dd44246715.png",
+        "dataURL": "assets/uploads/fcd7b1dd44246715.png",
+        "mediaType": "image",
+        "name": "6c"
+      },
+      {
+        "_key": "6CC::assets/uploads/fcd7b1dd44246715.png",
+        "dataURL": "assets/uploads/fcd7b1dd44246715.png",
+        "mediaType": "image",
+        "name": "6CC"
+      },
+      {
+        "_key": "Nico6C::assets/uploads/3002f77535935ff8.png",
+        "dataURL": "assets/uploads/3002f77535935ff8.png",
+        "mediaType": "image",
+        "name": "Nico6C"
       }
     ]
   },
-  "savedAt": "2026-05-25T02:38:59.668Z",
+  "savedAt": "2026-05-25T03:54:23.430Z",
   "scene": "global",
   "version": 1
 }

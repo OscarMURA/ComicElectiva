@@ -1,13 +1,166 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-fontsizes": {
+      "e6-p1-umpklg4xt": 23
+    },
+    "comic-bubble-positions": {
+      "e6-p1-d0": {
+        "x": 28.033447265625,
+        "y": 28.059895833333332
+      },
+      "e6-p1-narration": {
+        "x": 8.426513671875,
+        "y": 89.48350694444444
+      },
+      "e6-p2-d0": {
+        "x": 50,
+        "y": 50
+      },
+      "e6-p3-d0": {
+        "x": 71.96326061997705,
+        "y": 71.93495713702545
+      }
+    },
+    "comic-bubble-sizes": {
+      "e6-p1-umpklg4xt": {
+        "h": 155,
+        "w": 246
+      }
+    },
+    "comic-bubble-text-overrides": {
+      "e6-p1-narration": "Río Cauca · Atardecer"
+    },
+    "comic-character-sizes": {
+      "e6-p1-char-mpki6rf5": {
+        "h": 516,
+        "w": 1134
+      },
+      "e6-p1-char-mpki9pxl": {
+        "h": 240,
+        "w": 788
+      },
+      "e6-p2-char-mpkmgv1w": {
+        "h": 393,
+        "w": 295
+      },
+      "e6-p2-char-mpkn8l18": {
+        "h": 238,
+        "w": 535
+      },
+      "e6-p3-char-mpko93ag": {
+        "h": 281,
+        "w": 211
+      },
+      "e6-p3-char-mpko9t9y": {
+        "h": 313,
+        "w": 235
+      }
+    },
+    "comic-deleted-bubbles": [
+      "e6-p1-d0",
+      "e6-p2-d0",
+      "e6-p3-d0"
+    ],
     "comic-panel-order": [
       "e6-p1",
       "e6-p2",
       "e6-p3"
+    ],
+    "comic-user-backgrounds": {
+      "e6-p1": "assets/uploads/c4ae5e86e6c4820f.png",
+      "e6-p2": "assets/uploads/4a21658ef93924de.png",
+      "e6-p3": "assets/uploads/cbdbf6321bb47a45.png"
+    },
+    "comic-user-bubbles": {
+      "e6-p1": [
+        {
+          "id": "e6-p1-umpklg4xt",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Llegamos al final del viaje. Al río que carga el agua de toda la región. Y estaba enfermo.",
+          "type": "thought",
+          "x": 88.2177734375,
+          "y": 50.716145833333336
+        }
+      ]
+    },
+    "comic-user-characters": [
+      {
+        "dataURL": "assets/uploads/9fcedcb2bf0cda61.png",
+        "height": 516,
+        "id": "e6-p1-char-mpki6rf5",
+        "mediaType": "image",
+        "name": "personaje",
+        "panelId": "e6-p1",
+        "position": "right",
+        "size": 1134,
+        "x": 60.66,
+        "y": 64.97
+      },
+      {
+        "dataURL": "assets/uploads/771aa2304444179c.png",
+        "height": 240,
+        "id": "e6-p1-char-mpki9pxl",
+        "mediaType": "image",
+        "name": "Bongo6A",
+        "panelId": "e6-p1",
+        "position": "right",
+        "size": 788,
+        "x": 87.72,
+        "y": 78.29
+      },
+      {
+        "dataURL": "assets/uploads/cd7f2c5627dca80d.png",
+        "height": 393,
+        "id": "e6-p2-char-mpkmgv1w",
+        "mediaType": "image",
+        "name": "Nico6A",
+        "panelId": "e6-p2",
+        "position": "right",
+        "size": 295,
+        "x": 76.88,
+        "y": 74.22
+      },
+      {
+        "dataURL": "assets/uploads/847873d03d7c8237.png",
+        "height": 238,
+        "id": "e6-p2-char-mpkn8l18",
+        "mediaType": "image",
+        "name": "Bongueiro",
+        "panelId": "e6-p2",
+        "position": "right",
+        "size": 535,
+        "x": 87,
+        "y": 80.3
+      },
+      {
+        "dataURL": "assets/uploads/fcd7b1dd44246715.png",
+        "height": 281,
+        "id": "e6-p3-char-mpko93ag",
+        "mediaType": "image",
+        "name": "6c",
+        "panelId": "e6-p3",
+        "position": "right",
+        "size": 211,
+        "x": 77.52,
+        "y": 70.25
+      },
+      {
+        "dataURL": "assets/uploads/3002f77535935ff8.png",
+        "height": 313,
+        "id": "e6-p3-char-mpko9t9y",
+        "mediaType": "image",
+        "name": "Nico6C",
+        "panelId": "e6-p3",
+        "position": "right",
+        "size": 235,
+        "x": 67.34,
+        "y": 64.23
+      }
     ]
   },
-  "savedAt": "2026-05-23T22:31:33.655Z",
+  "savedAt": "2026-05-25T03:55:14.307Z",
   "scene": "6",
   "version": 1
 }
