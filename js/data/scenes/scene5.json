@@ -178,8 +178,8 @@
           "speaker": "narrator",
           "text": "Qué raro... mi olfato casi no la encuentra. Esta cachorra humana huele a viento... a casi nada. Cuando alguien come bien, se siente el olor a tierra y a fuego; pero ella huele a puro aire, como si se estuviera volviendo transparente.",
           "type": "thought",
-          "x": 48.52752685546875,
-          "y": 69.49869791666666
+          "x": 48.73291015625,
+          "y": 74.75477430555556
         }
       ],
       "e5-p2": [
@@ -189,8 +189,8 @@
           "speaker": "narrator",
           "text": "Toma... Guardé este hilo del campo para vos. Así la comida nunca más se va a olvidar de buscarte.",
           "type": "speech",
-          "x": 52.75115966796875,
-          "y": 22.151692708333336
+          "x": 50.809326171875,
+          "y": 15.93532986111111
         },
         {
           "id": "e5-p2-umpk6frjz",
@@ -207,8 +207,8 @@
           "speaker": "narrator",
           "text": "Gracias... Ya no tengo tanto miedo.",
           "type": "speech",
-          "x": 62.469482421875,
-          "y": 50.900607638888886
+          "x": 70.084228515625,
+          "y": 59.055989583333336
         }
       ],
       "e5-up-19e58704777zeu": [
@@ -245,8 +245,8 @@
           "speaker": "narrator",
           "text": "Guau Guau :0",
           "type": "speech",
-          "x": 57.27996826171875,
-          "y": 88.10492621527779
+          "x": 57.26806640624999,
+          "y": 87.99696180555556
         }
       ]
     },
@@ -337,7 +337,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T04:41:16.601Z",
+  "savedAt": "2026-05-25T07:53:24.101Z",
   "scene": "5",
   "version": 1
 }

@@ -3,9 +3,13 @@
   "data": {
     "comic-bubble-fontsizes": {
       "e4-p1-umpk4y2s8": 22,
-      "e4-p1-umpk56rcz": 21
+      "e4-p1-umpk56rcz": 29
     },
     "comic-bubble-positions": {
+      "e4-p1-d0": {
+        "x": 28.033447265625,
+        "y": 28.059895833333332
+      },
       "e4-p1-narration": {
         "x": 17.138671875,
         "y": 92.73546006944444
@@ -19,6 +23,10 @@
       "e4-p1-umpk4y2s8": {
         "h": 60,
         "w": 507
+      },
+      "e4-p1-umpk56rcz": {
+        "h": 103,
+        "w": 413
       }
     },
     "comic-bubble-text-overrides": {
@@ -70,7 +78,8 @@
     },
     "comic-deleted-bubbles": [
       "e4-p1-narration",
-      "e4-p2-d0"
+      "e4-p2-d0",
+      "e4-p1-d0"
     ],
     "comic-deleted-panels": [
       "e4-p3"
@@ -109,8 +118,8 @@
           "speaker": "narrator",
           "text": "Pero nadie comía. La comida lloraba sola tirada en el suelo.",
           "type": "thought",
-          "x": 21.92840576171875,
-          "y": 53.33116319444444
+          "x": 21.971435546875,
+          "y": 53.3203125
         },
         {
           "id": "e4-p1-umpk56rcz",
@@ -118,8 +127,8 @@
           "speaker": "narrator",
           "text": "Bongo... pero si todas estas frutas están buenas. ¿Por qué las tiraron?",
           "type": "speech",
-          "x": 80.084228515625,
-          "y": 75.830078125
+          "x": 79.927978515625,
+          "y": 66.74696180555556
         }
       ],
       "e4-p2": [
@@ -129,8 +138,8 @@
           "speaker": "narrator",
           "text": "Bongo… mirá.",
           "type": "speech",
-          "x": 43.14422607421875,
-          "y": 52.64756944444444
+          "x": 43.514404296875,
+          "y": 44.91319444444444
         },
         {
           "id": "e4-p2-umpk59khq",
@@ -138,8 +147,8 @@
           "speaker": "narrator",
           "text": "Cada fruta tiene un hilo. Y los hilos van a alguna parte… pero alguien los cortó.",
           "type": "speech",
-          "x": 30.206298828125,
-          "y": 72.42296006944444
+          "x": 27.811279296875004,
+          "y": 68.58723958333334
         },
         {
           "id": "e4-p2-umpk5c0xq",
@@ -162,8 +171,8 @@
         "panelId": "e4-p1",
         "position": "center",
         "size": 915,
-        "x": 67.84,
-        "y": 69.8
+        "x": 67.81,
+        "y": 69.74
       },
       {
         "dataURL": "assets/uploads/65716bbf66b5e365.png",
@@ -203,7 +212,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T04:09:21.006Z",
+  "savedAt": "2026-05-25T07:52:36.494Z",
   "scene": "4",
   "version": 1
 }

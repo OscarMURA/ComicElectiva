@@ -1,18 +1,66 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-fontsizes": {
+      "e7-p1-umpkyhlw3": 21,
+      "e7-p1-umpkyinnr": 33,
+      "e7-p2-umpkymx8e": 28,
+      "e7-p2-umpkynogm": 30,
+      "e7-p2-umpkyo8it": 30,
+      "e7-p2-umpkypkpt": 37
+    },
     "comic-bubble-positions": {
       "e7-p1-d0": {
         "x": 28.033447265625,
         "y": 28.059895833333332
       },
       "e7-p1-narration": {
-        "x": 7.326660156250001,
-        "y": 32.24826388888889
+        "x": 25.003662109375004,
+        "y": 57.013888888888886
       },
       "e7-p2-d0": {
         "x": 50,
         "y": 50
+      }
+    },
+    "comic-bubble-sizes": {
+      "e7-p1-umpkyhlw3": {
+        "h": 41,
+        "w": 282
+      },
+      "e7-p1-umpkyinnr": {
+        "h": 57,
+        "w": 278
+      },
+      "e7-p2-umpkymx8e": {
+        "h": 80,
+        "w": 370
+      },
+      "e7-p2-umpkynogm": {
+        "h": 57,
+        "w": 458
+      },
+      "e7-p2-umpkyo8it": {
+        "h": 57,
+        "w": 238
+      },
+      "e7-p2-umpkypkpt": {
+        "h": 125,
+        "w": 1280
+      }
+    },
+    "comic-bubble-text-overrides": {
+      "e7-p1-narration": "Cocina · 7:00 PM"
+    },
+    "comic-bubble-timing": {
+      "e7-p1-umpkyhlw3": {
+        "sequence": 1
+      },
+      "e7-p1-umpkyk0lp": {
+        "sequence": 2
+      },
+      "e7-p1-umpkylqf4": {
+        "sequence": 3
       }
     },
     "comic-character-sizes": {
@@ -35,7 +83,8 @@
     },
     "comic-deleted-bubbles": [
       "e7-p1-d0",
-      "e7-p2-d0"
+      "e7-p2-d0",
+      "e7-p1-narration"
     ],
     "comic-deleted-panels": [
       "e7-p3"
@@ -49,6 +98,75 @@
       "e7-p1": "assets/uploads/918ced5f44f9f06c.png",
       "e7-p2": "assets/uploads/68d04321748294e0.png"
     },
+    "comic-user-bubbles": {
+      "e7-p1": [
+        {
+          "id": "e7-p1-umpkyhlw3",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Mamá… ¿por qué nosotros comemos sancocho y Luz no?",
+          "type": "speech",
+          "x": 50.087890625,
+          "y": 33.14887152777778
+        },
+        {
+          "id": "e7-p1-umpkyinnr",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Cocina · 7:00 PM",
+          "type": "narration",
+          "x": 9.37744140625,
+          "y": 6.239149305555555
+        },
+        {
+          "id": "e7-p1-umpkyk0lp",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Hay preguntas que no tienen respuesta de un día, mijo. Tienen respuesta de toda una vida.",
+          "type": "speech",
+          "x": 61.246337890625,
+          "y": 15.40798611111111
+        },
+        {
+          "id": "e7-p1-umpkylqf4",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "¿Vos qué creés que se puede hacer?",
+          "type": "speech",
+          "x": 67.57080078125,
+          "y": 80.234375
+        }
+      ],
+      "e7-p2": [
+        {
+          "id": "e7-p2-umpkynogm",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "No fue un premio por sentarme.",
+          "type": "narration",
+          "x": 17.254638671875,
+          "y": 6.265190972222221
+        },
+        {
+          "id": "e7-p2-umpkyo8it",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Fue un pacto.",
+          "type": "narration",
+          "x": 7.5439453125,
+          "y": 25.670572916666668
+        },
+        {
+          "id": "e7-p2-umpkypkpt",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Esa noche, la sopa de Nico sabía a preguntas. Y los dos sabíamos que mañana sería diferente.",
+          "type": "narration",
+          "x": 50.064697265625,
+          "y": 91.72743055555556
+        }
+      ]
+    },
     "comic-user-characters": [
       {
         "dataURL": "assets/uploads/8a0c35ef723f217e.png",
@@ -59,8 +177,8 @@
         "panelId": "e7-p1",
         "position": "right",
         "size": 473,
-        "x": 68.37,
-        "y": 68.38
+        "x": 68.34,
+        "y": 68.33
       },
       {
         "dataURL": "assets/uploads/65456acf031844f1.png",
@@ -71,8 +189,8 @@
         "panelId": "e7-p1",
         "position": "right",
         "size": 509,
-        "x": 83.76,
-        "y": 62.4
+        "x": 83.49,
+        "y": 62.23
       },
       {
         "dataURL": "assets/uploads/95b9e222ab103958.webp",
@@ -95,12 +213,12 @@
         "panelId": "e7-p1",
         "position": "right",
         "size": 326,
-        "x": 15.47,
-        "y": 75.34
+        "x": 15.58,
+        "y": 75.19
       }
     ]
   },
-  "savedAt": "2026-05-25T05:57:39.084Z",
+  "savedAt": "2026-05-25T08:46:53.640Z",
   "scene": "7",
   "version": 1
 }

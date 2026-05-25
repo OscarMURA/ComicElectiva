@@ -1,10 +1,24 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-fontsizes": {
+      "e8-p1-ucmpkxog57": 26,
+      "e8-p1-umpkxarzp": 21,
+      "e8-p1-umpkxcwh2": 23,
+      "e8-p2-ucmpkxle1d": 26,
+      "e8-p2-umpkxepam": 20,
+      "e8-p2-umpkxhy48": 27,
+      "e8-p3-umpkxpoo6": 31,
+      "e8-p3-umpkxqssw": 24
+    },
     "comic-bubble-positions": {
       "e8-p1-d0": {
         "x": 28.033447265625,
         "y": 28.059895833333332
+      },
+      "e8-p1-narration": {
+        "x": 14.532470703125,
+        "y": 68.09461805555556
       },
       "e8-p2-d0": {
         "x": 50,
@@ -14,6 +28,35 @@
         "x": 71.96533203125,
         "y": 71.93793402777777
       }
+    },
+    "comic-bubble-sizes": {
+      "e8-p1-umpkxarzp": {
+        "h": 54,
+        "w": 284
+      },
+      "e8-p1-umpkxcwh2": {
+        "h": 41,
+        "w": 398
+      },
+      "e8-p2-ucmpkxle1d": {
+        "h": 96,
+        "w": 626
+      },
+      "e8-p2-umpkxepam": {
+        "h": 122,
+        "w": 211
+      },
+      "e8-p3-umpkxpoo6": {
+        "h": 57,
+        "w": 397
+      },
+      "e8-p3-umpkxqssw": {
+        "h": 57,
+        "w": 588
+      }
+    },
+    "comic-bubble-text-overrides": {
+      "e8-p1-narration": "Nadie le había agradecido al viejo en mucho tiempo. Su sombrero se sintió más liviano."
     },
     "comic-character-sizes": {
       "e8-p1-char-mpkth16b": {
@@ -52,7 +95,8 @@
     "comic-deleted-bubbles": [
       "e8-p1-d0",
       "e8-p2-d0",
-      "e8-p3-d0"
+      "e8-p3-d0",
+      "e8-p1-narration"
     ],
     "comic-panel-order": [
       "e8-p1",
@@ -64,6 +108,88 @@
       "e8-p2": "assets/uploads/3956dfba45e81cd3.png",
       "e8-p3": "assets/uploads/3042bbe8c4b4aaf7.png"
     },
+    "comic-user-bubbles": {
+      "e8-p1": [
+        {
+          "id": "e8-p1-umpkxarzp",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Don Efraín… le traje esto. Para que sepa que sus tomates son los más bonitos.",
+          "type": "speech",
+          "x": 71.800537109375,
+          "y": 22.315538194444446
+        },
+        {
+          "id": "e8-p1-umpkxbt6c",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Mijo… mijo… gracias.",
+          "type": "speech",
+          "x": 19.82177734375,
+          "y": 37.81684027777778
+        },
+        {
+          "id": "e8-p1-ucmpkxog57",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Nadie le había agradecido al viejo en mucho tiempo. Su sombrero se sintió más liviano.",
+          "type": "narration",
+          "width": 80,
+          "x": 34.111328125,
+          "y": 90.13237847222221
+        }
+      ],
+      "e8-p2": [
+        {
+          "id": "e8-p2-umpkxfdzw",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "Wof wof...",
+          "type": "speech",
+          "x": 65.81298828125,
+          "y": 58.567708333333336
+        },
+        {
+          "id": "e8-p2-umpkxhy48",
+          "position": "bottom-left",
+          "speaker": "narrator",
+          "text": "…gracias.",
+          "type": "speech",
+          "x": 31.180419921875004,
+          "y": 20.78125
+        },
+        {
+          "id": "e8-p2-ucmpkxle1d",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Algunas cosas no se dicen. Se entregan.",
+          "type": "narration",
+          "width": 80,
+          "x": 75.10009765625,
+          "y": 5.319010416666667
+        }
+      ],
+      "e8-p3": [
+        {
+          "id": "e8-p3-umpkxpoo6",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "No arreglamos el mundo.",
+          "type": "narration",
+          "x": 13.96484375,
+          "y": 4.678819444444445
+        },
+        {
+          "id": "e8-p3-umpkxqssw",
+          "position": "bottom-center",
+          "speaker": "narrator",
+          "text": "Pero le cosimos un parche. Y a veces los parches sostienen más que las cosas nuevas.",
+          "type": "narration",
+          "x": 22.169189453125,
+          "y": 86.3671875
+        }
+      ]
+    },
     "comic-user-characters": [
       {
         "dataURL": "assets/uploads/f856a419606c5606.png",
@@ -74,8 +200,8 @@
         "panelId": "e8-p1",
         "position": "right",
         "size": 268,
-        "x": 78.07,
-        "y": 81.81
+        "x": 78.01,
+        "y": 81.63
       },
       {
         "dataURL": "assets/uploads/6b43ade727c03363.png",
@@ -109,8 +235,8 @@
         "panelId": "e8-p2",
         "position": "right",
         "size": 400,
-        "x": 78.04,
-        "y": 63.85
+        "x": 77.9,
+        "y": 63.73
       },
       {
         "dataURL": "assets/uploads/3b07bcc3e17c37e8.png",
@@ -120,8 +246,8 @@
         "panelId": "e8-p2",
         "position": "right",
         "size": 400,
-        "x": 42.55,
-        "y": 60.01
+        "x": 42.58,
+        "y": 59.92
       },
       {
         "dataURL": "assets/uploads/e0a2cc88c3f8da8b.png",
@@ -132,8 +258,8 @@
         "panelId": "e8-p3",
         "position": "right",
         "size": 245,
-        "x": 59.5,
-        "y": 74.56
+        "x": 59.49,
+        "y": 74.49
       },
       {
         "dataURL": "assets/uploads/32cc2297cb6ae81a.png",
@@ -157,7 +283,7 @@
         "position": "right",
         "size": 349,
         "x": 45.24,
-        "y": 61.92
+        "y": 61.88
       },
       {
         "dataURL": "assets/uploads/1b331147f4c46798.png",
@@ -168,8 +294,8 @@
         "panelId": "e8-p3",
         "position": "right",
         "size": 370,
-        "x": 65,
-        "y": 57.8
+        "x": 64.97,
+        "y": 57.78
       },
       {
         "dataURL": "assets/uploads/2273aa65f2d93a09.png",
@@ -180,12 +306,12 @@
         "panelId": "e8-p3",
         "position": "left",
         "size": 342,
-        "x": 28.91,
-        "y": 57.85
+        "x": 28.94,
+        "y": 57.83
       }
     ]
   },
-  "savedAt": "2026-05-25T07:22:06.137Z",
+  "savedAt": "2026-05-25T08:20:15.687Z",
   "scene": "8",
   "version": 1
 }

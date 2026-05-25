@@ -10,7 +10,8 @@
       "e9-p1-umpk6sgz3": 23,
       "e9-p2-umpk71i8b": 23,
       "e9-p2-umpk73tpc": 23,
-      "e9-p2-umpk772pu": 24
+      "e9-p2-umpk772pu": 24,
+      "e9-p2-umpk78x6k": 23
     },
     "comic-bubble-positions": {
       "e9-p1-d0": {
@@ -28,6 +29,10 @@
       "e9-p3-d0": {
         "x": 71.96533203125,
         "y": 69.94357638888889
+      },
+      "e9-p3-narration": {
+        "x": 10.062255859375,
+        "y": 84.90234375
       }
     },
     "comic-bubble-sizes": {
@@ -132,7 +137,8 @@
       "e9-p1-d0",
       "e9-p1-narration",
       "e9-p2-d0",
-      "e9-p3-d0"
+      "e9-p3-d0",
+      "e9-p3-narration"
     ],
     "comic-panel-order": [
       "e9-p1",
@@ -229,13 +235,13 @@
           "y": 90.14214409722221
         },
         {
-          "id": "e9-p2-umpk78x6k",
+          "id": "e9-p2-umpkxnmao",
           "position": "bottom-left",
           "speaker": "narrator",
-          "text": "Guau...",
+          "text": "Wof..",
           "type": "speech",
-          "x": 40.42205810546875,
-          "y": 51.47026909722222
+          "x": 41.2646484375,
+          "y": 51.48003472222222
         }
       ]
     },
@@ -290,7 +296,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T07:22:20.668Z",
+  "savedAt": "2026-05-25T08:17:18.371Z",
   "scene": "9",
   "version": 1
 }
