@@ -2198,6 +2198,20 @@
     applyBubbleSide(sel, side);
     saveBubbleSide(id, side);
     syncSideButtonsToBubble(sel);
+    // Persist new position into comic-user-bubbles so it syncs to server and teammates.
+    if (sel.dataset.userAdded === 'true' && id) {
+      const panel = sel.closest('.panel');
+      const panelId = panel ? panel.dataset.panelId : null;
+      if (panelId) {
+        const data = loadStored();
+        const list = data[panelId] || [];
+        for (let i = 0; i < list.length; i++) {
+          if (list[i].id === id) { list[i].position = sel.dataset.position; break; }
+        }
+        data[panelId] = list;
+        saveStored(data);
+      }
+    }
   }
 
   function applyStoredBubbleSides() {

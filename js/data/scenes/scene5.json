@@ -161,8 +161,8 @@
           "speaker": "narrator",
           "text": "Bongo… ella tiene hambre",
           "type": "speech",
-          "x": 33.55560302734375,
-          "y": 12.413194444444445
+          "x": 33.7158203125,
+          "y": 13.191731770833334
         },
         {
           "id": "e5-p1-umpk69ga2",
@@ -170,8 +170,8 @@
           "speaker": "narrator",
           "text": "Guau Guau",
           "type": "speech",
-          "x": 20.867919921875,
-          "y": 48.52973090277778
+          "x": 20.7855224609375,
+          "y": 48.53515625
         },
         {
           "id": "e5-p1-umpk6c6mu",
@@ -179,8 +179,8 @@
           "speaker": "narrator",
           "text": "Qué raro... mi olfato casi no la encuentra. Esta cachorra humana huele a viento... a casi nada. Cuando alguien come bien, se siente el olor a tierra y a fuego; pero ella huele a puro aire, como si se estuviera volviendo transparente.",
           "type": "thought",
-          "x": 47.7508544921875,
-          "y": 69.01584201388889
+          "x": 47.8546142578125,
+          "y": 69.05381944444444
         }
       ],
       "e5-p2": [
@@ -190,8 +190,8 @@
           "speaker": "narrator",
           "text": "Toma... Guardé este hilo del campo para vos. Así la comida nunca más se va a olvidar de buscarte.",
           "type": "speech",
-          "x": 52.75115966796875,
-          "y": 22.151692708333336
+          "x": 52.83660888671875,
+          "y": 22.51519097222222
         },
         {
           "id": "e5-p2-umpk6frjz",
@@ -208,8 +208,8 @@
           "speaker": "narrator",
           "text": "Gracias... Ya no tengo tanto miedo.",
           "type": "speech",
-          "x": 62.469482421875,
-          "y": 50.900607638888886
+          "x": 62.225341796875,
+          "y": 50.88975694444444
         }
       ],
       "e5-up-19e58704777zeu": [
@@ -237,8 +237,8 @@
           "speaker": "narrator",
           "text": "Este lugar se parece al parque donde jugamos siempre... pero todo está patas arriba. Se siente... raro",
           "type": "speech",
-          "x": 56.64825439453125,
-          "y": 47.68880208333333
+          "x": 56.59332275390625,
+          "y": 48.23133680555556
         },
         {
           "id": "e5-up-19e58704777zeu-umpk5sj5c",
@@ -246,8 +246,8 @@
           "speaker": "narrator",
           "text": "Guau Guau :0",
           "type": "speech",
-          "x": 57.27996826171875,
-          "y": 88.10492621527779
+          "x": 57.0098876953125,
+          "y": 87.10394965277779
         }
       ]
     },
@@ -338,7 +338,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T01:46:14.683Z",
+  "savedAt": "2026-05-25T02:41:17.614Z",
   "scene": "5",
   "version": 1
 }

@@ -88,6 +88,7 @@ BUBBLE_OR_CHAR_OBJECT_KEYS = {
     'comic-bubble-timing',
     'comic-bubble-audio',
     'comic-bubble-sizes',
+    'comic-bubble-sides',
     'comic-character-positions',
     'comic-character-sizes',
 }

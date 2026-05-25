@@ -202,8 +202,8 @@
           "speaker": "narrator",
           "text": "Mañana seguimos, Bongo. El mundo tiene muchos hilos sueltos.",
           "type": "speech",
-          "x": 45.55206298828125,
-          "y": 18.70659722222222
+          "x": 45.56732177734375,
+          "y": 19.09450954861111
         },
         {
           "id": "e9-p2-umpk73tpc",
@@ -229,8 +229,8 @@
           "speaker": "narrator",
           "text": "Guau...",
           "type": "speech",
-          "x": 39.90936279296875,
-          "y": 51.28038194444444
+          "x": 39.94598388671875,
+          "y": 50.75141059027778
         }
       ]
     },
@@ -285,7 +285,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T01:46:33.111Z",
+  "savedAt": "2026-05-25T02:41:33.983Z",
   "scene": "9",
   "version": 1
 }

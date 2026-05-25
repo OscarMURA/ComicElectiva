@@ -36,6 +36,7 @@
     'comic-bubble-sizes',
     'comic-character-sizes',
     'comic-extra-panels',
+    'comic-bubble-sides',
   ];
 
   function listKeys() { return KEYS.slice(); }

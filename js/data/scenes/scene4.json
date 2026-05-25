@@ -114,8 +114,8 @@
           "speaker": "narrator",
           "text": "Pero nadie comía. La comida lloraba sola tirada en el suelo.",
           "type": "thought",
-          "x": 21.92840576171875,
-          "y": 53.33116319444444
+          "x": 21.4508056640625,
+          "y": 53.47764756944444
         },
         {
           "id": "e4-p1-umpk56rcz",
@@ -123,8 +123,8 @@
           "speaker": "narrator",
           "text": "Bongo... pero si todas estas frutas están buenas. ¿Por qué las tiraron?",
           "type": "speech",
-          "x": 79.9652099609375,
-          "y": 75.12749565972221
+          "x": 79.84619140625,
+          "y": 74.60394965277779
         }
       ],
       "e4-p2": [
@@ -134,8 +134,8 @@
           "speaker": "narrator",
           "text": "Bongo… mirá.",
           "type": "speech",
-          "x": 43.16864013671875,
-          "y": 51.5869140625
+          "x": 43.38836669921875,
+          "y": 51.052517361111114
         },
         {
           "id": "e4-p2-umpk59khq",
@@ -143,8 +143,8 @@
           "speaker": "narrator",
           "text": "Cada fruta tiene un hilo. Y los hilos van a alguna parte… pero alguien los cortó.",
           "type": "speech",
-          "x": 30.206298828125,
-          "y": 72.42296006944444
+          "x": 30.2825927734375,
+          "y": 72.61013454861111
         },
         {
           "id": "e4-p2-umpk5c0xq",
@@ -208,7 +208,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-25T01:45:56.644Z",
+  "savedAt": "2026-05-25T02:40:38.822Z",
   "scene": "4",
   "version": 1
 }

@@ -1,6 +1,34 @@
 {
   "app": "HilosDelAgua",
   "data": {
+    "comic-bubble-sides": {
+      "e1-p2-umpiu7lse": "right",
+      "e1-p2-umpjcg69o": "right",
+      "e1-up-mpitlb8kqmv-umpjckru7": "right",
+      "e2-p1-umpjclwed": "right",
+      "e2-p2-umpjd4f75": "right",
+      "e2-p2-umpjd5x2n": "top-right",
+      "e2-p3-umpjde8vr": "right",
+      "e2-p3-umpjdg044": "top-right",
+      "e2-p3-umpk38qjp": "top-right",
+      "e3-p1-umpk2kos5": "right",
+      "e3-p1-umpk2lttv": "right",
+      "e3-p1-umpk399u0": "top-right",
+      "e3-p2-umpk3hfy7": "right",
+      "e3-p3-umpk3jrqs": "right",
+      "e3-p3-umpk4ebf8": "top-left",
+      "e4-p1-umpk4wwhu": "right",
+      "e4-p1-umpk4y2s8": "right",
+      "e4-p1-umpk56rcz": "top-left",
+      "e4-p2-umpk58za2": "right",
+      "e4-p2-umpk59khq": "top-right",
+      "e5-p1-umpk65yxm": "top-left",
+      "e5-p1-umpk6c6mu": "top-left",
+      "e5-p2-umpk6i6m2": "top-left",
+      "e5-up-19e58704777zeu-umpk5rbvn": "left",
+      "e5-up-19e58704777zeu-umpk5sj5c": "top-left",
+      "e9-p2-umpk78x6k": "top-left"
+    },
     "comic-global-audio-volume": 0,
     "comic-user-character-gallery": [
       {
@@ -245,7 +273,7 @@
       }
     ]
   },
-  "savedAt": "2026-05-24T17:32:02.836Z",
+  "savedAt": "2026-05-25T02:38:59.668Z",
   "scene": "global",
   "version": 1
 }
