@@ -19,9 +19,9 @@ doradas flotando en el fondo.
 
 ## Cómo abrirlo
 
-### En línea
+### En línea (GitHub Pages)
 
-Sitio desplegado para PC y móvil:
+URL pública esperada cuando GitHub Pages esté activo:
 
 ```text
 https://oscarmura.github.io/ComicElectiva/
@@ -29,6 +29,16 @@ https://oscarmura.github.io/ComicElectiva/
 
 La versión en línea funciona como lectura interactiva estática. Para editar,
 subir archivos o guardar cambios al repo, usa el servidor local descrito abajo.
+
+Para activar el despliegue en GitHub:
+
+1. Entra a `Settings → Pages`.
+2. En `Build and deployment`, selecciona `GitHub Actions`.
+3. Ejecuta el workflow `Deploy static site to GitHub Pages` desde `Actions`,
+   o haz push a `main`.
+
+Si prefieres desplegar desde rama, selecciona `Deploy from a branch`,
+elige `gh-pages` y carpeta `/ (root)`.
 
 ### Opción 1 · Servidor local (recomendada — habilita edición + uploads)
 
