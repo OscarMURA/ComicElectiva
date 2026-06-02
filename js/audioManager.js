@@ -10,10 +10,13 @@
   const GLOBAL_VOL_KEY = 'comic-global-audio-volume';
   const PANEL_AUDIO_KEY = 'comic-user-panel-audio';
   const CROSSFADE_MS = 1200;
-  const AMBIENT_VOLUME = 0.5;
-  const SYNTH_AMBIENT_VOLUME = 0.16;
-  const SFX_VOLUME = 0.7;
-  const GLOBAL_DEFAULT_VOLUME = 0.3;
+  const AMBIENT_VOLUME = 0.95;
+  const SYNTH_AMBIENT_VOLUME = 0.78;
+  const SFX_VOLUME = 1;
+  const GLOBAL_DEFAULT_VOLUME = 0.85;
+  const GLOBAL_AUDIO_GAIN = 2.2;
+  const AMBIENT_AUDIO_GAIN = 1.8;
+  const SFX_AUDIO_GAIN = 2.4;
 
   let muted = false;
   let unlocked = false;
@@ -28,6 +31,7 @@
   let synthMaster = null;
   let currentSynth = null;
   let currentSynthKey = null;
+  const audioBoosts = new WeakMap();
 
   // Global background music (loops across whole story).
   let globalAudio = null;
@@ -69,6 +73,27 @@
     if (opts && typeof opts.volume === 'number') a.volume = opts.volume;
     a.addEventListener('error', () => { /* silent */ });
     return a;
+  }
+
+  function applyAudioBoost(audio, gainValue) {
+    if (!audio) return null;
+    const ctx = getAudioContext();
+    if (!ctx) return null;
+    try {
+      let boost = audioBoosts.get(audio);
+      if (!boost) {
+        const source = ctx.createMediaElementSource(audio);
+        const gain = ctx.createGain();
+        source.connect(gain);
+        gain.connect(ctx.destination);
+        boost = { gain: gain };
+        audioBoosts.set(audio, boost);
+      }
+      boost.gain.gain.value = muted ? 0 : gainValue;
+      return boost;
+    } catch (e) {
+      return null;
+    }
   }
 
   function getAudioContext() {
@@ -325,6 +350,7 @@
     }
     globalSrc = src;
     globalAudio = createAudio(src, { loop: true, volume: 0 });
+    applyAudioBoost(globalAudio, GLOBAL_AUDIO_GAIN);
     const p = globalAudio.play();
     if (p && p.catch) p.catch(() => {});
     fadeTo(globalAudio, muted ? 0 : globalVolume, CROSSFADE_MS);
@@ -395,6 +421,7 @@
     const url = buildAmbientUrl(key);
     if (!url) return;
     const next = createAudio(url, { loop: true, volume: 0 });
+    applyAudioBoost(next, AMBIENT_AUDIO_GAIN);
     const targetVol = muted ? 0 : AMBIENT_VOLUME;
     const playPromise = next.play();
     if (playPromise && playPromise.catch) playPromise.catch(() => {});
@@ -466,6 +493,7 @@
       const a = template ? template.cloneNode(true) : new Audio(url);
       a.volume = (opts && typeof opts.volume === 'number') ? opts.volume : SFX_VOLUME;
       a.currentTime = 0;
+      applyAudioBoost(a, SFX_AUDIO_GAIN);
       a.addEventListener('error', () => { brokenAudio.add(url); }, { once: true });
       const p = a.play();
       if (p && p.catch) p.catch(() => { brokenAudio.add(url); });
@@ -506,6 +534,7 @@
     try {
       const instance = template.cloneNode(true);
       instance.volume = SFX_VOLUME;
+      applyAudioBoost(instance, SFX_AUDIO_GAIN);
       instance.addEventListener('error', () => { brokenAudio.add(url); }, { once: true });
       const p = instance.play();
       if (p && p.catch) p.catch(() => { brokenAudio.add(url); });
@@ -515,9 +544,11 @@
   function applyMuteState() {
     if (currentAmbient) {
       try { currentAmbient.volume = muted ? 0 : AMBIENT_VOLUME; } catch (e) {}
+      applyAudioBoost(currentAmbient, AMBIENT_AUDIO_GAIN);
     }
     if (globalAudio) {
       try { globalAudio.volume = muted ? 0 : globalVolume; } catch (e) {}
+      applyAudioBoost(globalAudio, GLOBAL_AUDIO_GAIN);
     }
     if (currentSynth && currentSynth.gain) {
       try { currentSynth.gain.gain.value = muted ? 0 : 1; } catch (e) {}
